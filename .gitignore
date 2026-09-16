@@ -1,0 +1,23 @@
+node_modules/
+.wrangler/
+reports/
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Legacy root-level site copy. Cloudflare serves the checked-in public/ folder.
+/fonts/
+/guides/
+/js/
+/tools/
+/_redirects
+/404.html
+/about.html
+/contact.html
+/index.html
+/main.js
+/privacy.html
+/robots.txt
+/sitemap.xml
+/style.css
+/terms.html

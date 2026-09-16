@@ -1,0 +1,34 @@
+/index.html / 301
+/about.html /about 301
+/contact.html /contact 301
+/privacy.html /privacy 301
+/terms.html /terms 301
+/tools/image-compressor.html /tools/image-compressor 301
+/tools/image-resizer.html /tools/image-resizer 301
+/tools/pdf-to-jpg.html /tools/pdf-to-jpg 301
+/tools/jpg-to-pdf.html /tools/jpg-to-pdf 301
+/tools/emi-calculator.html /tools/emi-calculator 301
+/tools/unit-converter.html /tools/unit-converter 301
+/tools/age-calculator.html /tools/age-calculator 301
+/tools/word-counter.html /tools/word-counter 301
+/tools/qr-generator.html /tools/qr-generator 301
+/tools/currency-converter.html /tools/currency-converter 301
+/guides/reduce-image-size-for-email.html /guides/reduce-image-size-for-email 301
+/guides/jpg-png-webp.html /guides/jpg-png-webp 301
+/guides.html /guides/ 301
+/guides /guides/ 301
+
+/tools/case-converter.html /tools/case-converter 301
+/tools/space-remover.html /tools/space-remover 301
+/tools/duplicate-line-remover.html /tools/duplicate-line-remover 301
+/tools/text-reverser.html /tools/text-reverser 301
+/tools/find-replace.html /tools/find-replace 301
+/tools/text-to-slug.html /tools/text-to-slug 301
+/tools/lorem-ipsum-generator.html /tools/lorem-ipsum-generator 301
+/tools/gpa-calculator.html /tools/gpa-calculator 301
+/tools/percentage-calculator.html /tools/percentage-calculator 301
+/tools/grade-calculator.html /tools/grade-calculator 301
+/tools/date-difference.html /tools/date-difference 301
+/tools/exam-countdown.html /tools/exam-countdown 301
+
+/tools/bs-ad-converter.html /tools/bs-ad-converter 301

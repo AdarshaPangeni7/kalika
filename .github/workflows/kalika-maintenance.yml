@@ -1,0 +1,83 @@
+name: Kalika maintenance checks
+
+on:
+  schedule:
+    - cron: "17 2 * * *"
+    - cron: "37 3 * * 1"
+    - cron: "7 4 1 * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Which checks to run"
+        required: true
+        default: "daily"
+        type: choice
+        options:
+          - daily
+          - weekly
+          - monthly
+          - all
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kalika-maintenance
+  cancel-in-progress: false
+
+jobs:
+  site-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install checker dependencies
+        run: npm install
+
+      - name: Install browser for console checks
+        if: github.event.inputs.mode == 'weekly' || github.event.inputs.mode == 'all' || github.event.schedule == '37 3 * * 1'
+        run: npx playwright install --with-deps chromium
+
+      - name: Choose scheduled check mode
+        id: mode
+        shell: bash
+        run: |
+          mode="${{ github.event.inputs.mode }}"
+          if [ -z "$mode" ]; then
+            case "${{ github.event.schedule }}" in
+              "37 3 * * 1") mode="weekly" ;;
+              "7 4 1 * *") mode="monthly" ;;
+              *) mode="daily" ;;
+            esac
+          fi
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+
+      - name: Run read-only Kalika checks
+        id: run_checks
+        continue-on-error: true
+        env:
+          KALIKA_SITE_ORIGIN: ${{ vars.KALIKA_SITE_ORIGIN || 'https://kalikatools.com' }}
+          PAGESPEED_API_KEY: ${{ secrets.PAGESPEED_API_KEY }}
+          GSC_PROPERTY: ${{ vars.GSC_PROPERTY }}
+          GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+          KALIKA_PERFORMANCE_MIN: ${{ vars.KALIKA_PERFORMANCE_MIN || '80' }}
+        run: npm run check:${{ steps.mode.outputs.mode }}
+
+      - name: Commit maintenance report
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Add Kalika maintenance report"
+          file_pattern: reports/*.md reports/*.json
+
+      - name: Mark workflow failed when urgent issues were found
+        if: steps.run_checks.outcome == 'failure'
+        run: exit 1
