@@ -1,1 +1,2 @@
 document.querySelector('.menu').addEventListener('click',e=>{const open=e.currentTarget.getAttribute('aria-expanded')!=='true';e.currentTarget.setAttribute('aria-expanded',open);document.querySelector('#nav').classList.toggle('open',open)});
+const analyticsScript = document.createElement('script'); analyticsScript.src = '/js/analytics.js'; analyticsScript.defer = true; document.head.append(analyticsScript);
