@@ -4,6 +4,7 @@ import { mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const root = process.cwd();
+const publicDir = path.join(root, "public");
 const reportsDir = path.join(root, "reports");
 const mode = getMode();
 const origin = normalizeOrigin(process.env.KALIKA_SITE_ORIGIN || "https://kalikatools.com");
@@ -60,6 +61,7 @@ if (["daily", "all"].includes(mode)) {
 }
 
 if (["weekly", "all"].includes(mode)) {
+  await checkSeoBaseline();
   await checkPageSpeed();
   await checkSearchConsole();
   await checkConsoleErrors();
@@ -258,7 +260,7 @@ async function checkContentFreshness() {
 
 async function checkCdnDependencies() {
   const urls = new Set();
-  for (const filename of await listFiles(path.join(root, "js"))) {
+  for (const filename of await listFiles(path.join(publicDir, "js"))) {
     const text = await readFile(filename, "utf8");
     for (const match of text.matchAll(/https:\/\/cdn\.jsdelivr\.net\/[^'")]+/g)) urls.add(match[0]);
   }
@@ -294,9 +296,52 @@ function urlFor(route) {
 }
 
 function fileForRoute(route) {
-  if (route === "/") return path.join(root, "index.html");
-  if (route.endsWith("/")) return path.join(root, route, "index.html");
-  return path.join(root, `${route}.html`);
+  if (route === "/") return path.join(publicDir, "index.html");
+  if (route.endsWith("/")) return path.join(publicDir, route, "index.html");
+  return path.join(publicDir, `${route}.html`);
+}
+
+async function checkSeoBaseline() {
+  const issues = [];
+  for (const route of routes) {
+    const page = await fetchText(urlFor(route));
+    if (!page.ok) {
+      worthReviewing.push(`${route}: SEO check skipped because the page could not be loaded.`);
+      continue;
+    }
+    const seo = parseSeo(page.text);
+    const routeIssues = [];
+    const isTool = route.startsWith("/tools/");
+
+    if (!seo.title) routeIssues.push("missing title");
+    else if (seo.title.length < 50 || seo.title.length > 60) routeIssues.push(`title length ${seo.title.length}, target 50-60`);
+
+    if (!seo.description) routeIssues.push("missing meta description");
+    else if (seo.description.length < 140 || seo.description.length > 160) {
+      routeIssues.push(`meta description length ${seo.description.length}, target 140-160`);
+    }
+
+    if (!seo.canonical) routeIssues.push("missing canonical tag");
+    if (seo.h1Count !== 1) routeIssues.push(`${seo.h1Count} H1 tags, target 1`);
+    if (isTool && !/WebApplication|SoftwareApplication/.test(seo.schemaText)) {
+      routeIssues.push("tool page missing WebApplication or SoftwareApplication schema");
+    }
+    if (isTool && /Frequently Asked Questions|FAQ/i.test(page.text) && !/FAQPage/.test(seo.schemaText)) {
+      routeIssues.push("FAQ section present but FAQPage schema not found");
+    }
+
+    checks.push({ name: "seo", route, ...seo, ok: routeIssues.length === 0 });
+    for (const issue of routeIssues) issues.push(`${route}: ${issue}`);
+  }
+
+  if (issues.length === 0) {
+    allClear.push("On-page SEO baseline passed for titles, descriptions, canonicals, H1s, and tool schema.");
+    return;
+  }
+
+  worthReviewing.push(`SEO baseline found ${issues.length} item(s) to review.`);
+  for (const issue of issues.slice(0, 20)) suggestedFixes.push(`${issue}. Review the page in the SEO admin panel before editing.`);
+  if (issues.length > 20) suggestedFixes.push(`SEO baseline has ${issues.length - 20} more item(s); open reports/latest.json for the full list.`);
 }
 
 async function fetchStatus(url, method = "GET") {
@@ -340,6 +385,38 @@ function getInternalLinks(html, route) {
     links.add(pathname || "/");
   }
   return links;
+}
+
+function parseSeo(html) {
+  return {
+    title: firstMatch(html, /<title[^>]*>([\s\S]*?)<\/title>/i),
+    description: firstMatch(html, /<meta\s+[^>]*name=["']description["'][^>]*content=["']([^"']*)["'][^>]*>/i)
+      || firstMatch(html, /<meta\s+[^>]*content=["']([^"']*)["'][^>]*name=["']description["'][^>]*>/i),
+    canonical: firstMatch(html, /<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']*)["'][^>]*>/i)
+      || firstMatch(html, /<link\s+[^>]*href=["']([^"']*)["'][^>]*rel=["']canonical["'][^>]*>/i),
+    h1Count: (html.match(/<h1\b/gi) || []).length,
+    schemaText: [...html.matchAll(/<script\s+[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)]
+      .map((match) => match[1])
+      .join("\n")
+  };
+}
+
+function firstMatch(text, pattern) {
+  const match = text.match(pattern);
+  return match ? decodeHtml(stripTags(match[1]).trim().replace(/\s+/g, " ")) : "";
+}
+
+function stripTags(value) {
+  return String(value).replace(/<[^>]*>/g, "");
+}
+
+function decodeHtml(value) {
+  return String(value)
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">");
 }
 
 async function listFiles(directory) {
