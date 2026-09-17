@@ -10,7 +10,9 @@
     "check:daily": "node scripts/maintenance-check.mjs --mode=daily",
     "check:weekly": "node scripts/maintenance-check.mjs --mode=weekly",
     "check:monthly": "node scripts/maintenance-check.mjs --mode=monthly",
-    "admin:seo": "node scripts/seo-admin-server.mjs"
+    "admin:seo": "node scripts/seo-admin-server.mjs",
+    "submit:indexnow": "node scripts/indexnow.mjs",
+    "deploy": "node scripts/deploy-site.mjs"
   },
   "devDependencies": {
     "cheerio": "^1.2.0",

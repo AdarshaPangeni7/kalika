@@ -3,6 +3,7 @@ import path from 'node:path';
 import {spawn} from 'node:child_process';
 import {randomUUID} from 'node:crypto';
 import {normalize,validate,revision,readEntries,atomicJson,buildLibrary,origin,escape} from './traditional-texts.mjs';
+import {submitIndexNow} from './indexnow.mjs';
 
 export function command(root,exe,args){return new Promise((resolve,reject)=>{
  const child=spawn(exe,args,{cwd:root,windowsHide:true,env:{...process.env,PATH:path.dirname(process.execPath)+path.delimiter+process.env.PATH},stdio:['ignore','pipe','pipe']});let output='';
@@ -10,7 +11,7 @@ export function command(root,exe,args){return new Promise((resolve,reject)=>{
  const timeout=setTimeout(()=>{child.kill();reject(Error('The command timed out.'))},300000);
  child.on('error',()=>{clearTimeout(timeout);reject(Error('A required local program could not start.'))});child.on('close',code=>{clearTimeout(timeout);code===0?resolve(output.trimEnd()):reject(Error('The command did not complete. Check GitHub/Cloudflare sign-in and your internet connection.'))});
 });}
-export function createTextManager(root,{run=(exe,args)=>command(root,exe,args),verifyLive=async(entry)=>{
+export function createTextManager(root,{run=(exe,args)=>command(root,exe,args),notifyIndexNow=entry=>submitIndexNow(root,[origin+'/texts/'+entry.slug,origin+'/texts/']),verifyLive=async(entry)=>{
  const url=origin+'/texts/'+entry.slug;
  for(let i=0;i<4;i++){const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(20000)});if(r.ok&&(await r.text()).includes(`data-content-revision="${revision(entry)}"`))return;if(i<3)await new Promise(r=>setTimeout(r,2000));}
  throw Error('Publishing finished, but the updated live page could not be verified yet. Retry to check it again.');
@@ -55,7 +56,8 @@ export function createTextManager(root,{run=(exe,args)=>command(root,exe,args),v
    if(job.phase==='committed'){job.message='Sending the reviewed text to GitHub…';await persist(job);await run('git',['push','origin','main']);job.phase='pushed';await persist(job);}
    if(job.phase==='pushed'){job.message='Publishing the saved site to Cloudflare…';await persist(job);await run(process.execPath,['node_modules/wrangler/bin/wrangler.js','deploy']);job.phase='deployed';await persist(job);}
    if(job.phase==='deployed'){job.message='Checking the live reading page…';await persist(job);await verifyLive(job.entry);job.phase='verified';}
-   job.status='complete';job.message='Published to GitHub and Cloudflare. The live page has been verified.';job.url=origin+'/texts/'+job.entry.slug;await persist(job);
+   try{job.discovery=await notifyIndexNow(job.entry);}catch(e){job.discovery={status:'retry-needed',message:e.message};}
+   job.status='complete';job.message='Published to GitHub and Cloudflare. The live page has been verified. '+(job.discovery?.message||'');job.url=origin+'/texts/'+job.entry.slug;await persist(job);
   }catch(e){job.status='failed';job.error=e.message;await persist(job);}finally{busy=false;}
  }
  async function publish(slug,expectedRevision,confirmed){
