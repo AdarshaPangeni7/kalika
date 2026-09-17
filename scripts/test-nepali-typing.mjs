@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import {createServer} from 'node:http';
+import {readFile,mkdir} from 'node:fs/promises';
+import path from 'node:path';
+import {chromium} from 'playwright';
+import {convertText,phonetic,candidates} from '../public/js/nepali-transliteration.js';
+for(const [input,expected]of Object.entries({'namaste':'नमस्ते','mero naam ram ho':'मेरो नाम राम हो','tapailai kasto chha?':'तपाईंलाई कस्तो छ?','ma nepali lekhnu':'म नेपाली लेख्नु','kaa ki kuu ke kai ko kau':'का कि कू के कै को कौ','ksh tra gya shra':'क्ष त्र ज्ञ श्र','k_ aM a~ aH':'क् अं अँ अः','Ta Tha Da Dha Na':'ट ठ ड ढ ण','नमस्ते 123 |':'नमस्ते 123 ।','https://example.com/ram?x=namaste test@example.com':'https://example.com/ram?x=namaste test@example.com'}))assert.equal(convertText(input),expected,input);
+assert.equal(phonetic('namaste'),'नमस्ते');assert.ok(candidates('ma').includes('मा'));
+const root=path.resolve('public');
+const server=createServer(async(req,res)=>{try{let p=new URL(req.url,'http://localhost').pathname;if(p==='/')p='/index.html';if(!path.extname(p))p+='.html';const file=path.resolve(root,'.'+p);if(!file.startsWith(root+path.sep))throw Error();const body=await readFile(file);res.setHeader('Content-Type',p.endsWith('.js')?'application/javascript':p.endsWith('.css')?'text/css':p.endsWith('.html')?'text/html':'application/octet-stream');res.end(body);}catch{res.writeHead(404).end();}});
+await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const browser=await chromium.launch({executablePath:process.env.KALIKA_CHROME_EXECUTABLE||(process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':undefined),headless:true});
+try{
+ const context=await browser.newContext({permissions:['clipboard-read','clipboard-write'],viewport:{width:1280,height:900}}),page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));const external=[];page.on('request',r=>{if(!r.url().startsWith('http://127.0.0.1'))external.push(r.url());});
+ await page.goto(`http://127.0.0.1:${server.address().port}/tools/nepali-typing`);
+ const editor=page.locator('#nepali-editor');await editor.pressSequentially('namaste mero naam ram ho ');
+ assert.equal(await editor.inputValue(),'नमस्ते मेरो नाम राम हो ');
+ await page.getByRole('button',{name:'Clear',exact:true}).click();await page.getByRole('button',{name:'Undo',exact:true}).click();assert.equal(await editor.inputValue(),'नमस्ते मेरो नाम राम हो ');
+ await page.getByRole('button',{name:'Redo',exact:true}).click();assert.equal(await editor.inputValue(),'');
+ await editor.fill('tapailai kasto chha?');await page.getByRole('button',{name:'Convert text',exact:true}).click();assert.equal(await editor.inputValue(),'तपाईंलाई कस्तो छ?');
+ await page.getByRole('button',{name:'Copy text',exact:true}).click();assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),'तपाईंलाई कस्तो छ?');
+ const downloading=page.waitForEvent('download');await page.getByRole('button',{name:'Download .txt',exact:true}).click();const downloaded=await downloading;assert.equal(await readFile(await downloaded.path(),'utf8'),'तपाईंलाई कस्तो छ?');
+ await page.locator('#typing-mode').selectOption('english');await editor.fill('Hello namaste');await editor.evaluate(e=>e.setSelectionRange(6,13));await page.getByRole('button',{name:'Convert text',exact:true}).click();assert.equal(await editor.inputValue(),'Hello नमस्ते');
+ await editor.fill('English stays English ');assert.equal(await editor.inputValue(),'English stays English ');
+ await page.locator('#typing-mode').selectOption('nepali');await editor.fill('');await editor.pressSequentially('https://example.com ');assert.equal(await editor.inputValue(),'https://example.com ');
+ await editor.fill('ma');await page.locator('#typing-suggestions').getByRole('button',{name:'मा',exact:true}).click();assert.equal(await editor.inputValue(),'मा');
+ await page.getByText('Nepali character keyboard / नेपाली अक्षरहरू',{exact:true}).click();await page.getByRole('button',{name:'Insert ।',exact:true}).click();assert.equal(await editor.inputValue(),'मा।');
+ await editor.fill('');await editor.dispatchEvent('compositionstart');await editor.fill('नेपाली');await editor.dispatchEvent('compositionend');assert.equal(await editor.inputValue(),'नेपाली');
+ await page.getByRole('button',{name:'Insert example',exact:true}).click();assert.ok((await editor.inputValue()).includes('नमस्ते'));
+ await mkdir('reports',{recursive:true});await page.screenshot({path:'reports/nepali-desktop.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));await page.screenshot({path:'reports/nepali-mobile.png',fullPage:true});
+ assert.deepEqual(errors,[]);assert.deepEqual(external,[]);
+ console.log('PASS: phrases, vowel marks, conjuncts, URLs, live typing, paste conversion, selected conversion, clipboard, UTF-8 download, Undo/Redo, spelling choices, keyboard, IME composition and mobile overflow. No external requests.');
+}finally{await browser.close();await new Promise(r=>server.close(r));}

@@ -40,6 +40,7 @@ const routes = [
   "/tools/unit-converter",
   "/tools/age-calculator",
   "/tools/word-counter",
+  "/tools/nepali-typing",
   "/tools/qr-generator",
   "/tools/currency-converter",
   "/guides/",

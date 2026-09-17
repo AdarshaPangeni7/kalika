@@ -74,6 +74,10 @@ jobs:
           KALIKA_PERFORMANCE_MIN: ${{ vars.KALIKA_PERFORMANCE_MIN || '80' }}
         run: npm run check:${{ steps.mode.outputs.mode }}
 
+      - name: Nepali typing functional checks
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        run: node scripts/test-nepali-typing.mjs
+
       - name: Competitor SEO review
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         env:
