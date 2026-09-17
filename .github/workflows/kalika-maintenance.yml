@@ -82,10 +82,6 @@ jobs:
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         run: node scripts/test-preeti-and-language.mjs
 
-      - name: Traditional text library and private editor checks
-        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
-        run: node scripts/test-text-library.mjs
-
       - name: Search crawler accessibility checks
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         run: node scripts/check-discovery.mjs

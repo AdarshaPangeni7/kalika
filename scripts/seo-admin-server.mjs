@@ -2,9 +2,6 @@ import crypto from "node:crypto";
 import http from "node:http";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import {fileURLToPath} from 'node:url';
-import {createTextManager} from './text-publisher.mjs';
-import {chrome,renderEntry} from './traditional-texts.mjs';
 
 const host = process.env.KALIKA_ADMIN_HOST || "127.0.0.1";
 const port = Number(process.env.KALIKA_ADMIN_PORT || 8789);
@@ -13,9 +10,6 @@ const adminUser = process.env.KALIKA_ADMIN_USER || "admin";
 const adminPassword = process.env.KALIKA_ADMIN_PASSWORD || crypto.randomBytes(9).toString("base64url");
 const sessions = new Map();
 if(!['127.0.0.1','localhost','::1'].includes(host))throw Error('This private admin must bind to a loopback address.');
-const projectRoot=process.env.KALIKA_PROJECT_ROOT||process.cwd();
-const scriptDir=path.dirname(fileURLToPath(import.meta.url));
-const texts=createTextManager(projectRoot);
 const allowedHosts=new Set([`127.0.0.1:${port}`,`localhost:${port}`,`[::1]:${port}`]);
 const sameOrigin=request=>{try{return allowedHosts.has(new URL(request.headers.origin).host)&&new URL(request.headers.origin).protocol==='http:'}catch{return false}};
 
@@ -29,27 +23,10 @@ const server = http.createServer(async (request, response) => {
 
     if (url.pathname === "/login" && request.method === "POST") {if(!sameOrigin(request))return sendText(response,'Invalid origin',403);return await handleLogin(request, response);}
     if (url.pathname === "/logout") return handleLogout(request, response);
+    if(!['/','/api/scan','/api/latest-report'].includes(url.pathname))return sendText(response,'Not found',404);
     if (!isAuthenticated(request)) return url.pathname.startsWith('/api/')?sendJson(response,{error:'Please sign in to the local admin panel again.'},401):sendLogin(response);
     const session=sessions.get(parseCookies(request.headers.cookie||'').kalika_admin);
     if(request.method==='POST'&&(!sameOrigin(request)||request.headers['x-kalika-csrf']!==session.csrf))return sendJson(response,{error:'Security check failed. Reload the admin page and try again.'},403);
-
-    if(url.pathname==='/texts-admin')return sendHtml(response,await readFile(path.join(scriptDir,'text-editor.html'),'utf8'));
-    if(url.pathname==='/admin-assets/text-editor.js'){response.writeHead(200,{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'no-store'});return response.end(await readFile(path.join(scriptDir,'text-editor-client.js'),'utf8'));}
-    if(url.pathname==='/api/texts/session'&&request.method==='GET')return sendJson(response,{csrf:session.csrf});
-    if(url.pathname==='/api/texts/list'&&request.method==='GET')return sendJson(response,await texts.list());
-    if(url.pathname==='/api/texts/status'&&request.method==='GET'){const job=await texts.status();return sendJson(response,publicJob(job));}
-    if(url.pathname.startsWith('/api/texts/')&&request.method==='POST'){
-      const body=JSON.parse(await readBody(request));
-      if(url.pathname==='/api/texts/save')return sendJson(response,await texts.save(body.entry,body.baseRevision));
-      if(url.pathname==='/api/texts/preview'){
-        const item=await texts.get(body.slug);if(!item||item.revision!==body.revision)throw Error('Save the latest version before previewing.');
-        let html=renderEntry(item.entry,await chrome(projectRoot),{preview:true});
-        for(const css of ['style.css','texts.css']){let styles=await readFile(path.join(projectRoot,'public',css),'utf8');for(const font of ['dm-sans-latin.woff2','libre-caslon-display-latin.woff2']){const data=await readFile(path.join(projectRoot,'public/fonts',font));styles=styles.replaceAll('/fonts/'+font,'data:font/woff2;base64,'+data.toString('base64'));}html=html.replace(`<link rel="stylesheet" href="/${css}">`,`<style>${styles}</style>`);}
-        return sendJson(response,{html});
-      }
-      if(url.pathname==='/api/texts/publish')return sendJson(response,publicJob(await texts.publish(body.slug,body.revision,body.confirmed)));
-      if(url.pathname==='/api/texts/retry')return sendJson(response,publicJob(await texts.retry()));
-    }
 
     if (url.pathname === "/") return sendHtml(response, dashboardHtml());
     if (url.pathname === "/api/scan") return sendJson(response, await scanSite());
@@ -199,12 +176,12 @@ function dashboardHtml() {
   <section class="top">
     <div>
       <p class="kicker">Kalika local admin</p>
-      <h1>SEO Review Panel</h1>
+      <h1>Tools &amp; SEO Review</h1>
       <p class="intro">This password-protected panel runs on your computer only. It scans ${escapeHtml(siteOrigin)}, drafts SEO review notes, and never publishes changes by itself.</p>
     </div>
     <div class="actions">
       <button id="scan">Scan pages</button>
-      <a class="button secondary" href="/texts-admin">Write traditional texts</a>
+
       <button class="secondary" id="json" disabled>Export JSON</button>
       <button class="secondary" id="csv" disabled>Export CSV</button>
       <a class="button secondary" href="/logout">Log out</a>
@@ -304,7 +281,6 @@ function readBody(request) {
   });
 }
 
-function publicJob(job){if(!job)return null;const {id,status,phase,message,error,url}=job;return {id,status,phase,message,error,url};}
 
 function firstMatch(text, pattern) {
   const match = text.match(pattern);

@@ -2,16 +2,15 @@
 
 The public robots file explicitly permits OAI-SearchBot and ChatGPT-User, Claude-SearchBot and Claude-User, PerplexityBot and Perplexity-User, and Applebot. The existing general crawl policy is unchanged. These search/retrieval bots are distinct from model-training bots. There is no guaranteed placement or indexing registration performed for these services.
 
-The sitemap lists canonical public pages. Content, canonical tags and structured data are delivered in the initial HTML. The local admin and private drafts are not hosted on the public site.
+The sitemap lists canonical public pages. Content, canonical tags and structured data are delivered in the initial HTML. The local admin is not hosted on the public site.
 
 ## IndexNow
 
 `indexnow.config.json` identifies the canonical host and its ownership-verification file in `public/`. The protocol requires that file to be publicly readable. It is not a Google, Bing, Cloudflare or admin account credential.
 
 - `npm run deploy` deploys through Cloudflare and then sends IndexNow notifications for changed public pages.
-- `npm run submit:indexnow` retries notifications without redeploying. It reads sitemap URLs and submits only changed pages whose live HTML matches the local version.
-- Publishing a traditional text through the admin verifies deployment first, then notifies IndexNow about the article and library listing. A notification failure does not misreport an otherwise successful publication as a failed deployment; its message appears in the publication status.
-- Accepted hashes are stored locally in `.kalika-admin/indexnow-state.json`, outside Git and public hosting, so unchanged pages are not submitted repeatedly. Back up this folder with your drafts when moving computers.
+- `npm run submit:indexnow` retries notifications without redeploying. It reads sitemap URLs and submits changed pages whose live HTML matches the local version. Previously submitted pages removed from the sitemap are notified only after their live URL returns 404 or 410.
+- Accepted hashes are stored locally in `.kalika-admin/indexnow-state.json`, outside Git and public hosting, so unchanged pages are not submitted repeatedly. Back up this folder when moving computers.
 - HTTP 200 means received; 202 means received with key validation pending. Neither guarantees indexing. For rate limits or temporary failures, retry later rather than repeatedly submitting.
 
 Google Search Console and Bing Webmaster Tools remain separate. IndexNow distributes submitted URLs among participating engines; it is not a direct submission mechanism for ChatGPT, Claude, Perplexity or Applebot.

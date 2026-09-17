@@ -2,7 +2,7 @@ import {readFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
-import {atomicJson} from './traditional-texts.mjs';
+import {atomicJson} from './local-utils.mjs';
 const origin='https://kalikatools.com';
 const hash=text=>createHash('sha256').update(text.replaceAll('\r\n','\n')).digest('hex');
 
@@ -16,12 +16,14 @@ export async function submitIndexNow(root,urls,{fetcher=fetch,stateFile=path.joi
  for(const u of requested){const parsed=new URL(u);if(parsed.origin!==origin||parsed.search||parsed.hash||!allowed.has(u))throw Error('Only canonical public URLs from the sitemap can be submitted.');}
  let state={version:1,accepted:{}};try{state=JSON.parse(await readFile(stateFile,'utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}
  const candidates=[];
+ // Notify removal only for URLs we submitted previously, after a live 404/410.
+ if(!urls)for(const [url,previous]of Object.entries(state.accepted)){const parsed=new URL(url);if(parsed.origin===origin&&!parsed.search&&!parsed.hash&&!allowed.has(url)&&previous.hash!=='deleted')candidates.push({url,hash:'deleted',deleted:true});}
  for(const url of requested){let pathname=new URL(url).pathname;if(pathname.endsWith('/'))pathname+='index.html';else pathname+='.html';const file=path.resolve(root,'public','.'+pathname);if(!file.startsWith(path.join(root,'public')+path.sep))throw Error('Invalid public file path.');const digest=hash(await readFile(file,'utf8'));if(state.accepted[url]?.hash!==digest)candidates.push({url,hash:digest});}
  if(!candidates.length)return {status:'unchanged',submitted:0,message:'No changed public pages need an IndexNow notification.'};
  const keyResponse=await fetcher(keyLocation,{signal:AbortSignal.timeout(20000),cache:'no-store'});
  if(!keyResponse.ok||(await keyResponse.text()).trim()!==config.key)throw Error('IndexNow ownership file is not live yet or does not match. Deploy the site first.');
  const ready=[],skipped=[];
- for(const candidate of candidates){try{const r=await fetcher(candidate.url,{signal:AbortSignal.timeout(20000),cache:'no-store'});if(r.status===200&&hash(await r.text())===candidate.hash)ready.push(candidate);else skipped.push(candidate.url);}catch{skipped.push(candidate.url);}}
+ for(const candidate of candidates){try{const r=await fetcher(candidate.url,{signal:AbortSignal.timeout(20000),cache:'no-store'});if(candidate.deleted?[404,410].includes(r.status):r.status===200&&hash(await r.text())===candidate.hash)ready.push(candidate);else skipped.push(candidate.url);}catch{skipped.push(candidate.url);}}
  if(!ready.length)return {status:'not-live',submitted:0,skipped,message:'No changed pages matched the deployed version. Deploy first, then retry the notification.'};
  let statusCode=200;
  for(let i=0;i<ready.length;i+=10000){const batch=ready.slice(i,i+10000);const r=await fetcher('https://api.indexnow.org/indexnow',{method:'POST',headers:{'Content-Type':'application/json; charset=utf-8'},body:JSON.stringify({host:config.host,key:config.key,keyLocation,urlList:batch.map(x=>x.url)}),signal:AbortSignal.timeout(30000)});if(![200,202].includes(r.status))throw Error(`IndexNow returned HTTP ${r.status}. The live site is unaffected; retry the notification later.`);if(r.status===202)statusCode=202;for(const item of batch)state.accepted[item.url]={hash:item.hash,submittedAt:new Date().toISOString(),response:r.status};await atomicJson(stateFile,state);}
