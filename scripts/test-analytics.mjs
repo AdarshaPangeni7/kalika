@@ -13,6 +13,7 @@ try {
  });
  await page.goto('https://kalikatools.com/?private=secret#private');
  assert.equal(tags,0);
+ assert.equal(await page.locator('.analytics-consent').isVisible(),false);
  await page.getByText('Privacy choices',{exact:true}).click();
  await page.getByText('Reject analytics',{exact:true}).click();
  await page.reload();

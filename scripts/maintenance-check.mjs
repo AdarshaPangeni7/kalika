@@ -1,6 +1,6 @@
 import { chromium } from "playwright";
 import { createSign } from "node:crypto";
-import { mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 
@@ -307,9 +307,11 @@ function fileForRoute(route) {
 
 async function checkSeoBaseline() {
   const issues = [];
+  let skipped = 0;
   for (const route of routes) {
     const page = await fetchText(urlFor(route));
     if (!page.ok) {
+      skipped++;
       worthReviewing.push(`${route}: SEO check skipped because the page could not be loaded.`);
       continue;
     }
@@ -338,12 +340,12 @@ async function checkSeoBaseline() {
     for (const issue of routeIssues) issues.push(`${route}: ${issue}`);
   }
 
-  if (issues.length === 0) {
+  if (issues.length === 0 && skipped === 0) {
     allClear.push("On-page SEO baseline passed for titles, descriptions, canonicals, H1s, and tool schema.");
     return;
   }
 
-  worthReviewing.push(`SEO baseline found ${issues.length} item(s) to review.`);
+  worthReviewing.push(`SEO baseline found ${issues.length} item(s) to review; ${skipped} page(s) could not be checked.`);
   for (const issue of issues.slice(0, 20)) suggestedFixes.push(`${issue}. Review the page in the SEO admin panel before editing.`);
   if (issues.length > 20) suggestedFixes.push(`SEO baseline has ${issues.length - 20} more item(s); open reports/latest.json for the full list.`);
 }
