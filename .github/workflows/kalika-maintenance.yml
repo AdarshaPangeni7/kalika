@@ -19,7 +19,7 @@ on:
           - all
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: kalika-maintenance
@@ -33,15 +33,17 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       - name: Install checker dependencies
-        run: npm install
+        run: npm ci
 
       - name: Install browser for console checks
         if: github.event.inputs.mode == 'weekly' || github.event.inputs.mode == 'all' || github.event.schedule == '37 3 * * 1'
@@ -67,16 +69,30 @@ jobs:
         env:
           KALIKA_SITE_ORIGIN: ${{ vars.KALIKA_SITE_ORIGIN || 'https://kalikatools.com' }}
           PAGESPEED_API_KEY: ${{ secrets.PAGESPEED_API_KEY }}
-          GSC_PROPERTY: ${{ vars.GSC_PROPERTY }}
+          GSC_PROPERTY: ${{ vars.GSC_PROPERTY || 'https://kalikatools.com/' }}
           GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
           KALIKA_PERFORMANCE_MIN: ${{ vars.KALIKA_PERFORMANCE_MIN || '80' }}
         run: npm run check:${{ steps.mode.outputs.mode }}
 
-      - name: Commit maintenance report
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Competitor SEO review
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        env:
+          BRAVE_SEARCH_API_KEY: ${{ secrets.BRAVE_SEARCH_API_KEY }}
+        run: node scripts/competitor-seo.mjs
+
+      - name: Readable report summary
+        if: always()
+        run: |
+          if [ -f reports/latest.md ]; then cat reports/latest.md >> "$GITHUB_STEP_SUMMARY"; fi
+          if [ -f reports/competitor-seo.md ]; then cat reports/competitor-seo.md >> "$GITHUB_STEP_SUMMARY"; fi
+
+      - name: Save reports
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          commit_message: "Add Kalika maintenance report"
-          file_pattern: reports/*.md reports/*.json
+          name: kalika-reports-${{ github.run_id }}
+          path: reports/
+          retention-days: 90
 
       - name: Mark workflow failed when urgent issues were found
         if: steps.run_checks.outcome == 'failure'

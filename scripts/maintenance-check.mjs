@@ -2,6 +2,7 @@ import { chromium } from "playwright";
 import { createSign } from "node:crypto";
 import { mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
 
 const root = process.cwd();
 const publicDir = path.join(root, "public");
@@ -63,7 +64,7 @@ if (["daily", "all"].includes(mode)) {
 if (["weekly", "all"].includes(mode)) {
   await checkSeoBaseline();
   await checkPageSpeed();
-  await checkSearchConsole();
+  try { await checkSearchConsole(); } catch { worthReviewing.push('Search Console check failed; verify service-account credentials and API access.'); }
   await checkConsoleErrors();
 }
 
@@ -142,6 +143,7 @@ async function checkPageSpeed() {
   }
 
   const flagged = [];
+  let completed = 0;
   for (const route of ["/", ...toolRoutes]) {
     const endpoint = new URL("https://www.googleapis.com/pagespeedonline/v5/runPagespeed");
     endpoint.searchParams.set("url", urlFor(route));
@@ -155,6 +157,7 @@ async function checkPageSpeed() {
       continue;
     }
     const score = Math.round(((data.value?.lighthouseResult?.categories?.performance?.score ?? 0) * 100));
+    completed++;
     checks.push({ name: "pagespeed", route, score, ok: score >= performanceMinimum });
     if (score < performanceMinimum) {
       flagged.push(`${route}: ${score}`);
@@ -162,11 +165,11 @@ async function checkPageSpeed() {
       suggestedFixes.push(`${route}: review PageSpeed diagnostics for render blocking work, heavy assets, and layout shifts before changing content.`);
     }
   }
-  if (flagged.length === 0) allClear.push(`PageSpeed mobile performance stayed at or above ${performanceMinimum} for the homepage and tool pages.`);
+  if (flagged.length === 0 && completed === toolRoutes.length + 1) allClear.push(`PageSpeed mobile performance stayed at or above ${performanceMinimum} for the homepage and tool pages.`);
 }
 
 async function checkSearchConsole() {
-  const property = process.env.GSC_PROPERTY || origin;
+  const property = process.env.GSC_PROPERTY || `${origin}/`;
   const serviceAccount = process.env.GSC_SERVICE_ACCOUNT_JSON;
   if (!serviceAccount) {
     worthReviewing.push("Search Console skipped: add GSC_SERVICE_ACCOUNT_JSON and GSC_PROPERTY after kalikatools.com is verified.");
@@ -246,8 +249,9 @@ async function checkContentFreshness() {
   const stale = [];
   for (const route of routes.filter((route) => route.startsWith("/tools/") || route.startsWith("/guides/"))) {
     const file = fileForRoute(route);
-    const info = await stat(file);
-    const ageDays = Math.floor((Date.now() - info.mtimeMs) / 86400000);
+    const lastEdit = execFileSync('git', ['log', '-1', '--format=%cI', '--', file], {encoding:'utf8'}).trim();
+    if (!lastEdit) { worthReviewing.push(`${route}: no Git history to determine content age.`); continue; }
+    const ageDays = Math.floor((Date.now() - Date.parse(lastEdit)) / 86400000);
     checks.push({ name: "freshness", route, ageDays, ok: ageDays < 90 });
     if (ageDays >= 90) {
       stale.push(`${route}: ${ageDays} days`);
@@ -358,18 +362,20 @@ async function fetchStatus(url, method = "GET") {
 }
 
 async function fetchText(url) {
-  const result = await fetchStatus(url);
-  if (!result.ok) return { ok: false, status: result.status, error: result.error, text: "" };
-  const response = await fetch(url, { redirect: "follow" });
-  return { ok: true, text: await response.text() };
+  try {
+    const response = await fetch(url, {redirect:'follow',signal:AbortSignal.timeout(15000)});
+    return {ok:response.ok,status:response.status,text:response.ok ? await response.text() : ''};
+  } catch(error) { return {ok:false,error:shortError(error.message),text:''}; }
 }
 
 async function fetchJson(url) {
-  const response = await fetch(url);
+  try {
+  const response = await fetch(url, {signal:AbortSignal.timeout(60000)});
   if (!response.ok) {
     return { error: await response.text() };
   }
   return { value: await response.json() };
+  } catch { return {error:'API unavailable or timed out'}; }
 }
 
 function getInternalLinks(html, route) {

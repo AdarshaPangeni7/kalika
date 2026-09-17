@@ -13,6 +13,8 @@
     "admin:seo": "node scripts/seo-admin-server.mjs"
   },
   "devDependencies": {
-    "playwright": "^1.47.2"
+    "cheerio": "^1.2.0",
+    "playwright": "^1.47.2",
+    "robots-parser": "^3.0.1"
   }
 }

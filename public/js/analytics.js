@@ -26,7 +26,8 @@
   banner.className = 'analytics-consent';
   banner.setAttribute('aria-label', 'Optional analytics');
   banner.innerHTML = '<p>Allow optional analytics to help improve Kalika? Google Analytics measures visits. Your files and tool inputs are not sent. <a href="/privacy">Privacy policy</a></p><div><button type="button" data-choice="denied">Reject analytics</button><button type="button" data-choice="granted">Allow analytics</button></div>';
-  banner.hidden = choice === 'granted' || choice === 'denied';
+  // Visitors may opt in from the footer; do not interrupt tool use with a popup.
+  banner.hidden = true;
   document.body.append(banner);
   banner.addEventListener('click', event => {
     const value = event.target.dataset.choice;
