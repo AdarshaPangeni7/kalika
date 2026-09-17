@@ -2,6 +2,9 @@ import crypto from "node:crypto";
 import http from "node:http";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import {fileURLToPath} from 'node:url';
+import {createTextManager} from './text-publisher.mjs';
+import {chrome,renderEntry} from './traditional-texts.mjs';
 
 const host = process.env.KALIKA_ADMIN_HOST || "127.0.0.1";
 const port = Number(process.env.KALIKA_ADMIN_PORT || 8789);
@@ -9,14 +12,44 @@ const siteOrigin = (process.env.KALIKA_SITE_ORIGIN || "https://kalikatools.com")
 const adminUser = process.env.KALIKA_ADMIN_USER || "admin";
 const adminPassword = process.env.KALIKA_ADMIN_PASSWORD || crypto.randomBytes(9).toString("base64url");
 const sessions = new Map();
+if(!['127.0.0.1','localhost','::1'].includes(host))throw Error('This private admin must bind to a loopback address.');
+const projectRoot=process.env.KALIKA_PROJECT_ROOT||process.cwd();
+const scriptDir=path.dirname(fileURLToPath(import.meta.url));
+const texts=createTextManager(projectRoot);
+const allowedHosts=new Set([`127.0.0.1:${port}`,`localhost:${port}`,`[::1]:${port}`]);
+const sameOrigin=request=>{try{return allowedHosts.has(new URL(request.headers.origin).host)&&new URL(request.headers.origin).protocol==='http:'}catch{return false}};
 
 const server = http.createServer(async (request, response) => {
   try {
+    response.setHeader('X-Content-Type-Options','nosniff');
+    response.setHeader('X-Frame-Options','DENY');
+    response.setHeader('Referrer-Policy','same-origin');
+    if(!allowedHosts.has(request.headers.host))return sendText(response,'Invalid host',403);
     const url = new URL(request.url || "/", `http://${host}:${port}`);
 
-    if (url.pathname === "/login" && request.method === "POST") return handleLogin(request, response);
+    if (url.pathname === "/login" && request.method === "POST") {if(!sameOrigin(request))return sendText(response,'Invalid origin',403);return await handleLogin(request, response);}
     if (url.pathname === "/logout") return handleLogout(request, response);
-    if (!isAuthenticated(request)) return sendLogin(response);
+    if (!isAuthenticated(request)) return url.pathname.startsWith('/api/')?sendJson(response,{error:'Please sign in to the local admin panel again.'},401):sendLogin(response);
+    const session=sessions.get(parseCookies(request.headers.cookie||'').kalika_admin);
+    if(request.method==='POST'&&(!sameOrigin(request)||request.headers['x-kalika-csrf']!==session.csrf))return sendJson(response,{error:'Security check failed. Reload the admin page and try again.'},403);
+
+    if(url.pathname==='/texts-admin')return sendHtml(response,await readFile(path.join(scriptDir,'text-editor.html'),'utf8'));
+    if(url.pathname==='/admin-assets/text-editor.js'){response.writeHead(200,{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'no-store'});return response.end(await readFile(path.join(scriptDir,'text-editor-client.js'),'utf8'));}
+    if(url.pathname==='/api/texts/session'&&request.method==='GET')return sendJson(response,{csrf:session.csrf});
+    if(url.pathname==='/api/texts/list'&&request.method==='GET')return sendJson(response,await texts.list());
+    if(url.pathname==='/api/texts/status'&&request.method==='GET'){const job=await texts.status();return sendJson(response,publicJob(job));}
+    if(url.pathname.startsWith('/api/texts/')&&request.method==='POST'){
+      const body=JSON.parse(await readBody(request));
+      if(url.pathname==='/api/texts/save')return sendJson(response,await texts.save(body.entry,body.baseRevision));
+      if(url.pathname==='/api/texts/preview'){
+        const item=await texts.get(body.slug);if(!item||item.revision!==body.revision)throw Error('Save the latest version before previewing.');
+        let html=renderEntry(item.entry,await chrome(projectRoot),{preview:true});
+        for(const css of ['style.css','texts.css']){let styles=await readFile(path.join(projectRoot,'public',css),'utf8');for(const font of ['dm-sans-latin.woff2','libre-caslon-display-latin.woff2']){const data=await readFile(path.join(projectRoot,'public/fonts',font));styles=styles.replaceAll('/fonts/'+font,'data:font/woff2;base64,'+data.toString('base64'));}html=html.replace(`<link rel="stylesheet" href="/${css}">`,`<style>${styles}</style>`);}
+        return sendJson(response,{html});
+      }
+      if(url.pathname==='/api/texts/publish')return sendJson(response,publicJob(await texts.publish(body.slug,body.revision,body.confirmed)));
+      if(url.pathname==='/api/texts/retry')return sendJson(response,publicJob(await texts.retry()));
+    }
 
     if (url.pathname === "/") return sendHtml(response, dashboardHtml());
     if (url.pathname === "/api/scan") return sendJson(response, await scanSite());
@@ -24,7 +57,7 @@ const server = http.createServer(async (request, response) => {
 
     sendText(response, "Not found", 404);
   } catch (error) {
-    sendJson(response, { error: error.message }, 500);
+    sendJson(response, { error: error.message }, 400);
   }
 });
 
@@ -45,7 +78,7 @@ async function handleLogin(request, response) {
 
   if (safeEqual(user, adminUser) && safeEqual(pass, adminPassword)) {
     const token = crypto.randomBytes(24).toString("base64url");
-    sessions.set(token, Date.now() + 1000 * 60 * 60 * 8);
+    sessions.set(token, {expiresAt:Date.now() + 1000 * 60 * 60 * 8,csrf:crypto.randomBytes(24).toString('hex')});
     response.writeHead(302, {
       Location: "/",
       "Set-Cookie": `kalika_admin=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=28800`
@@ -57,7 +90,8 @@ async function handleLogin(request, response) {
   sendLogin(response, true);
 }
 
-function handleLogout(_request, response) {
+function handleLogout(request, response) {
+  sessions.delete(parseCookies(request.headers.cookie||'').kalika_admin);
   response.writeHead(302, {
     Location: "/",
     "Set-Cookie": "kalika_admin=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0"
@@ -68,7 +102,7 @@ function handleLogout(_request, response) {
 function isAuthenticated(request) {
   const token = parseCookies(request.headers.cookie || "").kalika_admin;
   if (!token || !sessions.has(token)) return false;
-  if (sessions.get(token) < Date.now()) {
+  if (sessions.get(token).expiresAt < Date.now()) {
     sessions.delete(token);
     return false;
   }
@@ -170,6 +204,7 @@ function dashboardHtml() {
     </div>
     <div class="actions">
       <button id="scan">Scan pages</button>
+      <a class="button secondary" href="/texts-admin">Write traditional texts</a>
       <button class="secondary" id="json" disabled>Export JSON</button>
       <button class="secondary" id="csv" disabled>Export CSV</button>
       <a class="button secondary" href="/logout">Log out</a>
@@ -258,15 +293,18 @@ function safeEqual(left, right) {
 
 function readBody(request) {
   return new Promise((resolve, reject) => {
-    let body = "";
+    let body = "",tooLarge=false;
     request.on("data", (chunk) => {
+      if(tooLarge)return;
       body += chunk;
-      if (body.length > 10_000) request.destroy();
+      if (body.length > 1_000_000) {tooLarge=true;body='';reject(new Error('This request is too large. Shorten the text and try again.'));request.resume();}
     });
     request.on("end", () => resolve(body));
     request.on("error", reject);
   });
 }
+
+function publicJob(job){if(!job)return null;const {id,status,phase,message,error,url}=job;return {id,status,phase,message,error,url};}
 
 function firstMatch(text, pattern) {
   const match = text.match(pattern);

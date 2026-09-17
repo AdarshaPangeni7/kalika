@@ -49,6 +49,10 @@ const routes = [
   "/guides/jpg-png-webp"
 ];
 
+// Newly published traditional texts are discovered without editing this checker.
+const sitemapText=await readFile(path.join(publicDir,'sitemap.xml'),'utf8');
+for(const match of sitemapText.matchAll(/<loc>(.*?)<\/loc>/g)){const url=new URL(match[1]);if(url.origin===origin&&url.pathname.startsWith('/texts/')&&!routes.includes(url.pathname))routes.push(url.pathname);}
+const textRoutes=routes.filter(route=>route.startsWith('/texts/'));
 const toolRoutes = routes.filter((route) => route.startsWith("/tools/"));
 const checks = [];
 const needsAttention = [];
@@ -98,7 +102,7 @@ if (needsAttention.length > 0) {
 
 async function checkUptime() {
   const failures = [];
-  for (const route of ["/", ...toolRoutes]) {
+  for (const route of ["/", ...toolRoutes, ...textRoutes]) {
     const result = await fetchStatus(urlFor(route));
     checks.push({ name: "uptime", route, status: result.status, ok: result.ok, error: result.error });
     if (!result.ok) {
@@ -107,7 +111,7 @@ async function checkUptime() {
       suggestedFixes.push(`${route}: confirm the page exists on the live host and that redirects are configured for the clean URL.`);
     }
   }
-  if (failures.length === 0) allClear.push(`Homepage and all ${toolRoutes.length} tool pages returned 200.`);
+  if (failures.length === 0) allClear.push(`Homepage, all ${toolRoutes.length} tool pages and ${textRoutes.length} traditional-text pages returned 200.`);
 }
 
 async function checkBrokenLinks() {
@@ -253,7 +257,7 @@ async function checkConsoleErrors() {
 
 async function checkContentFreshness() {
   const stale = [];
-  for (const route of routes.filter((route) => route.startsWith("/tools/") || route.startsWith("/guides/"))) {
+  for (const route of routes.filter((route) => route.startsWith("/tools/") || route.startsWith("/guides/") || route.startsWith('/texts/'))) {
     const file = fileForRoute(route);
     const lastEdit = execFileSync('git', ['log', '-1', '--format=%cI', '--', file], {encoding:'utf8'}).trim();
     if (!lastEdit) { worthReviewing.push(`${route}: no Git history to determine content age.`); continue; }
@@ -265,7 +269,7 @@ async function checkContentFreshness() {
       suggestedFixes.push(`${route}: review accuracy, examples, FAQ answers, and title/meta fit before making any human-approved refresh.`);
     }
   }
-  if (stale.length === 0) allClear.push("Tool and guide pages were edited within the last 90 days.");
+  if (stale.length === 0) allClear.push("Tool, guide and traditional-text pages were edited within the last 90 days.");
 }
 
 async function checkCdnDependencies() {
