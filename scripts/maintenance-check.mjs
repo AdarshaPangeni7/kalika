@@ -111,6 +111,7 @@ async function checkUptime() {
 async function checkBrokenLinks() {
   const broken = [];
   const skipped = [];
+  const visited = new Map();
   for (const route of routes) {
     const html = await fetchText(urlFor(route));
     if (!html.ok) {
@@ -118,13 +119,16 @@ async function checkBrokenLinks() {
       continue;
     }
     for (const href of getInternalLinks(html.text, route)) {
-      const result = await fetchStatus(urlFor(href), "HEAD");
-      const retry = result.status === 405 ? await fetchStatus(urlFor(href), "GET") : result;
+      if (!visited.has(href)) {
+        const result = await fetchStatus(urlFor(href), "HEAD");
+        visited.set(href, result.status === 405 ? await fetchStatus(urlFor(href), "GET") : result);
+      }
+      const retry = visited.get(href);
       checks.push({ name: "link", source: route, target: href, status: retry.status, ok: retry.ok });
       if (!retry.ok) {
         broken.push(`${route} -> ${href}: ${retry.status || retry.error}`);
-        needsAttention.push(`${route}: broken internal link to ${href} (${retry.status || retry.error})`);
-        suggestedFixes.push(`${route}: update or remove the link to ${href}, then rerun the daily check.`);
+        needsAttention.push(`${route}: internal link check failed for ${href} (${retry.status || retry.error})`);
+        suggestedFixes.push(`${route}: investigate ${href}; distinguish DNS/network failure from a missing page before editing the link.`);
       }
     }
   }
@@ -351,23 +355,37 @@ async function checkSeoBaseline() {
 }
 
 async function fetchStatus(url, method = "GET") {
+  let last;
+  for (let attempt = 0; attempt < 3; attempt++) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 15000);
   try {
     const response = await fetch(url, { method, redirect: "follow", signal: controller.signal });
-    return { ok: response.status >= 200 && response.status < 300, status: response.status };
+    await response.body?.cancel();
+    last = { ok: response.status >= 200 && response.status < 300, status: response.status };
+    if (response.status < 500 && response.status !== 429) return last;
   } catch (error) {
-    return { ok: false, error: error.name === "AbortError" ? "timeout" : error.message };
+    last = { ok: false, error: error.name === "AbortError" ? "timeout" : `${error.message} (${error.cause?.code || 'network'})` };
   } finally {
     clearTimeout(timer);
   }
+  if (attempt < 2) await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+  }
+  return last;
 }
 
 async function fetchText(url) {
+  let last;
+  for (let attempt=0; attempt<3; attempt++) {
   try {
     const response = await fetch(url, {redirect:'follow',signal:AbortSignal.timeout(15000)});
-    return {ok:response.ok,status:response.status,text:response.ok ? await response.text() : ''};
-  } catch(error) { return {ok:false,error:shortError(error.message),text:''}; }
+    const text = await response.text();
+    last = {ok:response.ok,status:response.status,text:response.ok ? text : ''};
+    if(response.status<500 && response.status!==429) return last;
+  } catch(error) { last = {ok:false,error:shortError(error.message),text:''}; }
+  if(attempt<2) await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));
+  }
+  return last;
 }
 
 async function fetchJson(url) {
