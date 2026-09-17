@@ -78,6 +78,10 @@ jobs:
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         run: node scripts/test-nepali-typing.mjs
 
+      - name: Preeti conversion and device language checks
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        run: node scripts/test-preeti-and-language.mjs
+
       - name: Competitor SEO review
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         env:

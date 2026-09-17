@@ -41,10 +41,9 @@
   const originalDescription=document.querySelector('meta[name="description"]')?.content||"";
   let currentLanguage="en";
   let scheduled=false;
-  const europeanZones=["Europe/"];
-  const chinaZones=["Asia/Shanghai","Asia/Chongqing","Asia/Harbin","Asia/Urumqi","Asia/Hong_Kong","Asia/Macau","Asia/Taipei","Asia/Singapore"];
-  const hindiZones=["Asia/Kolkata","Asia/Calcutta","Asia/Kathmandu","Asia/Katmandu"];
-  const spanishZones=["Europe/Madrid","Atlantic/Canary","America/Mexico_City","America/Bogota","America/Lima","America/Santiago","America/Argentina/Buenos_Aires","America/Guatemala","America/La_Paz","America/Montevideo","America/Caracas","America/Asuncion"];
+  // A location is not a language preference. Old automatic choices are ignored.
+  let preference="auto";
+  function savePreference(value){preference=value;try{localStorage.setItem("kalika-language-preference-v2",value)}catch{}}
   document.addEventListener("DOMContentLoaded",init);
   function init(){
     addPicker();
@@ -52,22 +51,16 @@
     observeChanges();
   }
   function detectLanguage(){
-    const saved=localStorage.getItem("kalika-language");
+    let saved;try{saved=localStorage.getItem("kalika-language-preference-v2")}catch{}
     const requested=new URLSearchParams(location.search).get("lang");
-    if(languages[requested]) return requested;
-    if(languages[saved]) return saved;
-    const browser=(navigator.languages&&navigator.languages[0]||navigator.language||"").toLowerCase();
-    if(browser.startsWith("fr")) return "fr";
-    if(browser.startsWith("zh")||browser.startsWith("cmn")) return "zh";
-    if(browser.startsWith("es")) return "es";
-    if(browser.startsWith("hi")) return "hi";
-    const zone=Intl.DateTimeFormat().resolvedOptions().timeZone||"";
-    if(chinaZones.includes(zone)) return "zh";
-    if(hindiZones.includes(zone)) return "hi";
-    if(spanishZones.includes(zone)) return "es";
-    if(europeanZones.some(prefix=>zone.startsWith(prefix))) return "fr";
-    return "en";
+    preference=languages[requested]?requested:languages[saved]?saved:"auto";
+    return preference==="auto"?deviceLanguage():preference;
   }
+  function deviceLanguage(){
+    const code=(navigator.languages?.[0]||navigator.language||"en").toLowerCase().split(/[-_]/)[0];
+    return code==="cmn"?"zh":languages[code]?code:"en";
+  }
+  window.addEventListener("languagechange",()=>{if(preference==="auto")applyLanguage(deviceLanguage())});
   function addPicker(){
     const header=document.querySelector(".header");
     if(!header||document.querySelector(".language-picker")) return;
@@ -75,15 +68,15 @@
     label.className="language-picker";
     label.innerHTML='<span>Language</span><select aria-label="Language"></select>';
     const select=label.querySelector("select");
-    for(const [code,name] of Object.entries(languages)){
+    for(const [code,name] of Object.entries({auto:"Device language",...languages})){
       const option=document.createElement("option");
       option.value=code;
       option.textContent=name;
       select.append(option);
     }
     select.addEventListener("change",()=>{
-      localStorage.setItem("kalika-language",select.value);
-      applyLanguage(select.value);
+      savePreference(select.value);
+      applyLanguage(preference==="auto"?deviceLanguage():preference);
     });
     const note=document.querySelector(".header-note");
     header.insertBefore(label,note||null);
@@ -93,7 +86,7 @@
     const dictionary=phrase[lang]||{};
     document.documentElement.lang=lang==="cmn"?"zh-Hans":lang;
     document.documentElement.dir=rtl.has(lang)?"rtl":"ltr";
-    document.querySelector(".language-picker select").value=lang;
+    document.querySelector(".language-picker select").value=preference;
     const languageLabel=document.querySelector(".language-picker span");const languageText=languageNames[lang]||"Language";if(languageLabel.textContent!==languageText)languageLabel.textContent=languageText;
     translateTextNodes(document.body,dictionary);
     document.title=originalTitle;
@@ -103,9 +96,9 @@
   window.KalikaI18n={
     get language(){return currentLanguage},
     setLanguage(lang){
-      if(languages[lang]){
-        localStorage.setItem("kalika-language",lang);
-        applyLanguage(lang);
+      if(languages[lang]||lang==="auto"){
+        savePreference(lang);
+        applyLanguage(lang==="auto"?deviceLanguage():lang);
       }
     },
     t(value){

@@ -41,6 +41,7 @@ const routes = [
   "/tools/age-calculator",
   "/tools/word-counter",
   "/tools/nepali-typing",
+  "/tools/preeti-unicode-converter",
   "/tools/qr-generator",
   "/tools/currency-converter",
   "/guides/",
