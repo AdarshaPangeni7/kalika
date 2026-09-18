@@ -14,3 +14,5 @@ Input limits: 30 MiB/file; merge 2–20 files, 60 MiB total, 200 pages total; sp
 `node scripts/test-pdf-tools.mjs` tests real browser inputs/downloads, merge ordering and rotation, PDF text extraction, page-range validation, ZIP contents, both compression modes, original fallback, malformed/form PDFs and mobile overflow. Set KALIKA_TEST_ORIGIN to test a deployed site. Weekly maintenance includes the live test. Synthetic fixtures never contain user documents.
 
 The private SEO admin discovers these pages through the sitemap; no new public admin route is needed.
+
+The functional upload assertion excludes Cloudflare's `/cdn-cgi/rum` performance endpoint on deployed pages. It checks for application upload requests; it is not an assertion that the hosting platform performs no telemetry.
