@@ -116,6 +116,14 @@ jobs:
           if [ -f reports/latest.md ]; then cat reports/latest.md >> "$GITHUB_STEP_SUMMARY"; fi
           if [ -f reports/competitor-seo.md ]; then cat reports/competitor-seo.md >> "$GITHUB_STEP_SUMMARY"; fi
 
+      - name: Send weekly report email
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all') && secrets.KALIKA_REPORT_TO != '' && secrets.SMTP_USER != '' && secrets.SMTP_APP_PASSWORD != ''
+        env:
+          KALIKA_REPORT_TO: ${{ secrets.KALIKA_REPORT_TO }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_APP_PASSWORD: ${{ secrets.SMTP_APP_PASSWORD }}
+        run: npm run email:weekly-report
+
       - name: Save reports
         if: always()
         uses: actions/upload-artifact@v4
