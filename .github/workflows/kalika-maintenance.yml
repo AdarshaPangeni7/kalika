@@ -98,6 +98,12 @@ jobs:
           KALIKA_TEST_ORIGIN: https://kalikatools.com
         run: node scripts/test-pdf-tools.mjs
 
+      - name: Scientific fraction and work hours checks
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        env:
+          KALIKA_TEST_ORIGIN: https://kalikatools.com
+        run: node scripts/test-calculator-tools.mjs
+
       - name: Competitor SEO review
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         env:
