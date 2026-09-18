@@ -28,6 +28,7 @@ const routes = [
   "/tools/lorem-ipsum-generator",
   "/tools/gpa-calculator",
   "/tools/percentage-calculator",
+  "/tools/simple-calculator",
   "/tools/grade-calculator",
   "/tools/bs-ad-converter",
   "/tools/date-difference",

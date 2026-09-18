@@ -4,7 +4,7 @@ import path from 'node:path';
 const fix=process.argv.includes('--fix');
 async function files(dir){const entries=await readdir(dir,{withFileTypes:true});return (await Promise.all(entries.map(e=>e.isDirectory()?files(path.join(dir,e.name)):path.join(dir,e.name)))).flat();}
 const titles=new Set(),descriptions=new Set();let errors=0,count=0;
-for(const file of (await files('public')).filter(f=>f.endsWith('.html'))){
+for(const file of (await files('public')).filter(f=>f.endsWith('.html')&&!/^yandex_[a-f0-9]+\.html$/.test(path.basename(f)))){
  let html=await readFile(file,'utf8');let $=load(html);
  let title=$('title').text(),description=$('meta[name="description"]').attr('content')||'';
  if(fix){
