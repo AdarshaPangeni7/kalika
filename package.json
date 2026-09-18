@@ -16,6 +16,9 @@
   },
   "devDependencies": {
     "cheerio": "^1.2.0",
+    "jszip": "3.10.1",
+    "pdf-lib": "1.17.1",
+    "pdfjs-dist": "5.4.624",
     "playwright": "^1.47.2",
     "robots-parser": "^3.0.1",
     "wrangler": "4.133.0"
