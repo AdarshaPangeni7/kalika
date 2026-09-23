@@ -8,15 +8,15 @@ Read the run summary or download its reports artifact (retained for 90 days). Re
 
 ## Weekly Gmail report
 
-The weekly and manually-selected `all` checks can email a plain-text report after the run. It sends only when all three repository Actions secrets below exist; otherwise the email step is skipped and the site checks continue normally.
+The weekly and manually-selected `all` checks can email a plain-text report after the run. It sends when the settings below exist. Missing settings explicitly fail the email step and appear in the run summary; other reports are still saved.
 
 - `KALIKA_REPORT_TO`: the report recipient, for example `cr08320@gmail.com`.
 - `SMTP_USER`: the Gmail address that sends the report.
 - `SMTP_APP_PASSWORD`: a Gmail app password for that sending address, with spaces removed or included.
 
-Create the app password from the sender's Google Account after enabling 2-Step Verification. It is a separate 16-character password, not the account's normal password. Add all three under repository **Settings → Secrets and variables → Actions → New repository secret**. The value is never written into the source files, reports, workflow logs, or public site. Change or revoke the Gmail app password in Google Account settings if this sender should no longer have access.
+Create the app password from the sender's Google Account after enabling 2-Step Verification. It is a separate 16-character password, not the account's normal password. Add SMTP_APP_PASSWORD under repository Settings > Secrets and variables > Actions > New repository secret. KALIKA_REPORT_TO and SMTP_USER can be Actions variables or secrets (secrets take precedence). The value is never written into the source files, reports, workflow logs, or public site. Change or revoke the Gmail app password in Google Account settings if this sender should no longer have access.
 
-The email contains the same Kalika site report and competitor review saved by the workflow. It does not include visitor data and never edits or deploys the website. Run `node scripts/test-email-weekly-report.mjs` locally to test report assembly without sending any email.
+The email contains the site report, competitor review, individual check outcomes, and a link to the workflow logs. Failed, skipped and unreported checks are explicitly distinguished from passes. It does not include visitor data and never edits or deploys the website. Run `node scripts/test-email-weekly-report.mjs` locally to test report assembly without sending any email.
 
 Weekly competitor research reads the selected public pages in seo-competitors.json, respects robots.txt, and provides evidence-linked draft suggestions. It does not prove competitor rankings or traffic. Add BRAVE_SEARCH_API_KEY to Actions secrets to enable new search candidates; no API key is needed for selected pages. Search candidates require human review and are not automatically crawled or published.
 

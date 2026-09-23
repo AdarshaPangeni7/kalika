@@ -75,36 +75,43 @@ jobs:
         run: npm run check:${{ steps.mode.outputs.mode }}
 
       - name: Nepali typing functional checks
+        id: nepali
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         run: node scripts/test-nepali-typing.mjs
 
       - name: Preeti conversion and device language checks
+        id: preeti
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         run: node scripts/test-preeti-and-language.mjs
 
       - name: Search crawler accessibility checks
+        id: discovery
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         run: node scripts/check-discovery.mjs
 
       - name: Simple calculator functional checks
+        id: calculator
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         env:
           KALIKA_TEST_ORIGIN: https://kalikatools.com
         run: node scripts/test-simple-calculator.mjs
 
       - name: PDF tools functional checks
+        id: pdf
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         env:
           KALIKA_TEST_ORIGIN: https://kalikatools.com
         run: node scripts/test-pdf-tools.mjs
 
       - name: Scientific fraction and work hours checks
+        id: calculators
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         env:
           KALIKA_TEST_ORIGIN: https://kalikatools.com
         run: node scripts/test-calculator-tools.mjs
 
       - name: Competitor SEO review
+        id: competitors
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         env:
           BRAVE_SEARCH_API_KEY: ${{ secrets.BRAVE_SEARCH_API_KEY }}
@@ -117,11 +124,12 @@ jobs:
           if [ -f reports/competitor-seo.md ]; then cat reports/competitor-seo.md >> "$GITHUB_STEP_SUMMARY"; fi
 
       - name: Send weekly report email
-        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all') && secrets.KALIKA_REPORT_TO != '' && secrets.SMTP_USER != '' && secrets.SMTP_APP_PASSWORD != ''
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         env:
-          KALIKA_REPORT_TO: ${{ secrets.KALIKA_REPORT_TO }}
-          SMTP_USER: ${{ secrets.SMTP_USER }}
+          KALIKA_REPORT_TO: ${{ secrets.KALIKA_REPORT_TO || vars.KALIKA_REPORT_TO }}
+          SMTP_USER: ${{ secrets.SMTP_USER || vars.SMTP_USER }}
           SMTP_APP_PASSWORD: ${{ secrets.SMTP_APP_PASSWORD }}
+          KALIKA_CHECK_RESULTS: ${{ toJSON(steps) }}
         run: npm run email:weekly-report
 
       - name: Save reports
