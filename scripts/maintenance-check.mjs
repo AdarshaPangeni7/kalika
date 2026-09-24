@@ -39,6 +39,7 @@ const routes = [
   "/tools/image-compressor",
   "/tools/image-resizer",
   "/tools/merge-pdf",
+  "/tools/organize-pdf",
   "/tools/split-pdf",
   "/tools/compress-pdf",
   "/tools/pdf-to-jpg",

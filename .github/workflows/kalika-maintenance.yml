@@ -117,6 +117,13 @@ jobs:
           BRAVE_SEARCH_API_KEY: ${{ secrets.BRAVE_SEARCH_API_KEY }}
         run: node scripts/competitor-seo.mjs
 
+      - name: Organize PDF functional checks
+        id: organizer
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        env:
+          KALIKA_TEST_ORIGIN: https://kalikatools.com
+        run: node scripts/test-organize-pdf.mjs
+
       - name: Document scanner and JPG to PDF checks
         id: scanner
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
