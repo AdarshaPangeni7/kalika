@@ -110,6 +110,13 @@ jobs:
           KALIKA_TEST_ORIGIN: https://kalikatools.com
         run: node scripts/test-calculator-tools.mjs
 
+      - name: Tip calculator functional checks
+        id: tip_calculator
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        env:
+          KALIKA_TEST_ORIGIN: https://kalikatools.com
+        run: node scripts/test-tip-calculator.mjs
+
       - name: Competitor SEO review
         id: competitors
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')

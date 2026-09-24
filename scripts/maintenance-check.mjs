@@ -31,6 +31,7 @@ const routes = [
   "/tools/scientific-calculator",
   "/tools/fraction-calculator",
   "/tools/work-hours-calculator",
+  "/tools/tip-calculator",
   "/tools/simple-calculator",
   "/tools/grade-calculator",
   "/tools/bs-ad-converter",
