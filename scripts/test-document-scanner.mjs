@@ -56,9 +56,12 @@ try{
  await page.locator('#detect-scan').click();await wait();assert.match(await page.locator('.scanner-corner').first().getAttribute('style'),/left: 1[5678]/);
  await page.locator('#scan-filter').selectOption('gray');await page.locator('#export-all').click();await wait();assert.equal((await PDFDocument.load(await download())).getPageCount(),1);assert.match(await page.locator('#preview-note').innerText(),/Grayscale/);
  await page.locator('#scan-angle').fill('999');await page.locator('#export-all').click();await wait();assert.match(await page.locator('#error').innerText(),/rotation angle/);
- assert.deepEqual(errors,[]);assert.deepEqual(uploads,[]);assert.deepEqual(external,[]);
+ // Cloudflare injects its existing performance beacon on production pages.
+ // Allow only that known GET asset; scanner libraries and document processing stay local.
+ const scannerExternalRequests=external.filter(url=>{const u=new URL(url);return !(u.origin==='https://static.cloudflareinsights.com'&&u.pathname.startsWith('/beacon.min.js/'));});
+ assert.deepEqual(errors,[]);assert.deepEqual(uploads,[]);assert.deepEqual(scannerExternalRequests,[]);
  // Verify the existing PDF-to-JPG result's new optional scanner recommendation.
  await page.goto(base+'/tools/pdf-to-jpg');await page.locator('#file').setInputFiles({name:'scans.pdf',mimeType:'application/pdf',buffer:Buffer.from(pdfBytes)});await page.locator('button[type="submit"]').click();await page.locator('#result a[href="/tools/document-scanner"]').waitFor({timeout:60000});assert.equal(await page.locator('#error').innerText(),'');assert.deepEqual(errors,[]);assert.deepEqual(uploads,[]);
- await writeFile('reports/scanner-tests/result.json',JSON.stringify({passed:true,base,errors,uploads,scannerExternalRequests:0,pdfPages:2,sourceCornersDetected:true},null,2));
+ await writeFile('reports/scanner-tests/result.json',JSON.stringify({passed:true,base,errors,uploads,scannerExternalRequests,hostingBeaconRequests:external.filter(url=>url.startsWith('https://static.cloudflareinsights.com/')).length,pdfPages:2,sourceCornersDetected:true},null,2));
  console.log('Scanner detection, homography pixels, filters, rotate, manual crop, order, removal, decoded exports, invalid input, mobile layout and no upload tests passed.');
 }finally{await browser.close();await new Promise(r=>server.close(r));}
