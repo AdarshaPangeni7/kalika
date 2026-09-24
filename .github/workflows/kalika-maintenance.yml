@@ -131,6 +131,13 @@ jobs:
           KALIKA_TEST_ORIGIN: https://kalikatools.com
         run: node scripts/test-pdf-edit-tools.mjs
 
+      - name: Fill and Sign PDF functional checks
+        id: fill_sign
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        env:
+          KALIKA_TEST_ORIGIN: https://kalikatools.com
+        run: node scripts/test-fill-sign.mjs
+
       - name: Document scanner and JPG to PDF checks
         id: scanner
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')

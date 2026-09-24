@@ -40,6 +40,7 @@ const routes = [
   "/tools/image-resizer",
   "/tools/merge-pdf",
   "/tools/organize-pdf",
+  "/tools/fill-sign-pdf",
   "/tools/crop-pdf",
   "/tools/page-numbers",
   "/tools/watermark-pdf",
