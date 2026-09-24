@@ -30,3 +30,5 @@ The current Search Console API check verifies connectivity and counts performanc
 All suggestions need human review, testing and a separate deployment. Never put credentials in public/ or reports/.
 
 Weekly/all runs also exercise Nepali typing, Preeti ↔ Unicode conversion, copy/download, mobile layout, and device-language selection against the checked-out site. The live uptime/link crawl includes both Nepali tool pages. Run `node scripts/test-preeti-and-language.mjs` locally for the conversion and language regression checks. These functional tests use synthetic text, never visitor data.
+
+Weekly/all runs also test Document Scanner and JPG-to-PDF on the live site using synthetic document photos. Checks cover detection, perspective correction, crop handles, filters, rotation, page ordering, real downloads and mobile layouts. The scanner result is included in email check outcomes when email delivery is configured.

@@ -43,6 +43,7 @@ const routes = [
   "/tools/compress-pdf",
   "/tools/pdf-to-jpg",
   "/tools/jpg-to-pdf",
+  "/tools/document-scanner",
   "/tools/emi-calculator",
   "/tools/unit-converter",
   "/tools/age-calculator",

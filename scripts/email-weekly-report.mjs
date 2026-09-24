@@ -21,7 +21,7 @@ const [siteReport, competitorReport] = await Promise.all([
 const date = new Date().toISOString().slice(0, 10);
 const subject = `Kalika weekly site report — ${date}`;
 const results = JSON.parse(process.env.KALIKA_CHECK_RESULTS || '{}');
-const labels = { run_checks: 'Site monitoring', nepali: 'Nepali typing (checkout)', preeti: 'Preeti and language (checkout)', discovery: 'Search crawler access', calculator: 'Simple calculator (live)', pdf: 'PDF tools (live)', calculators: 'Additional calculators (live)', competitors: 'Competitor SEO review' };
+const labels = { run_checks: 'Site monitoring', nepali: 'Nepali typing (checkout)', preeti: 'Preeti and language (checkout)', discovery: 'Search crawler access', calculator: 'Simple calculator (live)', pdf: 'PDF tools (live)', calculators: 'Additional calculators (live)', competitors: 'Competitor SEO review', scanner: 'Document scanner and JPG to PDF (live)' };
 const outcomes = Object.entries(labels).map(([id, label]) => `${label}: ${results[id]?.outcome || 'not reported'}`);
 const runUrl = process.env.GITHUB_RUN_ID && process.env.GITHUB_REPOSITORY
   ? `${process.env.GITHUB_SERVER_URL || 'https://github.com'}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}` : '';
