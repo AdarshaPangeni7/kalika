@@ -17,6 +17,7 @@ function download(data,name,type='application/pdf'){const blob=data instanceof B
 function base(file){return file.name.replace(/\.pdf$/i,'').replace(/[^\p{L}\p{N}_-]/gu,'-').slice(0,60)||'kalika';}
 function progress(text){status.textContent=text;return new Promise(r=>setTimeout(r,0));}
 async function imageCompress(data,PDFDocument){
+ await (await import('/js/canvas-safety.js')).assertCanvasExport('image/jpeg');
  let task,pdf;
  try{
   const renderer=await import('/js/vendor/pdf/pdf.min.mjs');renderer.GlobalWorkerOptions.workerSrc='/js/vendor/pdf/pdf.worker.min.mjs';

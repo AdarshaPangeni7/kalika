@@ -54,3 +54,17 @@ The private SEO admin discovers HTML tool pages automatically, including the new
 ## Validation
 
 Synthetic skewed-paper detection; blank-photo fallback; corner-order validation; exact homography corner mapping and interpolated pixel sampling; all filter modes; touch-compatible pointer dragging and keyboard handles; 90-degree and free rotation; page order/removal; actual JPEG/PDF downloads; PDF reopening and rasterization; single/multi-page and US Letter output; corrupt/over-limit files; 320/390 px layouts; console errors; and document-upload requests are covered by the test suite. Test artifacts are saved under ignored `reports/scanner-tests/`.
+
+
+## Canvas restriction fix (2026-09-25)
+
+The reported PDF was structurally valid but contained a patterned, corrupted JPEG. The user confirmed Tor Browser. Image extraction restrictions can replace canvas pixels; a nonempty download is not proof of a valid scan.
+
+- `public/js/canvas-safety.js` checks a fixed synthetic color pattern through pixel readback, toBlob and toDataURL before image processing. It does not identify a visitor, persist results or send a request. A failed check stops processing and explains the site-specific canvas permission. It does not bypass the browser setting.
+- `public/js/image-pdf-original.js` embeds unedited JPEG/PNG images without canvas extraction. JPEG bytes and EXIF orientation are preserved, including all eight orientation transforms. Unedited images retain source resolution; JPEG metadata may remain embedded. Edited images and WebP conversion still need canvas permission and keep the 2,200-pixel limit.
+- PDF-to-JPG now uses local PDF.js, its local fonts/character maps/WASM, and local JSZip instead of relying on third-party CDN execution.
+- The guard also covers image compression/resizing, QR downloads, raster PDF compression and added text/signature images.
+- `scripts/test-canvas-safety.mjs` simulates restricted readback and corrupted blob/data-URL exports. It verifies that direct JPEG/PNG conversion still works, compares the original JPEG bytes exactly, and renders every EXIF orientation to check actual colors.
+- `scripts/test-everyday-tools.mjs` adds functional checks for the 21 tools not covered by the PDF, main calculator and Nepali suites. Both new suites run in weekly/all monitoring.
+
+A saved image containing replacement pixels does not contain the original document information. Recreate it from the original photograph after granting permission, or use the unedited JPG/PNG-to-PDF path.

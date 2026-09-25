@@ -152,6 +152,20 @@ jobs:
           KALIKA_TEST_ORIGIN: https://kalikatools.com
         run: node scripts/test-document-scanner.mjs
 
+      - name: Canvas privacy and original image PDF checks
+        id: canvas_safety
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        env:
+          KALIKA_TEST_ORIGIN: https://kalikatools.com
+        run: node scripts/test-canvas-safety.mjs
+
+      - name: Remaining text image and calculator checks
+        id: everyday_tools
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        env:
+          KALIKA_TEST_ORIGIN: https://kalikatools.com
+        run: node scripts/test-everyday-tools.mjs
+
       - name: Readable report summary
         if: always()
         run: |

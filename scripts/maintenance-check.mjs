@@ -234,6 +234,7 @@ async function checkConsoleErrors() {
   try {
     const launchOptions = { headless: true };
     if (process.env.KALIKA_CHROME_EXECUTABLE) launchOptions.executablePath = process.env.KALIKA_CHROME_EXECUTABLE;
+    else if (process.platform === 'win32') launchOptions.channel = 'chrome';
     browser = await chromium.launch(launchOptions);
     const page = await browser.newPage();
     const consoleErrors = [];

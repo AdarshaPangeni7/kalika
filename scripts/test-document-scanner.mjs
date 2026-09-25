@@ -51,6 +51,7 @@ try{
  await page.locator('#scan-files').setInputFiles({name:'bad.png',mimeType:'image/png',buffer:Buffer.from('bad data')});await wait();assert.match(await page.locator('#error').innerText(),/decoded/);
  await page.locator('#scan-files').setInputFiles(Array.from({length:21},(_,i)=>({...input,name:`${i}.png`})));await wait();assert.match(await page.locator('#error').innerText(),/20 pages/);
  await page.goto(base+'/tools/jpg-to-pdf');await add(input);assert.equal(await page.locator('#scan-editor').isVisible(),false);
+ await page.locator('#export-jpg').click();await wait();assert.equal((await download()).readUInt16BE(0),0xffd8);
  await page.locator('#export-all').click();await wait();assert.equal((await PDFDocument.load(await download())).getPageCount(),1);
  await page.getByRole('button',{name:'Crop & enhance page 1',exact:true}).click();await wait();assert.equal(await page.locator('#scan-editor').isVisible(),true);assert.match(await page.locator('.scanner-corner').first().getAttribute('style'),/left: 0%/);
  await page.locator('#detect-scan').click();await wait();assert.match(await page.locator('.scanner-corner').first().getAttribute('style'),/left: 1[5678]/);

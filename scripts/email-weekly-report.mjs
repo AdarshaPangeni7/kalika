@@ -24,6 +24,8 @@ const results = JSON.parse(process.env.KALIKA_CHECK_RESULTS || '{}');
 const labels = { run_checks: 'Site monitoring', nepali: 'Nepali typing (checkout)', preeti: 'Preeti and language (checkout)', discovery: 'Search crawler access', calculator: 'Simple calculator (live)', pdf: 'PDF tools (live)', calculators: 'Additional calculators (live)', competitors: 'Competitor SEO review', scanner: 'Document scanner and JPG to PDF (live)', organizer: 'Organize PDF (live)', pdf_edits: 'Watermark, page numbers and crop PDF (live)' };
 labels.fill_sign = 'Fill and Sign PDF (live)';
 labels.tip_calculator = 'Tip and Bill Split Calculator (live)';
+labels.canvas_safety = 'Canvas restrictions and original image PDFs (live)';
+labels.everyday_tools = 'Text, image and remaining calculators (live)';
 const outcomes = Object.entries(labels).map(([id, label]) => `${label}: ${results[id]?.outcome || 'not reported'}`);
 const runUrl = process.env.GITHUB_RUN_ID && process.env.GITHUB_REPOSITORY
   ? `${process.env.GITHUB_SERVER_URL || 'https://github.com'}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}` : '';
