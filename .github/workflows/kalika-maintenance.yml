@@ -117,6 +117,13 @@ jobs:
           KALIKA_TEST_ORIGIN: https://kalikatools.com
         run: node scripts/test-tip-calculator.mjs
 
+      - name: Discount sales tax and VAT checks
+        id: shopping_calculators
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        env:
+          KALIKA_TEST_ORIGIN: https://kalikatools.com
+        run: node scripts/test-shopping-calculators.mjs
+
       - name: Competitor SEO review
         id: competitors
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
