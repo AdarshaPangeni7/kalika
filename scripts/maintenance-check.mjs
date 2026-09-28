@@ -14,6 +14,11 @@ const today = new Date().toISOString().slice(0, 10);
 const reportBase = `kalika-site-check-${today}-${mode}`;
 
 const routes = [
+  "/tools/pdf-to-text",
+  "/tools/extract-pdf-pages",
+  "/tools/delete-pdf-pages",
+  "/tools/rotate-pdf",
+  "/pdf-tools",
   "/",
   "/about",
   "/contact",

@@ -22,6 +22,7 @@ const date = new Date().toISOString().slice(0, 10);
 const subject = `Kalika weekly site report — ${date}`;
 const results = JSON.parse(process.env.KALIKA_CHECK_RESULTS || '{}');
 const labels = { run_checks: 'Site monitoring', nepali: 'Nepali typing (checkout)', preeti: 'Preeti and language (checkout)', discovery: 'Search crawler access', calculator: 'Simple calculator (live)', pdf: 'PDF tools (live)', calculators: 'Additional calculators (live)', competitors: 'Competitor SEO review', scanner: 'Document scanner and JPG to PDF (live)', organizer: 'Organize PDF (live)', pdf_edits: 'Watermark, page numbers and crop PDF (live)' };
+labels.pdf_experience = 'PDF hub, rotate, delete, extract and PDF text (live)';
 labels.fill_sign = 'Fill and Sign PDF (live)';
 labels.tip_calculator = 'Tip and Bill Split Calculator (live)';
 labels.shopping_calculators = 'Discount, sales tax and VAT calculators (live)';

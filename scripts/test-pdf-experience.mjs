@@ -1,0 +1,53 @@
+import assert from 'node:assert/strict';
+import {createServer} from 'node:http';
+import {readFile,mkdir,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+import {PDFDocument,degrees} from 'pdf-lib';
+import {chromium} from 'playwright';
+const doc=await PDFDocument.create();
+for(const name of ['ALPHA','BETA','GAMMA'])doc.addPage([420,600]).drawText(name,{x:50,y:450,size:34});
+doc.getPage(1).setRotation(degrees(90));
+const bytes=Buffer.from(await doc.save());
+const root=path.resolve('public');
+const server=createServer(async(req,res)=>{try{let p=new URL(req.url,'http://localhost').pathname;if(p.endsWith('/'))p+='index.html';else if(!path.extname(p))p+='.html';const file=path.resolve(root,'.'+p);if(!file.startsWith(root+path.sep))throw Error();res.setHeader('Content-Type',/\.(m?js)$/.test(p)?'application/javascript':p.endsWith('.css')?'text/css':p.endsWith('.html')?'text/html':'application/octet-stream');res.end(await readFile(file));}catch{res.writeHead(404).end();}});
+await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const base=process.env.KALIKA_TEST_ORIGIN||`http://127.0.0.1:${server.address().port}`;
+await mkdir('reports/pdf-experience',{recursive:true});
+const browser=await chromium.launch({channel:process.platform==='win32'?'chrome':undefined,headless:true});
+try {
+  const page=await browser.newPage({locale:'en-US'}),errors=[],uploads=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  page.on('request',r=>{if(['POST','PUT'].includes(r.method())&&new URL(r.url()).pathname!=='/cdn-cgi/rum')uploads.push(r.url());});
+  const select=async(buffer=bytes)=>{await page.locator('#file').setInputFiles({name:'example.pdf',mimeType:'application/pdf',buffer});if(await page.locator('#organizer').count())await page.waitForFunction(()=>document.querySelector('#organizer').getAttribute('aria-busy')==='false');};
+  const download=async button=>{await page.getByRole('button',{name:button,exact:true}).click();await page.locator('#result a[download]').waitFor();const event=page.waitForEvent('download');await page.locator('#result a[download]').click();return Buffer.from(await readFile(await (await event).path()));};
+  const readText=async data=>page.evaluate(async b=>{const lib=await import('/js/vendor/pdf/pdf.min.mjs');lib.GlobalWorkerOptions.workerSrc='/js/vendor/pdf/pdf.worker.min.mjs';const pdf=await lib.getDocument({data:new Uint8Array(b)}).promise,out=[];for(let i=1;i<=pdf.numPages;i++)out.push((await (await pdf.getPage(i)).getTextContent()).items.map(x=>x.str).join(' '));await pdf.destroy();return out;},[...data]);
+  await page.goto(base+'/pdf-tools');
+  assert.equal(await page.locator('[data-pdf-card]').count(),15);
+  await page.locator('#pdf-search').fill('rotate');assert.ok(await page.locator('[data-pdf-card]:visible').count()>0);
+  await page.locator('#pdf-search').fill('no-such-tool');assert.equal(await page.locator('[data-pdf-card]:visible').count(),0);assert.equal(await page.locator('#no-tools').isVisible(),true);
+  await page.locator('#pdf-search').fill('');assert.equal(await page.locator('[data-pdf-card]:visible').count(),15);
+  for(const width of [1280,390,320]){await page.setViewportSize({width,height:900});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:`reports/pdf-experience/hub-${width}.png`,fullPage:true});}
+  await page.goto(base+'/tools/rotate-pdf');await select();
+  assert.equal(await page.locator('[data-up]:visible').count(),0);
+  await page.getByRole('checkbox',{name:'Select original page 2',exact:true}).check();await page.getByRole('button',{name:'Rotate selected 90°',exact:true}).click();
+  let output=await download('Create rotated PDF');assert.deepEqual((await PDFDocument.load(output)).getPages().map(p=>p.getRotation().angle),[0,180,0]);assert.deepEqual(await readText(output),['ALPHA','BETA','GAMMA']);
+  assert.equal(await page.locator('.pdf-next').count(),1);
+  await page.getByRole('button',{name:'Rotate all 90°',exact:true}).click();assert.equal(await page.locator('.pdf-next').count(),0);
+  output=await download('Create rotated PDF');assert.deepEqual((await PDFDocument.load(output)).getPages().map(p=>p.getRotation().angle),[90,270,90]);
+  await page.goto(base+'/tools/delete-pdf-pages');await select();await page.getByRole('checkbox',{name:'Select original page 2',exact:true}).check();await page.getByRole('button',{name:'Remove selected',exact:true}).click();
+  output=await download('Create PDF with remaining pages');assert.deepEqual(await readText(output),['ALPHA','GAMMA']);
+  await page.getByRole('button',{name:'Undo last change',exact:true}).click();assert.equal(await page.locator('.organize-card').count(),3);
+  await page.getByRole('button',{name:'Select all',exact:true}).click();await page.getByRole('button',{name:'Remove selected',exact:true}).click();assert.equal(await page.locator('#export-all').isDisabled(),true);
+  await page.goto(base+'/tools/extract-pdf-pages');await select();assert.equal(await page.locator('#export-selected').isDisabled(),true);await page.getByRole('checkbox',{name:'Select original page 3',exact:true}).check();await page.getByRole('checkbox',{name:'Select original page 1',exact:true}).check();output=await download('Extract selected pages');assert.deepEqual(await readText(output),['ALPHA','GAMMA']);assert.equal(await page.locator('#export-all').isVisible(),false);
+  await page.goto(base+'/tools/pdf-to-text');await select();await page.getByRole('button',{name:'Extract text',exact:true}).click();await page.locator('#result a[download]').waitFor();assert.match(await page.locator('#text-output').inputValue(),/Page 1[\s\S]*ALPHA[\s\S]*Page 2[\s\S]*BETA[\s\S]*Page 3[\s\S]*GAMMA/);
+  const event=page.waitForEvent('download');await page.locator('#result a[download]').click();assert.match(await readFile(await (await event).path(),'utf8'),/ALPHA/);
+  const empty=await PDFDocument.create();empty.addPage();await select(Buffer.from(await empty.save()));await page.getByRole('button',{name:'Extract text',exact:true}).click();await page.waitForFunction(()=>document.querySelector('#tool-form').getAttribute('aria-busy')==='false');assert.match(await page.locator('#status').innerText(),/No selectable text.*OCR/);assert.equal(await page.locator('#result a').count(),0);assert.equal(await page.locator('#text-output').inputValue(),'');
+  await select(Buffer.from('broken'));await page.getByRole('button',{name:'Extract text',exact:true}).click();await page.waitForFunction(()=>document.querySelector('#tool-form').getAttribute('aria-busy')==='false');assert.match(await page.locator('#error').innerText(),/not a readable PDF/);
+  const oversized=await PDFDocument.create();for(let i=0;i<201;i++)oversized.addPage();await select(Buffer.from(await oversized.save()));await page.getByRole('button',{name:'Extract text',exact:true}).click();await page.waitForFunction(()=>document.querySelector('#tool-form').getAttribute('aria-busy')==='false');assert.match(await page.locator('#error').innerText(),/200 pages/);
+  await select(bytes);await page.getByRole('button',{name:'Extract text',exact:true}).click();await page.getByRole('button',{name:'Cancel',exact:true}).click();await page.waitForFunction(()=>document.querySelector('#tool-form').getAttribute('aria-busy')==='false');assert.match(await page.locator('#status').innerText(),/cancelled/);assert.equal(await page.locator('#result a').count(),0);
+  await page.getByRole('button',{name:'Clear document and text',exact:true}).click();assert.equal(await page.locator('#file').inputValue(),'');
+  for(const slug of ['rotate-pdf','delete-pdf-pages','extract-pdf-pages','pdf-to-text']){await page.goto(base+'/tools/'+slug);for(const width of [390,320]){await page.setViewportSize({width,height:850});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),slug);await page.screenshot({path:`reports/pdf-experience/${slug}-${width}.png`,fullPage:true});}}
+  assert.deepEqual(errors,[]);assert.deepEqual(uploads,[]);
+  await writeFile('reports/pdf-experience/result.json',JSON.stringify({passed:true,base,errors,uploads},null,2));
+  console.log('PASS: hub search, rotation, deletion/undo, extraction order, preserved text, TXT download, empty/malformed/oversized inputs, cancellation, clear, mobile layout, no uploads or JS errors.');
+} finally {await browser.close();await new Promise(r=>server.close(r));}

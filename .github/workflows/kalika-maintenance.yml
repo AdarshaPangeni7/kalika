@@ -176,6 +176,13 @@ jobs:
           KALIKA_TEST_ORIGIN: https://kalikatools.com
         run: node scripts/test-everyday-tools.mjs
 
+      - name: PDF hub and focused PDF tools checks
+        id: pdf_experience
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        env:
+          KALIKA_TEST_ORIGIN: https://kalikatools.com
+        run: node scripts/test-pdf-experience.mjs
+
       - name: Readable report summary
         if: always()
         run: |
