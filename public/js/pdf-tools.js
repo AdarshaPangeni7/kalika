@@ -35,7 +35,7 @@ async function imageCompress(data,PDFDocument){
    }finally{canvas.width=1;canvas.height=1;page.cleanup();}
   }
   return await out.save();
- }finally{if(pdf)await pdf.destroy();else if(task)await task.destroy();}
+ }finally{if(pdf)await pdf.loadingTask.destroy();else if(task)await task.destroy();}
 }
 function compressionOptions(){if(mode!=='compress-pdf')return;const image=$('compression').value==='image';$('image-options').hidden=!image;$('lossy-consent').required=image;clear();}
 if(mode==='compress-pdf'){$('compression').onchange=compressionOptions;compressionOptions();}

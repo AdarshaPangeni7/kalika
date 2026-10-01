@@ -77,7 +77,7 @@ $('tool-form').addEventListener('submit', async event => {
   } catch (error) {
     if (!cancelled) $('error').textContent = error.name === 'PasswordException' ? 'This PDF needs a password. Choose an unlocked copy.' : error.name === 'InvalidPDFException' ? 'This PDF is damaged or unsupported. Try a different file.' : error.message || 'Text extraction failed. Try a smaller PDF.';
   } finally {
-    if (documentPdf) await documentPdf.destroy().catch(() => {});
+    if (documentPdf) await documentPdf.loadingTask.destroy().catch(() => {});
     else if (task) await task.destroy().catch(() => {});
     task = documentPdf = null;
     if (cancelled) { clearOutput(); $('status').textContent = 'Extraction cancelled. Choose a file to try again.'; }

@@ -20,14 +20,14 @@ try {
   page.on('request',r=>{if(['POST','PUT'].includes(r.method())&&new URL(r.url()).pathname!=='/cdn-cgi/rum')uploads.push(r.url());});
   const select=async(buffer=bytes)=>{await page.locator('#file').setInputFiles({name:'example.pdf',mimeType:'application/pdf',buffer});if(await page.locator('#organizer').count())await page.waitForFunction(()=>document.querySelector('#organizer').getAttribute('aria-busy')==='false');};
   const download=async button=>{await page.getByRole('button',{name:button,exact:true}).click();await page.locator('#result a[download]').waitFor();const event=page.waitForEvent('download');await page.locator('#result a[download]').click();return Buffer.from(await readFile(await (await event).path()));};
-  const readText=async data=>page.evaluate(async b=>{const lib=await import('/js/vendor/pdf/pdf.min.mjs');lib.GlobalWorkerOptions.workerSrc='/js/vendor/pdf/pdf.worker.min.mjs';const pdf=await lib.getDocument({data:new Uint8Array(b)}).promise,out=[];for(let i=1;i<=pdf.numPages;i++)out.push((await (await pdf.getPage(i)).getTextContent()).items.map(x=>x.str).join(' '));await pdf.destroy();return out;},[...data]);
+  const readText=async data=>page.evaluate(async b=>{const lib=await import('/js/vendor/pdf/pdf.min.mjs');lib.GlobalWorkerOptions.workerSrc='/js/vendor/pdf/pdf.worker.min.mjs';const pdf=await lib.getDocument({data:new Uint8Array(b)}).promise,out=[];for(let i=1;i<=pdf.numPages;i++)out.push((await (await pdf.getPage(i)).getTextContent()).items.map(x=>x.str).join(' '));await pdf.loadingTask.destroy();return out;},[...data]);
   await page.goto(base+'/pdf-tools');
   assert.equal(await page.locator('[data-pdf-card]').count(),15);
   await page.locator('#pdf-search').fill('rotate');assert.ok(await page.locator('[data-pdf-card]:visible').count()>0);
   await page.locator('#pdf-search').fill('no-such-tool');assert.equal(await page.locator('[data-pdf-card]:visible').count(),0);assert.equal(await page.locator('#no-tools').isVisible(),true);
   await page.locator('#pdf-search').fill('');assert.equal(await page.locator('[data-pdf-card]:visible').count(),15);
   for(const width of [1280,390,320]){await page.setViewportSize({width,height:900});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:`reports/pdf-experience/hub-${width}.png`,fullPage:true});}
-  await page.goto(base+'/tools/rotate-pdf');await select();
+  await page.goto(base+'/tools/rotate-pdf');await select();assert.equal(await page.locator('#error').innerText(),'');
   assert.equal(await page.locator('[data-up]:visible').count(),0);
   await page.getByRole('checkbox',{name:'Select original page 2',exact:true}).check();await page.getByRole('button',{name:'Rotate selected 90°',exact:true}).click();
   let output=await download('Create rotated PDF');assert.deepEqual((await PDFDocument.load(output)).getPages().map(p=>p.getRotation().angle),[0,180,0]);assert.deepEqual(await readText(output),['ALPHA','BETA','GAMMA']);
