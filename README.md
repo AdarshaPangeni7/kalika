@@ -1,6 +1,6 @@
 # Kalika
 
-Kalika is a free static tools website. The live site is designed to run without accounts, tracking, a database, or server-side file processing.
+Kalika is a free tools website without accounts, a database or server-side file processing. Optional Google Analytics loads only after consent. See SECURITY.md for the edge headers, privacy boundary and verification steps.
 
 ## Live Deployment
 
@@ -12,7 +12,7 @@ Kalika is a free static tools website. The live site is designed to run without 
 Cloudflare should deploy with the default command:
 
 ```bash
-npx wrangler deploy
+npm run deploy
 ```
 
 The `wrangler.jsonc` file points Cloudflare at `./public`, uses `404.html` for missing pages, and lets clean URLs such as `/tools/image-compressor` resolve from matching `.html` files.

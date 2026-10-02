@@ -13,7 +13,13 @@
     "admin:seo": "node scripts/seo-admin-server.mjs",
     "submit:indexnow": "node scripts/indexnow.mjs",
     "email:weekly-report": "node scripts/email-weekly-report.mjs",
-    "deploy": "node scripts/deploy-site.mjs"
+    "deploy": "node scripts/deploy-site.mjs",
+    "build:counts": "node scripts/build-tool-counts.mjs",
+    "build:security": "node scripts/build-security.mjs",
+    "build": "npm run build:counts && npm run build:security",
+    "predeploy": "npm run build",
+    "dev": "wrangler dev --local --var LOCAL_DEV:true",
+    "check:security": "node scripts/security-lint.mjs && node scripts/build-tool-counts.mjs --check && node scripts/build-security.mjs --check && node scripts/test-security-headers.mjs && node scripts/audit-seo.mjs"
   },
   "devDependencies": {
     "cheerio": "1.2.0",

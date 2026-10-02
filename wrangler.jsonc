@@ -1,6 +1,9 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "kalika",
+  "main": "worker.mjs",
+  "build": {"command": "npm run build"},
+  "vars": {"CSP_ENFORCE": "false"},
   "compatibility_date": "2026-09-16",
   "workers_dev": true,
   "preview_urls": true,
@@ -15,8 +18,10 @@
     }
   ],
   "assets": {
+    "binding": "ASSETS",
+    "run_worker_first": true,
     "directory": "./public",
     "not_found_handling": "404-page",
-    "html_handling": "auto-trailing-slash"
+    "html_handling": "none"
   }
 }

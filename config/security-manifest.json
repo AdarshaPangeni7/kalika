@@ -1,0 +1,472 @@
+{
+  "pages": {
+    "/404": {
+      "asset": "/404.html",
+      "hashes": []
+    },
+    "/about": {
+      "asset": "/about.html",
+      "hashes": []
+    },
+    "/contact": {
+      "asset": "/contact.html",
+      "hashes": []
+    },
+    "/guides/calculate-overnight-work-hours": {
+      "asset": "/guides/calculate-overnight-work-hours.html",
+      "hashes": [
+        "'sha256-6RMN+3ntH92ezPLxI1BBjirrJb1bymH+LHXBGUir1po='"
+      ]
+    },
+    "/guides/clean-text-copied-from-pdf": {
+      "asset": "/guides/clean-text-copied-from-pdf.html",
+      "hashes": [
+        "'sha256-NvAj5OBYqkn0j9VeAU6t7pAuDmcGkn1EnsMnYYrJ/P0='"
+      ]
+    },
+    "/guides/final-exam-score-needed": {
+      "asset": "/guides/final-exam-score-needed.html",
+      "hashes": [
+        "'sha256-UHot3z7TRuQvAO+XgRtoF7vN04f0sykcGk7VhRMTnm0='"
+      ]
+    },
+    "/guides/": {
+      "asset": "/guides/index.html",
+      "hashes": []
+    },
+    "/guides/jpg-png-webp": {
+      "asset": "/guides/jpg-png-webp.html",
+      "hashes": []
+    },
+    "/guides/phone-photos-to-pdf": {
+      "asset": "/guides/phone-photos-to-pdf.html",
+      "hashes": [
+        "'sha256-Auy4k2X1W4rB3Hj8G++nM5NPbsxxX7pcafM5hb3TYZA='"
+      ]
+    },
+    "/guides/reduce-image-size-for-email": {
+      "asset": "/guides/reduce-image-size-for-email.html",
+      "hashes": []
+    },
+    "/guides/resize-photo-for-application": {
+      "asset": "/guides/resize-photo-for-application.html",
+      "hashes": [
+        "'sha256-sjtSiIUd7DSntg7igPSOAbnd8bauE1c9kw9FnnSrWic='"
+      ]
+    },
+    "/": {
+      "asset": "/index.html",
+      "hashes": [
+        "'sha256-Sov3bsBB4uTzIf+Rx/9JM1TmIxB+SX/YHZR2jFSoIYM='"
+      ]
+    },
+    "/pdf-tools": {
+      "asset": "/pdf-tools.html",
+      "hashes": []
+    },
+    "/privacy": {
+      "asset": "/privacy.html",
+      "hashes": []
+    },
+    "/terms": {
+      "asset": "/terms.html",
+      "hashes": []
+    },
+    "/tools/age-calculator": {
+      "asset": "/tools/age-calculator.html",
+      "hashes": [
+        "'sha256-TkC1umBbKzI17TRIKGQLzerpkWB6Y+PN6zgVordTDHE='"
+      ]
+    },
+    "/tools/bs-ad-converter": {
+      "asset": "/tools/bs-ad-converter.html",
+      "hashes": [
+        "'sha256-8Ogypd8sAvyE5gp/bOmQNYnBWdPmZnXfUSrtgGHgLpo='"
+      ]
+    },
+    "/tools/case-converter": {
+      "asset": "/tools/case-converter.html",
+      "hashes": [
+        "'sha256-sBGbIuknL/1QAqAJO5lZqg+S45qBjEjA5zrIl3R9zts='"
+      ]
+    },
+    "/tools/compress-pdf": {
+      "asset": "/tools/compress-pdf.html",
+      "hashes": [
+        "'sha256-CoLuwKwWuyJD5U1FJK0x0GANT8Lw9z3XDIo/XMnRuM4='"
+      ]
+    },
+    "/tools/crop-pdf": {
+      "asset": "/tools/crop-pdf.html",
+      "hashes": [
+        "'sha256-KJGFEgSM5uu8Bq/SyPlJhCYYPTMA+ZZQkO9Exgh5G6Y='"
+      ]
+    },
+    "/tools/currency-converter": {
+      "asset": "/tools/currency-converter.html",
+      "hashes": [
+        "'sha256-gyfE2dmDk5pZr/X4hUQTPKYr3K+uTLh9x4xW162CzFs='"
+      ]
+    },
+    "/tools/date-difference": {
+      "asset": "/tools/date-difference.html",
+      "hashes": [
+        "'sha256-vlpCxng6EC63aLLf2jDRlXbD0sPlkKrzF2RruDY6OJ4='"
+      ]
+    },
+    "/tools/delete-pdf-pages": {
+      "asset": "/tools/delete-pdf-pages.html",
+      "hashes": [
+        "'sha256-lAuQWMICNLMjNV0TVEHzMSnXG2RMj5JNFoUt3Moch+w='"
+      ]
+    },
+    "/tools/discount-calculator": {
+      "asset": "/tools/discount-calculator.html",
+      "hashes": [
+        "'sha256-h5lhzaynfcurUP8Qa4+yPdLB1D8s5mT9MRRgmGubf5k='"
+      ]
+    },
+    "/tools/document-scanner": {
+      "asset": "/tools/document-scanner.html",
+      "hashes": [
+        "'sha256-jHbKjUugT3L8DpOb+UqIaIyJmmpzv1k5wOAgP/ik9tA='"
+      ]
+    },
+    "/tools/duplicate-line-remover": {
+      "asset": "/tools/duplicate-line-remover.html",
+      "hashes": [
+        "'sha256-kIXNlT3Zmls0JkWM3OuakLcVMUFYVwgQrLfBRvUbVzI='"
+      ]
+    },
+    "/tools/emi-calculator": {
+      "asset": "/tools/emi-calculator.html",
+      "hashes": [
+        "'sha256-1COxK+KZcD3xx8r/Ro4jk1lNByXuqjItabRdmUC9VqI='"
+      ]
+    },
+    "/tools/exam-countdown": {
+      "asset": "/tools/exam-countdown.html",
+      "hashes": [
+        "'sha256-iXc0hgjjnw9oI4wGcIljGlJhGnXYgIFibHODe5Q+U3U='"
+      ]
+    },
+    "/tools/extract-pdf-pages": {
+      "asset": "/tools/extract-pdf-pages.html",
+      "hashes": [
+        "'sha256-YQCbH0uSmykR7G/R9CSQ8KQC/4fA+0EJcs7ag1IirSU='"
+      ]
+    },
+    "/tools/fill-sign-pdf": {
+      "asset": "/tools/fill-sign-pdf.html",
+      "hashes": [
+        "'sha256-7RLMdzi07jEBGDlpfrxac+3Ro/lc1ZsBzXA2dduOfvU='"
+      ]
+    },
+    "/tools/find-replace": {
+      "asset": "/tools/find-replace.html",
+      "hashes": [
+        "'sha256-nVKP6WOt9t+L9S60wWKkDc6EZGdrA/VklwIHgaQfzDI='"
+      ]
+    },
+    "/tools/fraction-calculator": {
+      "asset": "/tools/fraction-calculator.html",
+      "hashes": [
+        "'sha256-ZjqJlMmJyEXLKHR6FUfv4DZj+4ZlJhwA9+mSImbuNu4='"
+      ]
+    },
+    "/tools/gpa-calculator": {
+      "asset": "/tools/gpa-calculator.html",
+      "hashes": [
+        "'sha256-mF8COTjbIpDx1cAVTWekltozaKVpL6dnukLWP/gThKQ='"
+      ]
+    },
+    "/tools/grade-calculator": {
+      "asset": "/tools/grade-calculator.html",
+      "hashes": [
+        "'sha256-KAzDUD8ZkOPt6FCVN7N8D8KsG5PmKH8fx8zoaGFOOq8='"
+      ]
+    },
+    "/tools/image-compressor": {
+      "asset": "/tools/image-compressor.html",
+      "hashes": [
+        "'sha256-VJHL3wDj2CbaEG5xz7tssWq5FvbI21mXZasEJKS29FU='"
+      ]
+    },
+    "/tools/image-resizer": {
+      "asset": "/tools/image-resizer.html",
+      "hashes": [
+        "'sha256-05VSRdXC9DOVkS24KKj6JDj549WIcWDoXY+DVQfEZys='"
+      ]
+    },
+    "/tools/jpg-to-pdf": {
+      "asset": "/tools/jpg-to-pdf.html",
+      "hashes": [
+        "'sha256-3i4JtonGH1LKc8iLCIedx0//mdfHDYM/yWop8jJUAoo='"
+      ]
+    },
+    "/tools/lorem-ipsum-generator": {
+      "asset": "/tools/lorem-ipsum-generator.html",
+      "hashes": [
+        "'sha256-DOvB5svA+lrGI7AgAlqg12H0wx5owKbFOtpO1OTJA9Q='"
+      ]
+    },
+    "/tools/merge-pdf": {
+      "asset": "/tools/merge-pdf.html",
+      "hashes": [
+        "'sha256-6In84E9iMiGDy8n31iIzqmqPSl7Tp9Zkjdb9morKLSw='"
+      ]
+    },
+    "/tools/nepali-typing": {
+      "asset": "/tools/nepali-typing.html",
+      "hashes": [
+        "'sha256-qZ3C5JXfcOE+H8j0ohVnwUZM/tK+pcDXCINnNxL975k='"
+      ]
+    },
+    "/tools/organize-pdf": {
+      "asset": "/tools/organize-pdf.html",
+      "hashes": [
+        "'sha256-tjh+xSnJ2GifpPcPD81XOMamW3/UoICgxVpFAsPVkQc='"
+      ]
+    },
+    "/tools/page-numbers": {
+      "asset": "/tools/page-numbers.html",
+      "hashes": [
+        "'sha256-6Q6WcxVyd8nwRd/20VKiCGx74wdTfvY9RUdJUw6cV2w='"
+      ]
+    },
+    "/tools/pdf-to-jpg": {
+      "asset": "/tools/pdf-to-jpg.html",
+      "hashes": [
+        "'sha256-WJzCkh+vmyP5r68TywOHJ0I3zmwiROtXeZAhZKv+Cfg='"
+      ]
+    },
+    "/tools/pdf-to-text": {
+      "asset": "/tools/pdf-to-text.html",
+      "hashes": [
+        "'sha256-c1D4rdU+70GNgQ/1QscKJInzyDxKImah30gOiVP8Rac='"
+      ]
+    },
+    "/tools/percentage-calculator": {
+      "asset": "/tools/percentage-calculator.html",
+      "hashes": [
+        "'sha256-TQmnaPG89UBRvvTuPKiU3QGeumfievwXhNtk8+iWAyA='"
+      ]
+    },
+    "/tools/preeti-unicode-converter": {
+      "asset": "/tools/preeti-unicode-converter.html",
+      "hashes": [
+        "'sha256-g2NBIzradYbMScOnOx0J058V3DUawULlRl03lHGp144='"
+      ]
+    },
+    "/tools/qr-generator": {
+      "asset": "/tools/qr-generator.html",
+      "hashes": [
+        "'sha256-haACfz/kXWPsw5vGglRwH62LhvIsQJYUA7STJCpy1qQ='"
+      ]
+    },
+    "/tools/rotate-pdf": {
+      "asset": "/tools/rotate-pdf.html",
+      "hashes": [
+        "'sha256-qrhEpoWSLCVyjBosDNZ4Bk4hJkBd5mVIF8q1hbbFlkw='"
+      ]
+    },
+    "/tools/sales-tax-calculator": {
+      "asset": "/tools/sales-tax-calculator.html",
+      "hashes": [
+        "'sha256-25Ki8yB2S3t+EeLpaEd3ptD+rN5+FBrOiL5s72UdFDQ='"
+      ]
+    },
+    "/tools/scientific-calculator": {
+      "asset": "/tools/scientific-calculator.html",
+      "hashes": [
+        "'sha256-f7dbS2EZBadiXMeP9y7rhXdvJy9YteSkmD6rDdJ5bqw='"
+      ]
+    },
+    "/tools/simple-calculator": {
+      "asset": "/tools/simple-calculator.html",
+      "hashes": [
+        "'sha256-KzOxdKVD7Y482Lk/4TbuxYOoMO3fqDeZgRh+JrBteog='"
+      ]
+    },
+    "/tools/space-remover": {
+      "asset": "/tools/space-remover.html",
+      "hashes": [
+        "'sha256-ipwEelNnnwEINL9yk1Y1UWlfpIW8YpdC9GzCYXZ7A+s='"
+      ]
+    },
+    "/tools/split-pdf": {
+      "asset": "/tools/split-pdf.html",
+      "hashes": [
+        "'sha256-Q5h5exuf63H/LtXSmfbICCT5T6oUiZ2iZ3T0j2qTeXk='"
+      ]
+    },
+    "/tools/text-reverser": {
+      "asset": "/tools/text-reverser.html",
+      "hashes": [
+        "'sha256-phkbBJ10N5UpJToRZGFB3aA10V5kXwGqGUf//fWd3YE='"
+      ]
+    },
+    "/tools/text-to-slug": {
+      "asset": "/tools/text-to-slug.html",
+      "hashes": [
+        "'sha256-+UjkwRRDfU23RY96AT3y43woq8fUiMXX1Gc95xUWYHY='"
+      ]
+    },
+    "/tools/tip-calculator": {
+      "asset": "/tools/tip-calculator.html",
+      "hashes": [
+        "'sha256-RfJC74Xl+tJFAoQuuuA0m3CfknLpvSjsCxDrC3Ohrw0='"
+      ]
+    },
+    "/tools/unit-converter": {
+      "asset": "/tools/unit-converter.html",
+      "hashes": [
+        "'sha256-SWX/pWGisfEManXT2LIoVn1wSrfBVXormsh4dRYO+jc='"
+      ]
+    },
+    "/tools/watermark-pdf": {
+      "asset": "/tools/watermark-pdf.html",
+      "hashes": [
+        "'sha256-vO777b8Eis3ECrpqs2QOtm4Gb6tlbyypprRpTgqi9u8='"
+      ]
+    },
+    "/tools/word-counter": {
+      "asset": "/tools/word-counter.html",
+      "hashes": [
+        "'sha256-9KiAWtaWptUjRnrtO8KcPmhAnARhJyXs6qmV0JuuVmM='"
+      ]
+    },
+    "/tools/work-hours-calculator": {
+      "asset": "/tools/work-hours-calculator.html",
+      "hashes": [
+        "'sha256-7B0elFhr/k2/+FBEOvWMmQYzwvTKysRxgQuEdF5hJFE='"
+      ]
+    },
+    "/yandex_c4f8be0d71009657.html": {
+      "asset": "/yandex_c4f8be0d71009657.html",
+      "hashes": []
+    }
+  },
+  "aliases": {
+    "/404.html": "/404",
+    "/404/": "/404",
+    "/about.html": "/about",
+    "/about/": "/about",
+    "/contact.html": "/contact",
+    "/contact/": "/contact",
+    "/guides/calculate-overnight-work-hours.html": "/guides/calculate-overnight-work-hours",
+    "/guides/calculate-overnight-work-hours/": "/guides/calculate-overnight-work-hours",
+    "/guides/clean-text-copied-from-pdf.html": "/guides/clean-text-copied-from-pdf",
+    "/guides/clean-text-copied-from-pdf/": "/guides/clean-text-copied-from-pdf",
+    "/guides/final-exam-score-needed.html": "/guides/final-exam-score-needed",
+    "/guides/final-exam-score-needed/": "/guides/final-exam-score-needed",
+    "/guides/index.html": "/guides/",
+    "/guides": "/guides/",
+    "/guides/jpg-png-webp.html": "/guides/jpg-png-webp",
+    "/guides/jpg-png-webp/": "/guides/jpg-png-webp",
+    "/guides/phone-photos-to-pdf.html": "/guides/phone-photos-to-pdf",
+    "/guides/phone-photos-to-pdf/": "/guides/phone-photos-to-pdf",
+    "/guides/reduce-image-size-for-email.html": "/guides/reduce-image-size-for-email",
+    "/guides/reduce-image-size-for-email/": "/guides/reduce-image-size-for-email",
+    "/guides/resize-photo-for-application.html": "/guides/resize-photo-for-application",
+    "/guides/resize-photo-for-application/": "/guides/resize-photo-for-application",
+    "/index.html": "/",
+    "/pdf-tools.html": "/pdf-tools",
+    "/pdf-tools/": "/pdf-tools",
+    "/privacy.html": "/privacy",
+    "/privacy/": "/privacy",
+    "/terms.html": "/terms",
+    "/terms/": "/terms",
+    "/tools/age-calculator.html": "/tools/age-calculator",
+    "/tools/age-calculator/": "/tools/age-calculator",
+    "/tools/bs-ad-converter.html": "/tools/bs-ad-converter",
+    "/tools/bs-ad-converter/": "/tools/bs-ad-converter",
+    "/tools/case-converter.html": "/tools/case-converter",
+    "/tools/case-converter/": "/tools/case-converter",
+    "/tools/compress-pdf.html": "/tools/compress-pdf",
+    "/tools/compress-pdf/": "/tools/compress-pdf",
+    "/tools/crop-pdf.html": "/tools/crop-pdf",
+    "/tools/crop-pdf/": "/tools/crop-pdf",
+    "/tools/currency-converter.html": "/tools/currency-converter",
+    "/tools/currency-converter/": "/tools/currency-converter",
+    "/tools/date-difference.html": "/tools/date-difference",
+    "/tools/date-difference/": "/tools/date-difference",
+    "/tools/delete-pdf-pages.html": "/tools/delete-pdf-pages",
+    "/tools/delete-pdf-pages/": "/tools/delete-pdf-pages",
+    "/tools/discount-calculator.html": "/tools/discount-calculator",
+    "/tools/discount-calculator/": "/tools/discount-calculator",
+    "/tools/document-scanner.html": "/tools/document-scanner",
+    "/tools/document-scanner/": "/tools/document-scanner",
+    "/tools/duplicate-line-remover.html": "/tools/duplicate-line-remover",
+    "/tools/duplicate-line-remover/": "/tools/duplicate-line-remover",
+    "/tools/emi-calculator.html": "/tools/emi-calculator",
+    "/tools/emi-calculator/": "/tools/emi-calculator",
+    "/tools/exam-countdown.html": "/tools/exam-countdown",
+    "/tools/exam-countdown/": "/tools/exam-countdown",
+    "/tools/extract-pdf-pages.html": "/tools/extract-pdf-pages",
+    "/tools/extract-pdf-pages/": "/tools/extract-pdf-pages",
+    "/tools/fill-sign-pdf.html": "/tools/fill-sign-pdf",
+    "/tools/fill-sign-pdf/": "/tools/fill-sign-pdf",
+    "/tools/find-replace.html": "/tools/find-replace",
+    "/tools/find-replace/": "/tools/find-replace",
+    "/tools/fraction-calculator.html": "/tools/fraction-calculator",
+    "/tools/fraction-calculator/": "/tools/fraction-calculator",
+    "/tools/gpa-calculator.html": "/tools/gpa-calculator",
+    "/tools/gpa-calculator/": "/tools/gpa-calculator",
+    "/tools/grade-calculator.html": "/tools/grade-calculator",
+    "/tools/grade-calculator/": "/tools/grade-calculator",
+    "/tools/image-compressor.html": "/tools/image-compressor",
+    "/tools/image-compressor/": "/tools/image-compressor",
+    "/tools/image-resizer.html": "/tools/image-resizer",
+    "/tools/image-resizer/": "/tools/image-resizer",
+    "/tools/jpg-to-pdf.html": "/tools/jpg-to-pdf",
+    "/tools/jpg-to-pdf/": "/tools/jpg-to-pdf",
+    "/tools/lorem-ipsum-generator.html": "/tools/lorem-ipsum-generator",
+    "/tools/lorem-ipsum-generator/": "/tools/lorem-ipsum-generator",
+    "/tools/merge-pdf.html": "/tools/merge-pdf",
+    "/tools/merge-pdf/": "/tools/merge-pdf",
+    "/tools/nepali-typing.html": "/tools/nepali-typing",
+    "/tools/nepali-typing/": "/tools/nepali-typing",
+    "/tools/organize-pdf.html": "/tools/organize-pdf",
+    "/tools/organize-pdf/": "/tools/organize-pdf",
+    "/tools/page-numbers.html": "/tools/page-numbers",
+    "/tools/page-numbers/": "/tools/page-numbers",
+    "/tools/pdf-to-jpg.html": "/tools/pdf-to-jpg",
+    "/tools/pdf-to-jpg/": "/tools/pdf-to-jpg",
+    "/tools/pdf-to-text.html": "/tools/pdf-to-text",
+    "/tools/pdf-to-text/": "/tools/pdf-to-text",
+    "/tools/percentage-calculator.html": "/tools/percentage-calculator",
+    "/tools/percentage-calculator/": "/tools/percentage-calculator",
+    "/tools/preeti-unicode-converter.html": "/tools/preeti-unicode-converter",
+    "/tools/preeti-unicode-converter/": "/tools/preeti-unicode-converter",
+    "/tools/qr-generator.html": "/tools/qr-generator",
+    "/tools/qr-generator/": "/tools/qr-generator",
+    "/tools/rotate-pdf.html": "/tools/rotate-pdf",
+    "/tools/rotate-pdf/": "/tools/rotate-pdf",
+    "/tools/sales-tax-calculator.html": "/tools/sales-tax-calculator",
+    "/tools/sales-tax-calculator/": "/tools/sales-tax-calculator",
+    "/tools/scientific-calculator.html": "/tools/scientific-calculator",
+    "/tools/scientific-calculator/": "/tools/scientific-calculator",
+    "/tools/simple-calculator.html": "/tools/simple-calculator",
+    "/tools/simple-calculator/": "/tools/simple-calculator",
+    "/tools/space-remover.html": "/tools/space-remover",
+    "/tools/space-remover/": "/tools/space-remover",
+    "/tools/split-pdf.html": "/tools/split-pdf",
+    "/tools/split-pdf/": "/tools/split-pdf",
+    "/tools/text-reverser.html": "/tools/text-reverser",
+    "/tools/text-reverser/": "/tools/text-reverser",
+    "/tools/text-to-slug.html": "/tools/text-to-slug",
+    "/tools/text-to-slug/": "/tools/text-to-slug",
+    "/tools/tip-calculator.html": "/tools/tip-calculator",
+    "/tools/tip-calculator/": "/tools/tip-calculator",
+    "/tools/unit-converter.html": "/tools/unit-converter",
+    "/tools/unit-converter/": "/tools/unit-converter",
+    "/tools/watermark-pdf.html": "/tools/watermark-pdf",
+    "/tools/watermark-pdf/": "/tools/watermark-pdf",
+    "/tools/word-counter.html": "/tools/word-counter",
+    "/tools/word-counter/": "/tools/word-counter",
+    "/tools/work-hours-calculator.html": "/tools/work-hours-calculator",
+    "/tools/work-hours-calculator/": "/tools/work-hours-calculator",
+    "/guides.html": "/guides/"
+  }
+}

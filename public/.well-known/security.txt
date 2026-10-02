@@ -1,0 +1,4 @@
+Contact: mailto:hello@kalikatools.com
+Expires: 2027-10-02T00:00:00Z
+Preferred-Languages: en
+Canonical: https://kalikatools.com/.well-known/security.txt
