@@ -5,6 +5,23 @@ reports/
 npm-debug.log*
 .DS_Store
 Thumbs.db
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*.json
+*token*.json
+*.log
+dist/
+build/
+coverage/
+.vscode/
+.idea/
+*.swp
+*.tmp
+auth.json
+playwright/.auth/
 
 # Legacy root-level site copy. Cloudflare serves the checked-in public/ folder.
 /fonts/

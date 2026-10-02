@@ -1,0 +1,9 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "IndexNow ownership key is intentionally public and served as a verification file; not an API credential."
+condition = "AND"
+paths = ['''^indexnow\.config\.json$''']
+regexTarget = "line"
+regexes = ['''^\s*"key": "[a-f0-9]{32}",?\s*$''']
