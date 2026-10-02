@@ -252,7 +252,7 @@ jobs:
 
       - name: Download maintenance reports
         if: steps.mail_config.outputs.ready == 'true'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: kalika-reports-${{ github.run_id }}
           path: reports/
