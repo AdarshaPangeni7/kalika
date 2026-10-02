@@ -53,12 +53,12 @@
   function detectLanguage(){
     let saved;try{saved=localStorage.getItem("kalika-language-preference-v2")}catch{}
     const requested=new URLSearchParams(location.search).get("lang");
-    preference=languages[requested]?requested:languages[saved]?saved:"auto";
+    preference=Object.hasOwn(languages,requested)?requested:Object.hasOwn(languages,saved)?saved:"auto";
     return preference==="auto"?deviceLanguage():preference;
   }
   function deviceLanguage(){
     const code=(navigator.languages?.[0]||navigator.language||"en").toLowerCase().split(/[-_]/)[0];
-    return code==="cmn"?"zh":languages[code]?code:"en";
+    return code==="cmn"?"zh":Object.hasOwn(languages,code)?code:"en";
   }
   window.addEventListener("languagechange",()=>{if(preference==="auto")applyLanguage(deviceLanguage())});
   function addPicker(){
@@ -66,8 +66,8 @@
     if(!header||document.querySelector(".language-picker")) return;
     const label=document.createElement("label");
     label.className="language-picker";
-    label.innerHTML='<span>Language</span><select aria-label="Language"></select>';
-    const select=label.querySelector("select");
+    const caption=document.createElement('span'),select=document.createElement('select');
+    caption.textContent='Language';select.setAttribute('aria-label','Language');label.append(caption,select);
     for(const [code,name] of Object.entries({auto:"Device language",...languages})){
       const option=document.createElement("option");
       option.value=code;

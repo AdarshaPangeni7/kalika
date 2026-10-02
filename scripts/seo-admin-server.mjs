@@ -9,6 +9,7 @@ const siteOrigin = (process.env.KALIKA_SITE_ORIGIN || "https://kalikatools.com")
 const adminUser = process.env.KALIKA_ADMIN_USER || "admin";
 const adminPassword = process.env.KALIKA_ADMIN_PASSWORD || crypto.randomBytes(9).toString("base64url");
 const sessions = new Map();
+let attempts=0,attemptWindow=Date.now();
 if(!['127.0.0.1','localhost','::1'].includes(host))throw Error('This private admin must bind to a loopback address.');
 const allowedHosts=new Set([`127.0.0.1:${port}`,`localhost:${port}`,`[::1]:${port}`]);
 const sameOrigin=request=>{try{return allowedHosts.has(new URL(request.headers.origin).host)&&new URL(request.headers.origin).protocol==='http:'}catch{return false}};
@@ -17,17 +18,19 @@ const server = http.createServer(async (request, response) => {
   try {
     response.setHeader('X-Content-Type-Options','nosniff');
     response.setHeader('X-Frame-Options','DENY');
+    response.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'; object-src 'none'; base-uri 'none'; form-action 'self'");
     response.setHeader('Referrer-Policy','same-origin');
     if(!allowedHosts.has(request.headers.host))return sendText(response,'Invalid host',403);
     const url = new URL(request.url || "/", `http://${host}:${port}`);
 
     if (url.pathname === "/login" && request.method === "POST") {if(!sameOrigin(request))return sendText(response,'Invalid origin',403);return await handleLogin(request, response);}
     if (url.pathname === "/logout") return handleLogout(request, response);
-    if(!['/','/api/scan','/api/latest-report'].includes(url.pathname))return sendText(response,'Not found',404);
+    if(!['/','/api/scan','/api/latest-report','/admin-client.js'].includes(url.pathname))return sendText(response,'Not found',404);
     if (!isAuthenticated(request)) return url.pathname.startsWith('/api/')?sendJson(response,{error:'Please sign in to the local admin panel again.'},401):sendLogin(response);
     const session=sessions.get(parseCookies(request.headers.cookie||'').kalika_admin);
     if(request.method==='POST'&&(!sameOrigin(request)||request.headers['x-kalika-csrf']!==session.csrf))return sendJson(response,{error:'Security check failed. Reload the admin page and try again.'},403);
 
+    if(url.pathname==='/admin-client.js'){response.writeHead(200,{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'no-store'});response.end(await readFile(new URL('./seo-admin-client.js',import.meta.url)));return;}
     if (url.pathname === "/") return sendHtml(response, dashboardHtml());
     if (url.pathname === "/api/scan") return sendJson(response, await scanSite());
     if (url.pathname === "/api/latest-report") return sendJson(response, await latestReport());
@@ -48,6 +51,8 @@ server.listen(port, host, () => {
 });
 
 async function handleLogin(request, response) {
+  if(Date.now()-attemptWindow>60000){attempts=0;attemptWindow=Date.now();}
+  if(++attempts>10)return sendText(response,'Too many sign-in attempts. Wait one minute.',429);
   const body = await readBody(request);
   const params = new URLSearchParams(body);
   const user = params.get("username") || "";
@@ -55,6 +60,8 @@ async function handleLogin(request, response) {
 
   if (safeEqual(user, adminUser) && safeEqual(pass, adminPassword)) {
     const token = crypto.randomBytes(24).toString("base64url");
+    for(const [key,value] of sessions)if(value.expiresAt<Date.now())sessions.delete(key);
+    if(sessions.size>=20)sessions.delete(sessions.keys().next().value);
     sessions.set(token, {expiresAt:Date.now() + 1000 * 60 * 60 * 8,csrf:crypto.randomBytes(24).toString('hex')});
     response.writeHead(302, {
       Location: "/",
@@ -215,20 +222,7 @@ function dashboardHtml() {
     </section>
   </section>
 </main>
-<script>
-const state={pages:[],selected:null};
-const $=(id)=>document.getElementById(id);
-$("scan").onclick=scan;$("json").onclick=()=>download("kalika-seo-review.json",JSON.stringify(state.pages,null,2));$("csv").onclick=exportCsv;$("q").oninput=render;$("status").onchange=render;$("title").oninput=count;$("desc").oninput=count;$("draftBtn").onclick=draft;
-async function scan(){ $("scan").disabled=true; $("scan").textContent="Scanning..."; $("rows").innerHTML="<tr><td colspan='5'>Scanning pages...</td></tr>"; try{const r=await fetch("/api/scan"); const data=await r.json(); if(!r.ok) throw new Error(data.error||"Scan failed"); state.pages=data.pages; $("json").disabled=false; $("csv").disabled=false; render();}catch(e){$("rows").innerHTML="<tr><td colspan='5'>"+esc(e.message)+"</td></tr>";}finally{$("scan").disabled=false; $("scan").textContent="Scan pages";}}
-function render(){const q=$("q").value.toLowerCase(),s=$("status").value;const pages=state.pages.filter(p=>(p.route+" "+p.title).toLowerCase().includes(q)&&(s==="all"||(s==="bad"?p.issues.length:p.issues.length===0)));$("pages").textContent=state.pages.length;$("issues").textContent=state.pages.reduce((n,p)=>n+p.issues.length,0);$("tools").textContent=state.pages.filter(p=>p.route.startsWith("/tools/")).length;$("rows").innerHTML=pages.length?pages.map(row).join(""):"<tr><td colspan='5'>No matching pages.</td></tr>";document.querySelectorAll("[data-route]").forEach(b=>b.onclick=()=>select(b.dataset.route));}
-function row(p){const ok=p.issues.length===0;return "<tr><td><button class='route' data-route='"+esc(p.route)+"'>"+esc(p.route)+"</button><br><small>"+p.status+"</small></td><td><span class='pill "+(ok?"good":"review")+"'>"+(ok?"Looks good":"Review")+"</span><br><small>"+esc(p.issues.join("; ")||"No issues found")+"</small></td><td>"+esc(p.title)+"<br><small>"+p.titleLength+" chars</small></td><td>"+esc(p.description)+"<br><small>"+p.descriptionLength+" chars</small></td><td>"+esc(p.h1||"No H1")+"<br><small>"+p.h1Count+" H1; schema: "+esc(p.schema)+"</small></td></tr>";}
-function select(route){const p=state.pages.find(x=>x.route===route);if(!p)return;state.selected=p;$("route").value=p.route;$("title").value=p.title;$("desc").value=p.description;count();$("draft").textContent="Edit the title or description, then generate a review note.";}
-function count(){$("titleCount").textContent=$("title").value.length+" characters. Target: 50-60.";$("descCount").textContent=$("desc").value.length+" characters. Target: 140-160.";}
-function draft(){if(!$("route").value){$("draft").textContent="Select a page first.";return;}$("draft").textContent=["Page: "+$("route").value,"","Suggested SEO update for human review:","Title ("+$("title").value.length+" chars): "+$("title").value,"Meta description ("+$("desc").value.length+" chars): "+$("desc").value,"","Next step: update the matching file in public/, commit to GitHub, and deploy."].join("\\n");}
-function exportCsv(){const h=["route","status","titleLength","descriptionLength","h1Count","issues","title","description"];download("kalika-seo-review.csv",[h.join(",")].concat(state.pages.map(p=>h.map(k=>csv(p[k]??"")).join(","))).join("\\n"))}
-function download(name,text){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:"text/plain"}));a.download=name;a.click();URL.revokeObjectURL(a.href)}
-function csv(v){return '"'+String(v).replaceAll('"','""')+'"'}function esc(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#39;"}[c]));}
-</script>
+<script src="/admin-client.js"></script>
 </body>
 </html>`;
 }
