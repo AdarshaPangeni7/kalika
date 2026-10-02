@@ -1,7 +1,6 @@
 (() => {
   const id = 'G-VLJV7JE2DN';
   const key = 'kalika-analytics-consent';
-  const noticeKey = 'kalika-privacy-notice-seen';
   let enabled = false;
   let choice;
   try { choice = localStorage.getItem(key); } catch {}
@@ -35,31 +34,7 @@
     const button=document.createElement('button');button.type='button';button.dataset.choice=value;button.textContent=label;actions.append(button);
   }
   banner.append(message,actions);
-  const notice = document.createElement('section');
-  notice.className = 'privacy-notice';
-  notice.setAttribute('aria-label', 'Cookies and privacy');
-  const note = document.createElement('p');
-  note.textContent = 'Your files stay in your browser. We use optional analytics cookies only if you enable them. ';
-  const policy = document.createElement('a');
-  policy.href = '/privacy'; policy.textContent = 'Cookies & privacy policy';
-  note.append(policy);
-  const controls = document.createElement('div');
-  const dismiss = document.createElement('button');
-  dismiss.type = 'button'; dismiss.textContent = 'I understand';
-  const preferences = document.createElement('button');
-  preferences.type = 'button'; preferences.textContent = 'Privacy settings';
-  preferences.className = 'privacy-notice-settings';
-  controls.append(dismiss, preferences); notice.append(note, controls);
-  try { notice.hidden = !!choice || localStorage.getItem(noticeKey) === 'yes'; } catch {}
-  function acknowledge() {
-    try { localStorage.setItem(noticeKey, 'yes'); } catch {}
-    notice.hidden = true;
-  }
-  dismiss.addEventListener('click', acknowledge);
-  preferences.addEventListener('click', () => {
-    acknowledge(); banner.hidden = false; banner.querySelector('button').focus();
-  });
-  document.body.append(notice);
+  // Visitors may opt in from the footer; do not interrupt tool use with a popup.
   banner.hidden = true;
   document.body.append(banner);
   banner.addEventListener('click', event => {
@@ -85,7 +60,7 @@
   settings.type = 'button';
   settings.className = 'analytics-settings';
   settings.textContent = 'Privacy choices';
-  settings.addEventListener('click', () => { notice.hidden = true; banner.hidden = false; banner.querySelector('button').focus(); });
+  settings.addEventListener('click', () => { banner.hidden = false; banner.querySelector('button').focus(); });
   (document.querySelector('footer nav') || document.body).append(settings);
   if (choice === 'granted') start();
 })();

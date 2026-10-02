@@ -499,14 +499,3 @@ button:disabled { opacity: .68; cursor: wait; box-shadow: none; }
 @media(max-width:639px){.header{flex-wrap:wrap;gap:14px;padding-block:14px}.header nav{top:100%}.language-picker{flex-shrink:0;margin-top:0}}
 
 .analytics-consent{position:fixed;bottom:1rem;left:1rem;right:1rem;max-width:44rem;margin:auto;padding:1.25rem;background:#f9f8f5;color:#142f38;border:1px solid #53747c;border-radius:12px;box-shadow:0 4px 24px #142f3826;z-index:1000}.analytics-consent[hidden]{display:none}.analytics-consent p{margin:0 0 1rem}.analytics-consent div{display:flex;gap:.75rem;flex-wrap:wrap}.analytics-consent button,.analytics-settings{font:inherit;padding:.5rem .8rem;border:1px solid #285c69;background:#f9f8f5;color:#143f4c;border-radius:6px;cursor:pointer}.analytics-consent button:focus-visible,.analytics-settings:focus-visible{outline:3px solid #c77b1c;outline-offset:3px}
-
-/* Informational notice; acknowledgement is separate from analytics consent. */
-.privacy-notice{position:fixed;inset:auto 0 0;background:#282b54;color:#fff;padding:1.4rem max(1rem,calc((100vw - 70rem)/2));text-align:center;z-index:1000;box-shadow:0 -3px 18px #142f3820;max-height:70vh;overflow:auto}
-.privacy-notice[hidden]{display:none}
-.privacy-notice p{margin:0 auto 1rem;max-width:65rem;font-size:clamp(1rem,2vw,1.3rem);line-height:1.6}
-.privacy-notice a{color:#fff;text-decoration:underline;text-underline-offset:3px}
-.privacy-notice>div{display:flex;justify-content:center;align-items:center;gap:1rem;flex-wrap:wrap}
-.privacy-notice button{font:inherit;font-weight:600;min-height:48px;padding:.75rem 1.7rem;background:#31788e;color:#fff;border:1px solid #8bc1d1;border-radius:4px;cursor:pointer}
-.privacy-notice button.privacy-notice-settings{background:transparent;border-color:transparent;text-decoration:underline;padding:.75rem}
-.privacy-notice button:focus-visible,.privacy-notice a:focus-visible{outline:3px solid #f3c572;outline-offset:4px}
-@media(max-width:480px){.privacy-notice{padding:1rem}.privacy-notice>div{gap:.35rem}.privacy-notice p{font-size:1rem}}

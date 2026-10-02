@@ -16,13 +16,6 @@ try {
  assert.equal((await page.context().cookies()).length,0);
  assert.equal(await page.evaluate(()=>typeof window.gtag),'undefined');
  assert.equal(await page.locator('.analytics-consent').isVisible(),false);
- assert.equal(await page.locator('.privacy-notice').isVisible(),true);
- await page.getByText('I understand',{exact:true}).click();
- assert.equal(tags,0);
- assert.equal(await page.evaluate(()=>localStorage.getItem('kalika-analytics-consent')),null);
- await page.reload();
- assert.equal(await page.locator('.privacy-notice').isVisible(),false);
- assert.equal(tags,0);
  await page.getByText('Privacy choices',{exact:true}).click();
  await page.getByText('Reject analytics',{exact:true}).click();
  assert.equal(tags,0);

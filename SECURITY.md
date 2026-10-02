@@ -30,7 +30,7 @@ HTML revalidates on every visit; unversioned assets have a one-hour, revalidatin
 
 Tool data stays in tab memory. Downloads are created locally. Only currency codes are sent to Frankfurter/ExchangeRate-API; amounts are not. Rate responses are validated and cached in memory, with stale results explicitly labelled.
 
-GA ID G-VLJV7JE2DN is a public identifier, not a secret. Analytics is off until the visitor opts in through Privacy choices. Rejection removes first-party _ga cookies and stops future collection. The notice dismissal, consent and language preference are the only site-written local-storage settings. The informational notice acknowledgement never grants analytics consent. GA Enhanced Measurement was disabled in the matching web stream on 2026-10-02; keep form, download, search and automatic interaction collection disabled. Account settings can change independently of this code. Never enable user-provided-data collection or add input/filename analytics events. Cloudflare and external rate providers still receive ordinary connection metadata.
+GA ID G-VLJV7JE2DN is a public identifier, not a secret. Analytics is off until the visitor opts in through Privacy choices. Rejection removes first-party _ga cookies and stops future collection. The consent and language preference are the only site-written local-storage settings. GA Enhanced Measurement was disabled in the matching web stream on 2026-10-02; keep form, download, search and automatic interaction collection disabled. Account settings can change independently of this code. Never enable user-provided-data collection or add input/filename analytics events. Cloudflare and external rate providers still receive ordinary connection metadata.
 
 ## Dependencies and checks
 
