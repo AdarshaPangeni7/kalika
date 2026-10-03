@@ -44,6 +44,12 @@
         "'sha256-Auy4k2X1W4rB3Hj8G++nM5NPbsxxX7pcafM5hb3TYZA='"
       ]
     },
+    "/guides/preeti-to-unicode-without-garbled-text": {
+      "asset": "/guides/preeti-to-unicode-without-garbled-text.html",
+      "hashes": [
+        "'sha256-EuyFf5QIEzgbh8V6dJ+MOfxTuF4iFyKxU6DK9hoy/KE='"
+      ]
+    },
     "/guides/reduce-image-size-for-email": {
       "asset": "/guides/reduce-image-size-for-email.html",
       "hashes": []
@@ -52,6 +58,12 @@
       "asset": "/guides/resize-photo-for-application.html",
       "hashes": [
         "'sha256-sjtSiIUd7DSntg7igPSOAbnd8bauE1c9kw9FnnSrWic='"
+      ]
+    },
+    "/guides/type-nepali-with-english-keyboard": {
+      "asset": "/guides/type-nepali-with-english-keyboard.html",
+      "hashes": [
+        "'sha256-wIYnpI6Nmi8vV4TmHVUn2QnCKPGSJAKDn5MmjjDjwo4='"
       ]
     },
     "/": {
@@ -366,10 +378,14 @@
     "/guides/jpg-png-webp/": "/guides/jpg-png-webp",
     "/guides/phone-photos-to-pdf.html": "/guides/phone-photos-to-pdf",
     "/guides/phone-photos-to-pdf/": "/guides/phone-photos-to-pdf",
+    "/guides/preeti-to-unicode-without-garbled-text.html": "/guides/preeti-to-unicode-without-garbled-text",
+    "/guides/preeti-to-unicode-without-garbled-text/": "/guides/preeti-to-unicode-without-garbled-text",
     "/guides/reduce-image-size-for-email.html": "/guides/reduce-image-size-for-email",
     "/guides/reduce-image-size-for-email/": "/guides/reduce-image-size-for-email",
     "/guides/resize-photo-for-application.html": "/guides/resize-photo-for-application",
     "/guides/resize-photo-for-application/": "/guides/resize-photo-for-application",
+    "/guides/type-nepali-with-english-keyboard.html": "/guides/type-nepali-with-english-keyboard",
+    "/guides/type-nepali-with-english-keyboard/": "/guides/type-nepali-with-english-keyboard",
     "/index.html": "/",
     "/pdf-tools.html": "/pdf-tools",
     "/pdf-tools/": "/pdf-tools",
