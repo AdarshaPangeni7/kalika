@@ -18,6 +18,8 @@ for(const file of (await walk('public')).filter(f=>f.endsWith('.html'))){
  else if(route!=='/'&&!route.endsWith('.html'))manifest.aliases[route+'/']=route;
 }
 manifest.aliases['/guides.html']='/guides/';
+manifest.aliases['/tools/compress-image']='/tools/image-compressor';
+manifest.aliases['/tools/compress-image.html']='/tools/image-compressor';
 await mkdir('config',{recursive:true});
 const output=JSON.stringify(manifest,null,2)+'\n';
 if(process.argv.includes('--check')){

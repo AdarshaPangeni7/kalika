@@ -8,6 +8,10 @@
       "asset": "/about.html",
       "hashes": []
     },
+    "/calculators": {
+      "asset": "/calculators.html",
+      "hashes": []
+    },
     "/contact": {
       "asset": "/contact.html",
       "hashes": []
@@ -66,6 +70,10 @@
         "'sha256-wIYnpI6Nmi8vV4TmHVUn2QnCKPGSJAKDn5MmjjDjwo4='"
       ]
     },
+    "/image-tools": {
+      "asset": "/image-tools.html",
+      "hashes": []
+    },
     "/": {
       "asset": "/index.html",
       "hashes": [
@@ -82,6 +90,10 @@
     },
     "/terms": {
       "asset": "/terms.html",
+      "hashes": []
+    },
+    "/text-tools": {
+      "asset": "/text-tools.html",
       "hashes": []
     },
     "/tools/age-calculator": {
@@ -364,6 +376,8 @@
     "/404/": "/404",
     "/about.html": "/about",
     "/about/": "/about",
+    "/calculators.html": "/calculators",
+    "/calculators/": "/calculators",
     "/contact.html": "/contact",
     "/contact/": "/contact",
     "/guides/calculate-overnight-work-hours.html": "/guides/calculate-overnight-work-hours",
@@ -386,6 +400,8 @@
     "/guides/resize-photo-for-application/": "/guides/resize-photo-for-application",
     "/guides/type-nepali-with-english-keyboard.html": "/guides/type-nepali-with-english-keyboard",
     "/guides/type-nepali-with-english-keyboard/": "/guides/type-nepali-with-english-keyboard",
+    "/image-tools.html": "/image-tools",
+    "/image-tools/": "/image-tools",
     "/index.html": "/",
     "/pdf-tools.html": "/pdf-tools",
     "/pdf-tools/": "/pdf-tools",
@@ -393,6 +409,8 @@
     "/privacy/": "/privacy",
     "/terms.html": "/terms",
     "/terms/": "/terms",
+    "/text-tools.html": "/text-tools",
+    "/text-tools/": "/text-tools",
     "/tools/age-calculator.html": "/tools/age-calculator",
     "/tools/age-calculator/": "/tools/age-calculator",
     "/tools/bs-ad-converter.html": "/tools/bs-ad-converter",
@@ -483,6 +501,8 @@
     "/tools/word-counter/": "/tools/word-counter",
     "/tools/work-hours-calculator.html": "/tools/work-hours-calculator",
     "/tools/work-hours-calculator/": "/tools/work-hours-calculator",
-    "/guides.html": "/guides/"
+    "/guides.html": "/guides/",
+    "/tools/compress-image": "/tools/image-compressor",
+    "/tools/compress-image.html": "/tools/image-compressor"
   }
 }

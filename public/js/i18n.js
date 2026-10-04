@@ -41,12 +41,30 @@
   const originalDescription=document.querySelector('meta[name="description"]')?.content||"";
   let currentLanguage="en";
   let scheduled=false;
+  let completeLanguages=new Set(['en']);
   // A location is not a language preference. Old automatic choices are ignored.
   let preference="auto";
   function savePreference(value){preference=value;try{localStorage.setItem("kalika-language-preference-v2",value)}catch{}}
   document.addEventListener("DOMContentLoaded",init);
   function init(){
     addPicker();
+    // Translate a page only when all of its original prose has a translation.
+    // A partial dictionary must never turn an English page into a mixed-language page.
+    const prose=[];
+    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+    while(walker.nextNode()){
+      const node=walker.currentNode,parent=node.parentElement;
+      if(!parent||parent.closest('script,style,textarea,option,code,.language-picker,[translate="no"],.result,.error'))continue;
+      const text=node.nodeValue.replace(/\s+/g,' ').trim();
+      if(/[A-Za-z]{2}/.test(text))prose.push(text);
+    }
+    for(const lang of Object.keys(languages)){
+      if(lang!=='en'&&prose.every(text=>Object.hasOwn(phrase[lang]||{},text)))completeLanguages.add(lang);
+    }
+    const note=document.createElement('p');
+    note.id='language-availability';note.className='wrap hint';note.setAttribute('translate','no');note.hidden=true;
+    note.textContent='A complete translation is not available for this page yet. Showing English to keep instructions consistent.';
+    document.querySelector('.header')?.after(note);
     applyLanguage(detectLanguage());
     observeChanges();
   }
@@ -82,12 +100,20 @@
     header.insertBefore(label,note||null);
   }
   function applyLanguage(lang){
+    const requested=lang;
+    if(!completeLanguages.has(lang))lang='en';
     currentLanguage=lang;
     const dictionary=phrase[lang]||{};
     document.documentElement.lang=lang==="cmn"?"zh-Hans":lang;
     document.documentElement.dir=rtl.has(lang)?"rtl":"ltr";
     document.querySelector(".language-picker select").value=preference;
     const languageLabel=document.querySelector(".language-picker span");const languageText=languageNames[lang]||"Language";if(languageLabel.textContent!==languageText)languageLabel.textContent=languageText;
+    const picker=document.querySelector('.language-picker');
+    const notice='Full translation is not available for this page; showing English.';
+    if(requested!==lang){picker.title=notice;}
+    else picker.removeAttribute('title');
+    const availability=document.getElementById('language-availability');
+    if(availability)availability.hidden=requested===lang;
     translateTextNodes(document.body,dictionary);
     document.title=originalTitle;
     const meta=document.querySelector('meta[name="description"]');
@@ -111,7 +137,7 @@
       scheduled=true;
       requestAnimationFrame(()=>{
         scheduled=false;
-        applyLanguage(currentLanguage);
+        applyLanguage(preference==="auto"?deviceLanguage():preference);
       });
     });
     observer.observe(document.body,{childList:true,characterData:true,subtree:true});
