@@ -57,3 +57,6 @@ The tool processes up to 10 selected PDF pages per run, with working images capp
 Run `node scripts/test-ocr.mjs` for real language fixtures, searchable/visible PDF checks, page ordering, cancellation/retry, dependency failure, restricted canvas handling, lazy loading, no uploads or IndexedDB, and mobile layout. The suite also runs inside `scripts/test-all-tools.mjs` with enforced CSP.
 
 To reproduce OCR assets after `npm ci`, run `node scripts/vendor-ocr.mjs`. Versions and the exact official `tessdata_fast` revision are pinned in `config/ocr-vendor.json`; hashes and upstream licenses are committed. The small first-party adapter uses the pinned Tesseract worker protocol, so upgrade the engine, adapter and tests together.
+
+Guide metadata and topical links: run `node scripts/update-editorial.mjs` after regenerating tools/category pages, then `npm run build`. Reading time is estimated at 200 words per minute; known article dates are preserved. The Nepali Tools hub groups existing tools without duplicating their homepage category cards.
+

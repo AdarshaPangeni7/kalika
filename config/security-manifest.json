@@ -22,21 +22,21 @@
     "/guides/calculate-overnight-work-hours": {
       "asset": "/guides/calculate-overnight-work-hours.html",
       "hashes": [
-        "'sha256-bT9eNKFB4xmolgEPfggyXNPLiHwqU7q/ekvkDd7F6s4='",
+        "'sha256-yqi/B4GqOqIRoJZObTQbp+bD5+eifWtWBD1aQOn9Xi8='",
         "'sha256-jg2fdcX8L69rVdNxgkT7HFO37xqChlZsVr8mNNA80eo='"
       ]
     },
     "/guides/clean-text-copied-from-pdf": {
       "asset": "/guides/clean-text-copied-from-pdf.html",
       "hashes": [
-        "'sha256-URWY+UaaDsPst3Lu2yuhHJbu8wsKS5lxzQUS/6y3JQE='",
+        "'sha256-HxmlREY5objIweerqNLFZIGseeSx90ksEN6tEAUaPFw='",
         "'sha256-4fCabz6BBnqRZH7MlYTCw37T2PaBFGw+Zv3VqLHTbAo='"
       ]
     },
     "/guides/final-exam-score-needed": {
       "asset": "/guides/final-exam-score-needed.html",
       "hashes": [
-        "'sha256-6RX3OSkgAIAw0mh7DZB2smokCq3xuw9DZ0SZQPWsaeo='",
+        "'sha256-8ml44yhr6fThZ8jta/pO8aJWKqdlwCMCboNO+dpGQyY='",
         "'sha256-c/WylihrvAOQD5Zqu7G0UyBmQb5vc75fsORaClQcM7Q='"
       ]
     },
@@ -47,42 +47,42 @@
     "/guides/jpg-png-webp": {
       "asset": "/guides/jpg-png-webp.html",
       "hashes": [
-        "'sha256-jd23i0PKnQMD0rsCYAkRTmWCmSxsHu42Bw732Tc/2C0='",
+        "'sha256-N9WXOhVQvuW9e21vn9LqDa1NA6uOnHgGwUBvI4xYzxg='",
         "'sha256-jw2j/hVFTc71jJFoO9+Qozkd7nvbXxlVqMlomLgtC7U='"
       ]
     },
     "/guides/phone-photos-to-pdf": {
       "asset": "/guides/phone-photos-to-pdf.html",
       "hashes": [
-        "'sha256-yOMZYJ2XAgpIQfq5O+XNc9brv1GGDn7vbXc6PUr2I0U='",
+        "'sha256-e3st/+2DMSVv/wHr133s62w3HaniWIPgHoUGA+O7tHg='",
         "'sha256-i9aMVMUrqxTeaRofsUnusDtRko+KuwiD84WB7rC0k5Q='"
       ]
     },
     "/guides/preeti-to-unicode-without-garbled-text": {
       "asset": "/guides/preeti-to-unicode-without-garbled-text.html",
       "hashes": [
-        "'sha256-xZ0UDJcbFAwyH1BfcWf4Ihw5M7XWvOXySUdLj722uSQ='",
+        "'sha256-Zs4/+cVKA7CrifY/w4iTahOX8iV34Y4FHQBRShNdREE='",
         "'sha256-6HGqx8qdBP5bl1VucL/RZM12djsJG6ShieO5+IOntos='"
       ]
     },
     "/guides/reduce-image-size-for-email": {
       "asset": "/guides/reduce-image-size-for-email.html",
       "hashes": [
-        "'sha256-5IEdMtOPjqy81q4qdiVqNlWGC70RxNL9XAPNxx5QNT4='",
+        "'sha256-EVt075nNa09etGWYkPj2J099+0BWthd+5wYMzjq6eec='",
         "'sha256-ke+cW5O+I8bhr40Urz4Hq+RQo5oIrhObxtW1StxWO4M='"
       ]
     },
     "/guides/resize-photo-for-application": {
       "asset": "/guides/resize-photo-for-application.html",
       "hashes": [
-        "'sha256-vvw1Pq/8hGMu7loCAliSj7SVKfKRm2rQ/mO5uUuENIc='",
+        "'sha256-wLTTjvSzCqK6J2gnzQlNHbkZokOnW6mdULdfRJhKRLc='",
         "'sha256-+FkqVoWv8dIFgfbuQxiXhlOwaMA9p1b+8ga7I7XgGwc='"
       ]
     },
     "/guides/type-nepali-with-english-keyboard": {
       "asset": "/guides/type-nepali-with-english-keyboard.html",
       "hashes": [
-        "'sha256-BuIQfIpURtK+WixMoL4Wd9ybWReLH7j6TOb7wb+YrOc='",
+        "'sha256-nNAxIOZHQ0+eWHuJRBUVNaspcIZNs7hEaVablUpez/8='",
         "'sha256-IRyX4eZmukKnkXiCWNFTDS0D1W5qhch2tJ4ZiMyR5bM='"
       ]
     },
@@ -97,6 +97,13 @@
       "asset": "/index.html",
       "hashes": [
         "'sha256-073hQSAgIam+tvhG3LfElYYgXS4cX61MiY+ZKFozdo0='"
+      ]
+    },
+    "/nepali-tools": {
+      "asset": "/nepali-tools.html",
+      "hashes": [
+        "'sha256-tLRBGqhmuUUlocm+eGJQ2Bab6b7v70Mtekc+gjF71/s='",
+        "'sha256-9mAMDPQs4LBnPj6Yz9eQyempVWiK+v1yVC2654m2WRM='"
       ]
     },
     "/pdf-tools": {
@@ -445,6 +452,8 @@
     "/image-tools.html": "/image-tools",
     "/image-tools/": "/image-tools",
     "/index.html": "/",
+    "/nepali-tools.html": "/nepali-tools",
+    "/nepali-tools/": "/nepali-tools",
     "/pdf-tools.html": "/pdf-tools",
     "/pdf-tools/": "/pdf-tools",
     "/privacy.html": "/privacy",
