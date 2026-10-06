@@ -19,6 +19,9 @@ for(const file of (await files('public')).filter(f=>f.endsWith('.html')&&!/^yand
   html=html.replace('</head>',tags+'</head>');await writeFile(file,html);$=load(html);
  }
  const issues=[];
+ const normalizeCopy=text=>text.replace(/\s+/g,' ').trim();
+ const heroCopy=normalizeCopy($('.tool-heading > p').last().text());
+ if(heroCopy.length>40&&$('main > section').not('.tool-heading').find('p').toArray().some(e=>normalizeCopy($(e).text())===heroCopy))issues.push('hero paragraph repeated below tool');
  if($('h1,h2,h3,h4,h5,h6').toArray().some(e=>/^call to action$/i.test($(e).text().trim())))issues.push('internal Call to Action heading');
  if(!title||titles.has(title))issues.push('missing/duplicate title');
  if(!description||descriptions.has(description))issues.push('missing/duplicate description');
