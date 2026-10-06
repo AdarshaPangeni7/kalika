@@ -19,6 +19,7 @@ for(const file of (await files('public')).filter(f=>f.endsWith('.html')&&!/^yand
   html=html.replace('</head>',tags+'</head>');await writeFile(file,html);$=load(html);
  }
  const issues=[];
+ if($('h1,h2,h3,h4,h5,h6').toArray().some(e=>/^call to action$/i.test($(e).text().trim())))issues.push('internal Call to Action heading');
  if(!title||titles.has(title))issues.push('missing/duplicate title');
  if(!description||descriptions.has(description))issues.push('missing/duplicate description');
  if(!$('link[rel="canonical"]').attr('href'))issues.push('missing canonical');
