@@ -1,0 +1,1 @@
+nav.breadcrumb{display:flex;flex-wrap:wrap;align-items:baseline;gap:.35rem .55rem;margin:1rem 0 2rem;font-size:.85rem;line-height:1.6}nav.breadcrumb a{color:var(--blue);text-decoration:underline;text-underline-offset:.15em}nav.breadcrumb [aria-current=page]{color:var(--muted);overflow-wrap:anywhere}nav.breadcrumb a:focus-visible{outline:3px solid var(--amber);outline-offset:3px}

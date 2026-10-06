@@ -36,3 +36,6 @@ jobs:
       - run: node scripts/test-security-admin.mjs
       - name: Private OCR browser regression
         run: node scripts/test-ocr.mjs
+
+      - name: Category navigation and search regression
+        run: node scripts/test-category-hubs.mjs

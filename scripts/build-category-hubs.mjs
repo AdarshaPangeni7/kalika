@@ -1,0 +1,51 @@
+import fs from 'node:fs';
+import {load} from 'cheerio';
+import {setBreadcrumb} from './breadcrumbs.mjs';
+const home = load(fs.readFileSync('public/index.html','utf8'));
+const esc = value => value.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;');
+const definitions = [
+  {slug:'image-tools',name:'Image Tools',category:'category-1',overline:'YOUR IMAGES, ON YOUR DEVICE',intro:'Crop, resize, compress and convert images locally. Find the step you need, then preview and download your result.',search:'Try crop, WebP or 50 KB',privacy:'Your images are processed in this browser without a file upload. Keep an original copy and check the result before sharing.',groups:[
+    ['Prepare a photo',['image-cropper','image-resizer']],
+    ['Reduce size or change format',['image-compressor','image-format-converter']],
+  ],tags:{'image-cropper':'crop square trim edges application photo','image-resizer':'resize pixels width height dimensions photo application','image-compressor':'compress 50kb 100kb 200kb size email jpg jpeg webp','image-format-converter':'format convert jpg jpeg png webp transparency'},guidance:[
+    ['Prepare a photo for an application','<p>Check the form’s accepted formats, pixel dimensions and file-size limit before editing. <a href="/tools/image-cropper">Crop unwanted edges</a>, <a href="/tools/image-resizer">set the required dimensions</a>, then <a href="/tools/image-compressor">compress the finished photo</a> if it needs to fit a KB limit. Compare the result with your original so important details remain readable.</p>'],
+    ['Choose a format the destination accepts','<p>A photograph, a transparent logo and a screenshot have different needs. Use the <a href="/tools/image-format-converter">format converter</a> when a destination requires JPG, PNG or WebP. JPG does not preserve transparency; changing the format also does not guarantee a smaller file. Check the preview and actual download size.</p>'],
+  ],guides:['resize-photo-for-application','reduce-image-size-for-email','jpg-png-webp']},
+  {slug:'calculators',name:'Calculators',category:'category-2',overline:'EVERYDAY NUMBERS, EXPLAINED',intro:'Work out everyday arithmetic, prices, payments and work hours. Choose a calculator for your task and check its inputs and assumptions before using the result.',search:'Try tax, fractions or work hours',privacy:'Calculation inputs are handled in your browser. Currency Converter also requests public reference exchange rates.',groups:[
+    ['Everyday and scientific maths',['simple-calculator','scientific-calculator','fraction-calculator']],
+    ['Prices, payments and shared bills',['tip-calculator','discount-calculator','sales-tax-calculator','emi-calculator','currency-converter']],
+    ['Time and measurements',['work-hours-calculator','unit-converter']],
+  ],tags:{'simple-calculator':'add subtract multiply divide arithmetic','scientific-calculator':'powers roots logarithms trigonometry radians degrees','fraction-calculator':'fractions mixed numbers working','tip-calculator':'tip bill split shared restaurant','discount-calculator':'sale discount savings price','sales-tax-calculator':'sales tax vat inclusive exclusive price','emi-calculator':'loan emi instalment installment interest monthly payment','currency-converter':'currency exchange rates money conversion','work-hours-calculator':'timesheet shift overnight hours breaks time','unit-converter':'units measurement length weight temperature distance'},guidance:[
+    ['Choose the result you need','<p>Use the <a href="/tools/simple-calculator">simple calculator</a> for everyday sums, the <a href="/tools/scientific-calculator">scientific calculator</a> for powers and trigonometry, or the <a href="/tools/fraction-calculator">fraction calculator</a> when you want to keep a result in fraction form. Check the selected angle mode before comparing a trigonometric result.</p>'],
+    ['Compare prices using the right inputs','<p>A discount changes the price; tax and tips are separate steps. Use the discount, tax or bill-split tool for the amount you actually want to check. Enter the rate that applies to your case. Currency conversions use reference rates, so a bank or payment provider’s final quote can differ.</p>'],
+    ['Check an overnight shift','<p>If a shift crosses midnight, do not simply subtract the two clock times. The <a href="/tools/work-hours-calculator">work-hours calculator</a> accounts for an overnight shift and lets you subtract breaks. Compare the total with your actual shift and your workplace’s timesheet rules.</p>'],
+  ],guides:['calculate-overnight-work-hours','final-exam-score-needed']},
+  {slug:'text-tools',name:'Text Tools',category:'text-tools',overline:'WORK WITH WORDS, ON YOUR DEVICE',intro:'Count, clean and transform text in your browser. Find a tool for copied notes, lists, URLs or Nepali writing.',search:'Try spaces, word count or Nepali',privacy:'Text is processed in this browser tab. Keep a copy of anything you want to use before closing or refreshing the page.',groups:[
+    ['Count words and change case',['word-counter','case-converter']],
+    ['Clean copied text and lists',['space-remover','duplicate-line-remover','find-replace']],
+    ['Reshape text for publishing',['text-reverser','text-to-slug','lorem-ipsum-generator']],
+    ['Write and convert Nepali',['nepali-typing','preeti-unicode-converter']],
+  ],tags:{'word-counter':'word count words characters sentences paragraphs','case-converter':'uppercase lowercase title sentence case','space-remover':'spaces whitespace cleanup copied pdf text line breaks','duplicate-line-remover':'duplicate repeated lines list cleanup','find-replace':'find replace words phrases text','text-reverser':'reverse text lines order','text-to-slug':'slug url title hyphens publishing','lorem-ipsum-generator':'placeholder lorem ipsum paragraphs design layout','nepali-typing':'nepali roman typing unicode writing','preeti-unicode-converter':'preeti unicode nepali legacy font conversion'},guidance:[
+    ['Clean copied text without losing its meaning','<p>Use <a href="/tools/space-remover">Extra Space Remover</a> for awkward spacing, <a href="/tools/find-replace">Find &amp; Replace</a> for a repeated word or phrase, and <a href="/tools/duplicate-line-remover">Duplicate Line Remover</a> for a list with repeated entries. Keep the original and compare punctuation, line breaks and any text you intended to keep.</p>'],
+    ['Choose typing or font conversion for Nepali','<p>Starting a new passage? <a href="/tools/nepali-typing">Nepali Typing</a> turns Roman input into Nepali text you can review. If you already have text written for the legacy Preeti font, use the <a href="/tools/preeti-unicode-converter">Preeti ↔ Unicode Converter</a>. Font conversion and transliteration solve different tasks; check spelling and punctuation after either one.</p>'],
+  ],guides:['clean-text-copied-from-pdf','preeti-to-unicode-without-garbled-text','type-nepali-with-english-keyboard']},
+];
+for (const d of definitions) {
+  const file = `public/${d.slug}.html`, $ = load(fs.readFileSync(file,'utf8'));
+  const expected = home(`#${d.category} a.tool`).map((i,e)=>home(e).attr('href').split('/').pop()).get().sort();
+  const slugs = d.groups.flatMap(group=>group[1]);
+  if (new Set(slugs).size !== slugs.length || JSON.stringify([...slugs].sort()) !== JSON.stringify(expected)) throw Error(d.slug+': groups must include every category tool exactly once.');
+  const cards = d.groups.map(([heading,items])=>`<section class="pdf-group" data-hub-group><h2>${esc(heading)}</h2><div class="pdf-hub-grid">${items.map(slug=>{
+    const card=home(`a.tool[href="/tools/${slug}"]`);return `<a class="pdf-hub-card" data-hub-card data-search-tags="${esc(d.tags[slug]||'')}" href="/tools/${slug}"><h3>${esc(card.find('h3').text())}</h3><p>${esc(card.find('p').text())}</p></a>`;
+  }).join('')}</div></section>`).join('');
+  const guides = d.guides.map(slug=>{const guide=load(fs.readFileSync(`public/guides/${slug}.html`,'utf8'));return `<li><a href="/guides/${slug}">${esc(guide('h1').text())}</a></li>`;}).join('');
+  $('main').html(`<section class="tool-heading pdf-intro"><p class="overline">${d.overline}</p><h1>${d.slug==='calculators'?'Free Online Calculators':'Free '+d.name}</h1><p>${d.intro}</p></section><p class="pdf-trust">${d.privacy} <a href="/privacy">How privacy works</a>.</p><div class="hub-search-row"><label class="pdf-search" for="hub-search">Find ${d.slug==='calculators'?'a calculator':'a '+(d.slug==='image-tools'?'image':'text')+' tool'}<input id="hub-search" type="search" placeholder="${d.search}" autocomplete="off"></label><button id="hub-clear" type="button" hidden>Clear search</button></div><p id="hub-status" role="status" aria-live="polite">${slugs.length} tools available.</p><p id="hub-empty" hidden>No matching tools. Try a shorter phrase or clear the search.</p>${cards}<section class="help hub-guidance">${d.guidance.map(([heading,html])=>`<div><h2>${heading}</h2>${html}</div>`).join('')}</section><section class="explainer"><h2>Guides for your next task</h2><ul class="hub-guide-links">${guides}</ul><p><a href="/guides/">Browse all guides</a></p></section>`);
+  for (const href of ['/pdf-experience.css','/category-hub.css']) if (!$(`link[href="${href}"]`).length) $('head').append(`<link rel="stylesheet" href="${href}">`);
+  if (!$('script[src="/js/category-hub.js"]').length) $('head').append('<script defer src="/js/category-hub.js"></script>');
+  $('script[data-hub-schema]').remove();
+  const schema={'@context':'https://schema.org','@type':'CollectionPage','@id':'https://kalikatools.com/'+d.slug+'#collection',url:'https://kalikatools.com/'+d.slug,name:d.name,description:$('meta[name="description"]').attr('content'),mainEntity:{'@type':'ItemList',itemListElement:slugs.map((slug,i)=>({'@type':'ListItem',position:i+1,url:'https://kalikatools.com/tools/'+slug,name:home(`a.tool[href="/tools/${slug}"] h3`).text()}))}};
+  $('head').append($('<script type="application/ld+json" data-hub-schema></script>').text(JSON.stringify(schema)));
+  setBreadcrumb($,[{name:'Home',path:'/'},{name:'Tools',path:'/#tools'},{name:d.name,path:'/'+d.slug}]);
+  fs.writeFileSync(file,$.html());
+  console.log(d.name+': '+slugs.length+' tools, grouped search and task guidance.');
+}
