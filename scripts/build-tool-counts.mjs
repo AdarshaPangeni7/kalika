@@ -3,7 +3,10 @@ import {load} from 'cheerio';
 // The homepage's actual categorized tool links are the registry. Counts are never hand-maintained.
 const file='public/index.html',original=await readFile(file,'utf8'),$=load(original.trim()),links=[];
 const categories=$('.category').toArray();
-for(const category of categories){
+for(const [index,category] of categories.entries()){
+ const title=$(category).find('.category-title');
+ if(!title.children('span.mono').length)title.prepend('<span class="mono"></span>');
+ title.children('span.mono').text(String(index+1).padStart(2,'0'));
  const section=$(category),tools=section.find('a.tool[href^="/tools/"]');
  tools.each((_,e)=>links.push($(e).attr('href')));
  $(`.categories a[href="#${section.attr('id')}"] span`).text(String(tools.length).padStart(2,'0'));
