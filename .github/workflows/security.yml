@@ -39,3 +39,6 @@ jobs:
 
       - name: Category navigation and search regression
         run: node scripts/test-category-hubs.mjs
+
+      - name: Homepage task search regression
+        run: node scripts/test-home-search.mjs

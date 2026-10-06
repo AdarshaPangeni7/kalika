@@ -19,6 +19,8 @@ $('title').text(title);$('meta[name=description]').attr('content',description);
 for(const prefix of ['og','twitter']){ $(`meta[property="${prefix}:title"],meta[name="${prefix}:title"]`).attr('content',title);$(`meta[property="${prefix}:description"],meta[name="${prefix}:description"]`).attr('content',description); }
 $('.hero .intro').text(`Compress a photo. Convert a file. Work out the numbers. ${count} handy tools, ready when you are.`);
 $('.catalog-head .mono').text(`${count} tools / ${categories.length} categories`);
+$('#tool-search').attr('placeholder',`Search ${count} tools — try scan text or photo smaller`);
+$('#tool-search-status').text(`${count} tools available.`);
 const output=$.html().trimEnd()+'\n';
 if(process.argv.includes('--check')){if(original!==output)throw Error('Run npm run build:counts and commit the homepage.');}
 else await writeFile(file,output);

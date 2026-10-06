@@ -1,0 +1,9 @@
+.tool-search { margin: 28px 0; max-width: 760px; }
+.tool-search label { display: block; font-weight: 600; margin-bottom: 10px; }
+.tool-search-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.tool-search input { flex: 1 1 250px; min-width: 0; width: 100%; padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); font: inherit; }
+.tool-search button { padding: 10px 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); font: inherit; cursor: pointer; }
+.tool-search input:focus-visible,.tool-search button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+#tool-search-help { font-size: 14px; }
+.category[hidden], .tool[hidden], .tool-search [hidden] { display: none !important; }
+
