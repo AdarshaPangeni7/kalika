@@ -262,6 +262,12 @@
         "'sha256-qZ3C5JXfcOE+H8j0ohVnwUZM/tK+pcDXCINnNxL975k='"
       ]
     },
+    "/tools/ocr-pdf": {
+      "asset": "/tools/ocr-pdf.html",
+      "hashes": [
+        "'sha256-zmhlerOrWoSCiCZthzzSa4eMKlz+FiQQ8OHH34R+kOI='"
+      ]
+    },
     "/tools/organize-pdf": {
       "asset": "/tools/organize-pdf.html",
       "hashes": [
@@ -481,6 +487,8 @@
     "/tools/merge-pdf/": "/tools/merge-pdf",
     "/tools/nepali-typing.html": "/tools/nepali-typing",
     "/tools/nepali-typing/": "/tools/nepali-typing",
+    "/tools/ocr-pdf.html": "/tools/ocr-pdf",
+    "/tools/ocr-pdf/": "/tools/ocr-pdf",
     "/tools/organize-pdf.html": "/tools/organize-pdf",
     "/tools/organize-pdf/": "/tools/organize-pdf",
     "/tools/page-numbers.html": "/tools/page-numbers",

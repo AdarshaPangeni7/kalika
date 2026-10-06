@@ -208,5 +208,22 @@
   "public/js/vendor/pdf/wasm/quickjs-eval.wasm": "7bcacc9f22cacf7e9b23866d2a6d1639693d40c7f144e41b7c69ed37ba9cbe8f",
   "public/js/vendor/preeti-mapping-LICENSE.txt": "3e1816e26bca361cd14718ec2a9c54cd56a44d84d3f2d0d8be92c86a7967c229",
   "public/js/vendor/qr/LICENSE.txt": "aaa1f349028a59432eb00222b8ddfe4d2ccebdce04cf8348dcb8d41b7068107b",
-  "public/js/vendor/qr/qrcode.min.js": "c541ef06327885a8415bca8df6071e14189b4855336def4f36db54bde8484f36"
+  "public/js/vendor/qr/qrcode.min.js": "c541ef06327885a8415bca8df6071e14189b4855336def4f36db54bde8484f36",
+  "public/js/vendor/ocr/core/tesseract-core-lstm.wasm.js": "eef5f8b2f8e20e150680b20adaec4a60babafee3adbe8a94583c81fee46e8680",
+  "public/js/vendor/ocr/core/tesseract-core-relaxedsimd-lstm.wasm.js": "861a536cf9ef8e63cb644d57bab39c388f37f7d6b6f60024b741c5f6b39a59b3",
+  "public/js/vendor/ocr/core/tesseract-core-relaxedsimd.wasm.js": "843074aa5bad1cc6421b74a86201768ced9f244795e4d81435435a61a40ce535",
+  "public/js/vendor/ocr/core/tesseract-core-simd-lstm.wasm.js": "c58b46a4c796c0b8afccf77591d5b875b6896b45d402bbce8caa6f5362447b38",
+  "public/js/vendor/ocr/core/tesseract-core-simd.wasm.js": "6b61ef4e911b5cf57e656bbfe983d6e2b3711a02dd164154ddda064566e8e09d",
+  "public/js/vendor/ocr/core/tesseract-core.wasm.js": "0bc6ce3e5fbbd0cd89706cf2fd70960e3372f4f01ee24265b26990808aaeb286",
+  "public/js/vendor/ocr/CORE-LICENSE.txt": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08",
+  "public/js/vendor/ocr/languages/chi_sim.traineddata.gz": "6a317f84d100103a0740334e01c3dedbe761a29d946b44a166cb322729094bec",
+  "public/js/vendor/ocr/languages/eng.traineddata.gz": "b130d16b69e3888bc099133991a50a5b50e1da0e3ff6ca31a5496fab0fb386c3",
+  "public/js/vendor/ocr/languages/fra.traineddata.gz": "09ca4bc39c0764b4a7766204f64cf73b47720fad566b478ac46b2f364b1fff82",
+  "public/js/vendor/ocr/languages/hin.traineddata.gz": "2bc56d6b657329759a9e10759cc157ad9d546e91e0698c04d23a36df43d97986",
+  "public/js/vendor/ocr/languages/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+  "public/js/vendor/ocr/languages/nep.traineddata.gz": "3661e0781f66fc3df6f7312d41c4b9dbf242850deb0e6a94854d44cc2a595985",
+  "public/js/vendor/ocr/languages/spa.traineddata.gz": "b088edf7bb347765cac72538cae5665d97dc442890341356c80f38efb70b3ce0",
+  "public/js/vendor/ocr/README.txt": "3d5939f487acb41370469b33826ab8feaa005282922469a939350fb65411fe15",
+  "public/js/vendor/ocr/TESSERACT-LICENSE.txt": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+  "public/js/vendor/ocr/worker.min.js": "576b7df7e3393e137e51849357c9adb53fe7ac1bb69bfa06cf3d61520f182c6d"
 }

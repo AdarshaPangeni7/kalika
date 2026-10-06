@@ -30,6 +30,7 @@
     "playwright": "1.63.0",
     "qrcodejs": "1.0.0",
     "robots-parser": "3.0.1",
+    "tesseract.js": "7.0.0",
     "wrangler": "4.145.0"
   }
 }

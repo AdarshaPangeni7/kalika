@@ -47,3 +47,13 @@ npm run admin:seo
 The panel scans the public sitemap, checks each page's title, meta description, canonical tag, H1, and structured data, then lets you draft review notes for future edits.
 
 This panel is intentionally review-only. It cannot publish changes to the live site. To apply an SEO update, edit the matching file in `public/`, commit it to GitHub, and deploy through Cloudflare.
+
+## Private OCR
+
+`/tools/ocr-pdf` recognizes printed text in one PDF or JPG/PNG/WebP image entirely in the browser. Tesseract.js 7 runs in one cancellable worker; PDF.js renders selected PDF pages. Engine and language assets are self-hosted and loaded only after the user starts recognition. Model IndexedDB caching is disabled; document inputs and recognized text are never uploaded or stored by the application.
+
+The tool processes up to 10 selected PDF pages per run, with working images capped at 2,200 pixels on the longest side. TXT output is editable; optional searchable PDF output contains rendered images and the original OCR text layer. Text-box corrections do not change that layer. Recognition does not preserve original PDF forms, links, accessibility structure or signature validity, and users must review results. Blank recognition does not offer a searchable PDF.
+
+Run `node scripts/test-ocr.mjs` for real language fixtures, searchable/visible PDF checks, page ordering, cancellation/retry, dependency failure, restricted canvas handling, lazy loading, no uploads or IndexedDB, and mobile layout. The suite also runs inside `scripts/test-all-tools.mjs` with enforced CSP.
+
+To reproduce OCR assets after `npm ci`, run `node scripts/vendor-ocr.mjs`. Versions and the exact official `tessdata_fast` revision are pinned in `config/ocr-vendor.json`; hashes and upstream licenses are committed. The small first-party adapter uses the pinned Tesseract worker protocol, so upgrade the engine, adapter and tests together.

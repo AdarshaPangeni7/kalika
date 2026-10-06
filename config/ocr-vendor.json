@@ -1,0 +1,13 @@
+{
+  "tesseractVersion": "7.0.0",
+  "coreVersion": "7.0.0",
+  "modelRevision": "87416418657359cb625c412a48b6e1d6d41c29bd",
+  "languages": [
+    "eng",
+    "fra",
+    "spa",
+    "hin",
+    "nep",
+    "chi_sim"
+  ]
+}

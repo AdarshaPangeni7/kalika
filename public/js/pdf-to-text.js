@@ -62,6 +62,7 @@ $('tool-form').addEventListener('submit', async event => {
     if (cancelled) return;
     if (empty.length === documentPdf.numPages) {
       $('status').textContent = 'No selectable text found. This PDF may contain scanned images or outlined letters. It needs OCR, which this tool does not perform.';
+      const link = document.createElement('a'); link.href = '/tools/ocr-pdf'; link.textContent = 'Recognize this scan with Private OCR'; $('status').append(' ', link);
       return;
     }
     $('text-output').value = parts.join('\n\n');

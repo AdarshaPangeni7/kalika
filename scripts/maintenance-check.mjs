@@ -15,6 +15,7 @@ const reportBase = `kalika-site-check-${today}-${mode}`;
 
 const routes = [
   "/tools/pdf-to-text",
+  "/tools/ocr-pdf",
   "/tools/extract-pdf-pages",
   "/tools/delete-pdf-pages",
   "/tools/rotate-pdf",
