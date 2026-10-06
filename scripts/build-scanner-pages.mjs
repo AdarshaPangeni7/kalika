@@ -17,7 +17,7 @@ for(const d of definitions){const $=load(reference),url=`https://kalikatools.com
  $('main').html(`<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/#category-0">PDF tools</a> / ${d.name}</nav>
  <section class="tool-heading"><p class="overline">YOUR DOCUMENTS, ON YOUR DEVICE</p><h1>${d.scan?'Free Online Document Scanner':'Convert Images to PDF with Optional Scan Cleanup'}</h1><p>${d.intro}</p></section>
  <section id="scanner" class="workspace scanner-workspace" data-tool="${d.slug}" data-mode="${d.scan?'scan':'images'}" aria-label="${d.name} workspace">
- <ol class="scanner-steps" aria-label="Scanning steps"><li>1. Add photos</li><li>2. Adjust &amp; enhance</li><li>3. Arrange &amp; export</li></ol>
+ <ol class="scanner-steps" aria-label="Scanning steps"><li>Add photos</li><li>Adjust &amp; enhance</li><li>Arrange &amp; export</li></ol>
  <label>Add photos<input id="scan-files" type="file" accept="image/jpeg,image/png,image/webp" multiple></label>
  <details class="scanner-camera"><summary>Take a photo with your phone</summary><label>Take a photo<input id="scan-camera" type="file" accept="image/jpeg,image/png,image/webp" capture="environment"></label><p class="hint">Your browser chooses whether to open a camera or file picker.</p></details>
  <p class="hint">Up to 20 photos · 20 MB each · 60 MB total · 24 megapixels per photo. ${d.scan?'Scan output up to 2,200 px on the longest side.':'Unedited JPG/PNG retain original resolution; edited images and WebP are capped at 2,200 px.'} JPG, PNG and WebP.</p>
