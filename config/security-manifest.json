@@ -19,19 +19,19 @@
     "/guides/calculate-overnight-work-hours": {
       "asset": "/guides/calculate-overnight-work-hours.html",
       "hashes": [
-        "'sha256-6RMN+3ntH92ezPLxI1BBjirrJb1bymH+LHXBGUir1po='"
+        "'sha256-bT9eNKFB4xmolgEPfggyXNPLiHwqU7q/ekvkDd7F6s4='"
       ]
     },
     "/guides/clean-text-copied-from-pdf": {
       "asset": "/guides/clean-text-copied-from-pdf.html",
       "hashes": [
-        "'sha256-NvAj5OBYqkn0j9VeAU6t7pAuDmcGkn1EnsMnYYrJ/P0='"
+        "'sha256-URWY+UaaDsPst3Lu2yuhHJbu8wsKS5lxzQUS/6y3JQE='"
       ]
     },
     "/guides/final-exam-score-needed": {
       "asset": "/guides/final-exam-score-needed.html",
       "hashes": [
-        "'sha256-UHot3z7TRuQvAO+XgRtoF7vN04f0sykcGk7VhRMTnm0='"
+        "'sha256-6RX3OSkgAIAw0mh7DZB2smokCq3xuw9DZ0SZQPWsaeo='"
       ]
     },
     "/guides/": {
@@ -40,34 +40,38 @@
     },
     "/guides/jpg-png-webp": {
       "asset": "/guides/jpg-png-webp.html",
-      "hashes": []
+      "hashes": [
+        "'sha256-jd23i0PKnQMD0rsCYAkRTmWCmSxsHu42Bw732Tc/2C0='"
+      ]
     },
     "/guides/phone-photos-to-pdf": {
       "asset": "/guides/phone-photos-to-pdf.html",
       "hashes": [
-        "'sha256-Auy4k2X1W4rB3Hj8G++nM5NPbsxxX7pcafM5hb3TYZA='"
+        "'sha256-yOMZYJ2XAgpIQfq5O+XNc9brv1GGDn7vbXc6PUr2I0U='"
       ]
     },
     "/guides/preeti-to-unicode-without-garbled-text": {
       "asset": "/guides/preeti-to-unicode-without-garbled-text.html",
       "hashes": [
-        "'sha256-EuyFf5QIEzgbh8V6dJ+MOfxTuF4iFyKxU6DK9hoy/KE='"
+        "'sha256-xZ0UDJcbFAwyH1BfcWf4Ihw5M7XWvOXySUdLj722uSQ='"
       ]
     },
     "/guides/reduce-image-size-for-email": {
       "asset": "/guides/reduce-image-size-for-email.html",
-      "hashes": []
+      "hashes": [
+        "'sha256-5IEdMtOPjqy81q4qdiVqNlWGC70RxNL9XAPNxx5QNT4='"
+      ]
     },
     "/guides/resize-photo-for-application": {
       "asset": "/guides/resize-photo-for-application.html",
       "hashes": [
-        "'sha256-sjtSiIUd7DSntg7igPSOAbnd8bauE1c9kw9FnnSrWic='"
+        "'sha256-vvw1Pq/8hGMu7loCAliSj7SVKfKRm2rQ/mO5uUuENIc='"
       ]
     },
     "/guides/type-nepali-with-english-keyboard": {
       "asset": "/guides/type-nepali-with-english-keyboard.html",
       "hashes": [
-        "'sha256-wIYnpI6Nmi8vV4TmHVUn2QnCKPGSJAKDn5MmjjDjwo4='"
+        "'sha256-BuIQfIpURtK+WixMoL4Wd9ybWReLH7j6TOb7wb+YrOc='"
       ]
     },
     "/image-tools": {
