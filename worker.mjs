@@ -38,7 +38,9 @@ export default {
   }
   for(const [key,value] of securityHeaders(pathname,env,page?.hashes))response.headers.set(key,value);
   const html=response.headers.get('Content-Type')?.includes('text/html');
-  response.headers.set('Cache-Control',response.status!==200?'no-store':html?'public, max-age=0, must-revalidate':'public, max-age=3600, must-revalidate');
+  // Keep served HTML intact: Cloudflare must not inject an ungated RUM beacon
+  // or other scripts outside the site's consent-controlled analytics loader.
+  response.headers.set('Cache-Control',response.status!==200?'no-store':html?'public, max-age=0, must-revalidate, no-transform':'public, max-age=3600, must-revalidate');
   // Unversioned assets are deliberately NOT immutable: updates must reach repeat visitors.
   if(!canonicalHost)response.headers.set('X-Robots-Tag','noindex');
   return response;

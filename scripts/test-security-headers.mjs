@@ -10,7 +10,7 @@ for(const route of ['/','/tools/document-scanner','/tools/jpg-to-pdf','/not-foun
  assert.match(r.headers.get('Permissions-Policy'),route==='/tools/document-scanner'?/camera=\(self\)/:/camera=\(\)/);
  assert.match(r.headers.get('Content-Security-Policy-Report-Only'),/worker-src 'self' blob:/);
  assert.doesNotMatch(r.headers.get('Content-Security-Policy-Report-Only'),/script-src [^;]*'unsafe-(inline|eval)'/);
- assert.equal(r.headers.get('Cache-Control'),'public, max-age=0, must-revalidate');
+ assert.equal(r.headers.get('Cache-Control'),'public, max-age=0, must-revalidate, no-transform');
 }
 const enforced=await worker.fetch(new Request('https://kalikatools.com/'),{...env,CSP_ENFORCE:'true'});
 assert.equal(enforced.headers.get('Content-Security-Policy-Report-Only'),null);
