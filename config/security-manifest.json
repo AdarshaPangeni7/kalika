@@ -217,7 +217,19 @@
     "/tools/image-compressor": {
       "asset": "/tools/image-compressor.html",
       "hashes": [
-        "'sha256-VJHL3wDj2CbaEG5xz7tssWq5FvbI21mXZasEJKS29FU='"
+        "'sha256-d7zPBdzbTITsfIiYIaftIwJQzXh8V3r5rFr9B+UOKBc='"
+      ]
+    },
+    "/tools/image-cropper": {
+      "asset": "/tools/image-cropper.html",
+      "hashes": [
+        "'sha256-O6VuhWxhbd6IruJgk0yheALqlhbZVABYBL3+OmRNPb0='"
+      ]
+    },
+    "/tools/image-format-converter": {
+      "asset": "/tools/image-format-converter.html",
+      "hashes": [
+        "'sha256-21GJ0PhXnUA92Apc5hHbFsXME4bUUxJRs/Y7NLXHiE0='"
       ]
     },
     "/tools/image-resizer": {
@@ -455,6 +467,10 @@
     "/tools/grade-calculator/": "/tools/grade-calculator",
     "/tools/image-compressor.html": "/tools/image-compressor",
     "/tools/image-compressor/": "/tools/image-compressor",
+    "/tools/image-cropper.html": "/tools/image-cropper",
+    "/tools/image-cropper/": "/tools/image-cropper",
+    "/tools/image-format-converter.html": "/tools/image-format-converter",
+    "/tools/image-format-converter/": "/tools/image-format-converter",
     "/tools/image-resizer.html": "/tools/image-resizer",
     "/tools/image-resizer/": "/tools/image-resizer",
     "/tools/jpg-to-pdf.html": "/tools/jpg-to-pdf",

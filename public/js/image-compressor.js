@@ -1,34 +1,11 @@
-(()=>{
-const $=id=>document.getElementById(id),form=$('tool-form'),result=$('result'),error=$('error');let urls=[];
-function clear(){urls.forEach(URL.revokeObjectURL);urls=[];result.replaceChildren();error.textContent=''}
-function fail(s){throw new Error(s)}
-function number(id,min=-1e15,max=1e15){const el=$(id),n=Number(el.value);if(!el.value.trim()||!Number.isFinite(n)||n<min||n>max)fail('Enter a valid '+el.closest('label').firstChild.textContent.toLowerCase()+' between '+min+' and '+max+'.');return n}
-function text(tag,value,cls){const el=document.createElement(tag);el.textContent=value;if(cls)el.className=cls;result.append(el);return el}
-const fmt=n=>new Intl.NumberFormat(undefined,{maximumFractionDigits:2}).format(n);
-function stats(items){const row=document.createElement('div');row.className='stats';for(const [label,value]of items){const p=document.createElement('p'),b=document.createElement('strong');b.textContent=value;p.append(b,document.createTextNode(label));row.append(p)}result.append(row)}
-function blob(canvas,type='image/jpeg',quality=.9){return new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('Your browser could not export this image. Try a smaller size.')),type,quality))}
-function download(b,name,preview=false){const url=URL.createObjectURL(b);urls.push(url);if(preview){const img=document.createElement('img');img.src=url;img.alt='Converted image preview';result.append(img)}const a=document.createElement('a');a.href=url;a.download=name;a.textContent='Download again';result.append(a);a.click()}
-function files(types,max=20,multi=false){const list=[...$('file').files];if(!list.length)fail('Choose a file first.');if(!multi&&list.length>1)fail('Choose one file at a time.');for(const f of list){if(!types.includes(f.type))fail('“'+f.name+'” is not a supported file. Choose '+(types.includes('application/pdf')?'a .pdf file.':'a JPG, PNG or WebP image.'));if(f.size>max*1024*1024)fail('“'+f.name+'” is larger than '+max+' MB. Choose a smaller file.');if(!f.size)fail('“'+f.name+'” is empty. Choose another file.')}return list}
-async function readImage(f){
-  if('createImageBitmap' in window){
-    try{
-      const bitmap=await createImageBitmap(f,{imageOrientation:'from-image',colorSpaceConversion:'default'});
-      if(bitmap.width*bitmap.height>24000000){bitmap.close();fail('This image exceeds 24 megapixels. Choose a smaller image.')}
-      return {source:bitmap,width:bitmap.width,height:bitmap.height,close:()=>bitmap.close()};
-    }catch{}
-  }
-  const u=URL.createObjectURL(f),img=new Image();
-  try{
-    await new Promise((r,j)=>{img.onload=()=>('decode'in img?img.decode().catch(()=>{}).then(r):r());img.onerror=()=>j(new Error('“'+f.name+'” could not be read. It may be corrupted. Try another image.'));img.src=u});
-    if(img.naturalWidth*img.naturalHeight>24000000)fail('This image exceeds 24 megapixels. Choose a smaller image.');
-    return {source:img,width:img.naturalWidth,height:img.naturalHeight,close:()=>URL.revokeObjectURL(u)};
-  }catch(e){URL.revokeObjectURL(u);throw e}
-}
-function canvas(w,h,white=true){if(!Number.isInteger(w)||!Number.isInteger(h)||w<1||h<1||w>10000||h>10000||w*h>24000000)fail('The result is too large. Use dimensions up to 10,000 pixels and 24 megapixels total.');const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d',{alpha:!white});if(!ctx)fail('Canvas is unavailable in this browser.');if(white){ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h)}return c}
-function base(f){return f.name.replace(/\.[^.]+$/,'').replace(/[^\p{L}\p{N}_-]/gu,'-').slice(0,80)||'kalika'}
-function wire(action){form.noValidate=true;form.addEventListener('submit',async e=>{e.preventDefault();clear();const b=form.querySelector('button');b.disabled=true;const old=b.textContent;b.textContent='Working…';try{const invalid=[...form.elements].find(el=>el.willValidate&&!el.validity.valid);if(invalid){invalid.focus();fail('Check '+invalid.closest('label').firstChild.textContent.trim().toLowerCase()+': '+invalid.validationMessage)}await (await import('/js/canvas-safety.js')).assertCanvasExport('image/jpeg');await action()}catch(e){result.replaceChildren();error.textContent=e.message||'Something went wrong. Please try again.'}finally{b.disabled=false;b.textContent=old}})}
-if($('file'))$('file').addEventListener('change',()=>{clear();$('files').textContent=[...$('file').files].map((f,i)=>`${i+1}. ${f.name} (${fmt(f.size/1024)} KB)`).join(' · ')});
-window.addEventListener('pagehide',()=>urls.forEach(URL.revokeObjectURL));
+import {$,read,draw,encode,target,number,show,wire} from './image-engine.js';
+$('quality').addEventListener('input',()=>{$('quality-value').textContent=$('quality').value+'%';});
+$('preset').addEventListener('change',()=>{if($('preset').value)$('target-kb').value=$('preset').value;});
+wire(async()=>{const file=$('file').files[0],src=await read(file);let c;try{let width=src.width,height=src.height;const type=$('format').value;if($('resize').checked){width=number('width',1,10000);height=$('lock').checked?Math.max(1,Math.round(width*src.height/src.width)):number('height',1,10000);}if($('mode').value==='target'&&type==='image/png')throw Error('Choose JPG or WebP for a target size. PNG does not use a lossy quality control.');let output,note='';const bytes=$('mode').value==='target'?number('target-kb',1,20000)*1000:null;
+for(let attempt=0;attempt<9;attempt++){c=draw(src.image,width,height,type);if(bytes){const match=await target(c,type,bytes);if(match){output=match.blob;note='Within your '+$('target-kb').value+' KB limit (1 KB = 1,000 bytes). Review fine detail before using it.';break;}if(!$('auto-resize').checked||$('resize').checked)throw Error('The target could not be reached at these dimensions. Choose a larger limit or allow smaller dimensions. No file was downloaded.');const min=await encode(c,type,.05);const scale=Math.min(.85,Math.sqrt(bytes/min.size)*.9);if(width===1&&height===1)break;width=Math.max(1,Math.floor(width*scale));height=Math.max(1,Math.floor(height*scale));c.width=c.height=1;}else{output=await encode(c,type,number('quality',5,100)/100);break;}}
+if(!output)throw Error('Could not reach this target. Choose a larger limit.');if(output.size>=file.size)note+=' The result is not smaller than your original.';show(file,output,width,height,note);
+}finally{src.close();if(c)c.width=c.height=1;}});
 
-wire(async()=>{const f=files(['image/jpeg','image/png','image/webp'])[0],img=await readImage(f);try{const c=canvas(img.width,img.height);c.getContext('2d').drawImage(img.source,0,0);const b=await blob(c,'image/jpeg',number('quality',.1,1));text('h2','Your image is ready');stats([['Original',fmt(f.size/1024)+' KB'],['Compressed',fmt(b.size/1024)+' KB']]);text('p',b.size<f.size?fmt((1-b.size/f.size)*100)+'% smaller.':'The converted JPG is not smaller than your original. You can keep the original or try a lower quality.');download(b,base(f)+'-compressed.jpg',true);c.width=1;c.height=1}finally{img.close()}});
-})();
+function options(){const t=$('mode').value==='target';$('target-options').hidden=!t;$('quality-options').hidden=t;$('resize-options').hidden=!$('resize').checked;}for(const id of ['mode','resize'])$(id).addEventListener('change',options);options();
+
+$('target-kb').addEventListener('input',()=>{$('preset').value=['50','100','200'].includes($('target-kb').value)?$('target-kb').value:'';});

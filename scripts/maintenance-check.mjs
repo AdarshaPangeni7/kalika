@@ -45,6 +45,8 @@ const routes = [
   "/tools/date-difference",
   "/tools/exam-countdown",
   "/tools/image-compressor",
+  "/tools/image-cropper",
+  "/tools/image-format-converter",
   "/tools/image-resizer",
   "/tools/merge-pdf",
   "/tools/organize-pdf",

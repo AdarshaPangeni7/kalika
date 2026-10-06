@@ -6,7 +6,7 @@ function number(id,min=-1e15,max=1e15){const el=$(id),n=Number(el.value);if(!el.
 function text(tag,value,cls){const el=document.createElement(tag);el.textContent=value;if(cls)el.className=cls;result.append(el);return el}
 const fmt=n=>new Intl.NumberFormat(undefined,{maximumFractionDigits:2}).format(n);
 function blob(canvas,type='image/jpeg',quality=.9){return new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('Your browser could not export this image. Try a smaller size.')),type,quality))}
-function download(b,name,preview=false){const url=URL.createObjectURL(b);urls.push(url);if(preview){const img=document.createElement('img');img.src=url;img.alt='Converted image preview';result.append(img)}const a=document.createElement('a');a.href=url;a.download=name;a.textContent='Download again';result.append(a);a.click()}
+function download(b,name,preview=false){const url=URL.createObjectURL(b);urls.push(url);if(preview){const img=document.createElement('img');img.src=url;img.alt='Converted image preview';result.append(img)}const a=document.createElement('a');a.href=url;a.download=name;a.textContent='Download image';result.append(a)}
 function files(types,max=20,multi=false){const list=[...$('file').files];if(!list.length)fail('Choose a file first.');if(!multi&&list.length>1)fail('Choose one file at a time.');for(const f of list){if(!types.includes(f.type))fail('“'+f.name+'” is not a supported file. Choose '+(types.includes('application/pdf')?'a .pdf file.':'a JPG, PNG or WebP image.'));if(f.size>max*1024*1024)fail('“'+f.name+'” is larger than '+max+' MB. Choose a smaller file.');if(!f.size)fail('“'+f.name+'” is empty. Choose another file.')}return list}
 async function readImage(f){
   if('createImageBitmap' in window){
