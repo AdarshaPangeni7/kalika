@@ -76,7 +76,7 @@ export async function handleAdmin(request,env){
    return json({reports:reports.filter(Boolean),runs,githubError,refreshedAt:new Date().toISOString()});
   }
   if(p==='/admin/api/seo'){
-   const pages=Object.entries(manifest.pages).filter(([route])=>route!=='/404.html').map(([route,page])=>({route,title:page.title||'',description:page.description||''}));
+   const pages=Object.entries(manifest.pages).filter(([route,page])=>!['/404','/404.html'].includes(route)&&Boolean(page.title)).map(([route,page])=>({route,title:page.title||'',description:page.description||''}));
    return json({pages});
   }
   if(p==='/admin'||p==='/admin/')return reply(dashboard);
