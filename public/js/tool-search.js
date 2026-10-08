@@ -4,6 +4,7 @@ const clear = document.getElementById('tool-search-clear');
 const cards = [...document.querySelectorAll('.category a.tool')];
 const categories = [...document.querySelectorAll('.category')];
 const aliases = {
+ 'clavier-francais':'french français francais accents accent keyboard clavier typing é è ç œ oe capital letters',
  'serbian-latin-cyrillic':'serbian srpski latinica ćirilica cirilica latin cyrillic preslovljavanje српски ћирилица латиница',
  'document-scanner':'scan text camera paper receipt straighten unskew photos',
  'ocr-pdf':'scan text scanned image photo recognize recognition searchable optical characters',

@@ -128,8 +128,8 @@
       "hashes": [
         "'sha256-073hQSAgIam+tvhG3LfElYYgXS4cX61MiY+ZKFozdo0='"
       ],
-      "title": "Kalika: 49 Free PDF, Image, Text Tools & Calculators",
-      "description": "Get everyday tasks done with 49 free PDF, image and text tools plus calculators. No signup, with file processing in your browser. Explore Kalika today."
+      "title": "Kalika: 50 Free PDF, Image, Text Tools & Calculators",
+      "description": "Get everyday tasks done with 50 free PDF, image and text tools plus calculators. No signup, with file processing in your browser. Explore Kalika today."
     },
     "/nepali-tools": {
       "asset": "/nepali-tools.html",
@@ -163,7 +163,7 @@
     "/text-tools": {
       "asset": "/text-tools.html",
       "hashes": [
-        "'sha256-9rbKiyzBSVbOf1e0XNb5r4/8RwkbifODWjQqxgAqg5w='",
+        "'sha256-yWWZnWAIl36wPbTwcuDi5DgoxPDnJLK8utQ6lADDLyc='",
         "'sha256-wVhvDjfxTvkOTlJM7GHKTAepDav3cFPCRiBAZZCYU1M='"
       ],
       "title": "Free Text Tools: Count, Convert and Clean Text | Kalika",
@@ -192,6 +192,14 @@
       ],
       "title": "Case Converter Online for Upper & Lowercase Text | Kalika",
       "description": "Use a case converter online to change uppercase, lowercase, title or sentence case. Paste text, choose a mode and copy the result without signing up."
+    },
+    "/tools/clavier-francais": {
+      "asset": "/tools/clavier-francais.html",
+      "hashes": [
+        "'sha256-GP95UfaCjlFKl3MNAy0VLu/Nzh7FXMoB8c22gbgvrI8='"
+      ],
+      "title": "Clavier français en ligne : accents et lettres | Kalika",
+      "description": "Tapez les accents français et les majuscules avec ce clavier français en ligne. Copiez ou téléchargez votre texte, sans compte ni envoi de votre saisie."
     },
     "/tools/compress-pdf": {
       "asset": "/tools/compress-pdf.html",
@@ -616,6 +624,8 @@
     "/tools/bs-ad-converter/": "/tools/bs-ad-converter",
     "/tools/case-converter.html": "/tools/case-converter",
     "/tools/case-converter/": "/tools/case-converter",
+    "/tools/clavier-francais.html": "/tools/clavier-francais",
+    "/tools/clavier-francais/": "/tools/clavier-francais",
     "/tools/compress-pdf.html": "/tools/compress-pdf",
     "/tools/compress-pdf/": "/tools/compress-pdf",
     "/tools/crop-pdf.html": "/tools/crop-pdf",

@@ -2,7 +2,7 @@ import {spawn} from 'node:child_process';
 import {mkdir,writeFile} from 'node:fs/promises';
 import {testServer} from './security-test-server.mjs';
 const server=await testServer(),results=[];
-const suites=['test-everyday-tools','test-image-tools','test-simple-calculator','test-calculator-tools','test-shopping-calculators','test-tip-calculator','test-nepali-typing','test-preeti-and-language','test-pdf-tools','test-organize-pdf','test-pdf-edit-tools','test-fill-sign','test-pdf-experience','test-document-scanner','test-canvas-safety','test-ocr','test-category-hubs','test-home-search','test-serbian'];
+const suites=['test-everyday-tools','test-image-tools','test-simple-calculator','test-calculator-tools','test-shopping-calculators','test-tip-calculator','test-nepali-typing','test-preeti-and-language','test-pdf-tools','test-organize-pdf','test-pdf-edit-tools','test-fill-sign','test-pdf-experience','test-document-scanner','test-canvas-safety','test-ocr','test-category-hubs','test-home-search','test-serbian','test-french-keyboard'];
 try{
  for(const suite of suites){
   const result=await new Promise(resolve=>{

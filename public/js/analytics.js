@@ -60,9 +60,18 @@
   settings.type = 'button';
   settings.className = 'analytics-settings';
   settings.textContent = 'Privacy choices';
-  // Fully localized consent UI on the Serbian tool; consent behavior is unchanged.
+  // Localized consent UI on French and Serbian tools; consent behavior is unchanged.
   function localizeConsent() {
     const lang = document.documentElement.lang;
+    if (lang.startsWith('fr')) {
+      banner.setAttribute('aria-label', 'Analytique facultative');
+      message.firstChild.textContent = 'Autoriser l’analytique facultative pour améliorer Kalika ? Google Analytics mesure les visites. Vos fichiers et votre saisie ne sont pas envoyés. ';
+      link.textContent = 'Politique de confidentialité (English)';
+      const labels = ['Refuser l’analytique', 'Autoriser l’analytique'];
+      actions.querySelectorAll('button').forEach((button, i) => { button.textContent = labels[i]; });
+      settings.textContent = 'Choix de confidentialité';
+      return;
+    }
     if (!lang.startsWith('sr')) return;
     const cyr = lang === 'sr-Cyrl';
     banner.setAttribute('aria-label', cyr ? 'Опциона аналитика' : 'Opciona analitika');
