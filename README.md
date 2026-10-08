@@ -60,3 +60,16 @@ To reproduce OCR assets after `npm ci`, run `node scripts/vendor-ocr.mjs`. Versi
 
 Guide metadata and topical links: run `node scripts/update-editorial.mjs` after regenerating tools/category pages, then `npm run build`. Reading time is estimated at 200 words per minute; known article dates are preserved. The Nepali Tools hub groups existing tools without duplicating their homepage category cards.
 
+
+## Automated performance and accessibility checks
+
+- `npm run check:quality`: scan all canonical public pages with axe-core (WCAG A/AA tags), plus mobile scans of five representative pages; run three simulated-mobile Lighthouse measurements per representative page and report median scores.
+- `npm run check:accessibility`: accessibility only.
+- `npm run check:lighthouse`: Lighthouse only. For a quick setup check, use `node scripts/check-quality.mjs --mode=lighthouse --runs=1`.
+- Uses the production Worker through the enforced-CSP local test server by default. Set `KALIKA_TEST_ORIGIN=https://kalikatools.com` for read-only live checks. Local pages intentionally have noindex, so the local Lighthouse SEO category is not graded; live reports include it.
+- Reports: `reports/quality.md`, machine-readable `reports/quality/results.json`, and Lighthouse HTML/JSON files. These are ignored locally and saved as GitHub Actions artifacts, never uploaded to a public Lighthouse storage service.
+- `.github/workflows/quality.yml` runs on pushes, pull requests and manual dispatch. Serious/critical axe findings, mobile performance below 80, or failed checks produce a failed check; moderate/minor and manual-review items remain visible in the artifacts. Automated checks do not certify accessibility or measure field Core Web Vitals.
+- The existing weekly/all maintenance runs also check the live site and include the quality report and check outcome in the existing Gmail report. No additional mail credentials are required. Nothing auto-edits, merges or deploys.
+- Installed pinned `lighthouse` and `@axe-core/playwright`. The older `@lhci/cli` wrapper was evaluated and removed because its dependency tree introduced unresolved advisories. Lighthouse runs directly in CI instead. Wrangler is updated and its `sharp` dependency patched via an exact override; `npm audit` must remain clean.
+
+The first axe scan found contrast issues on two guide buttons, the calendar current-day label and the Nepali typing action, plus an ARIA role issue on typing suggestions. These were corrected manually during setup; the scheduled checker only reports findings.

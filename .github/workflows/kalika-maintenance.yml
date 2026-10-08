@@ -28,7 +28,7 @@ concurrency:
 jobs:
   site-check:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
     outputs:
       mode: ${{ steps.mode.outputs.mode }}
       check_results: ${{ steps.check_results.outputs.results }}
@@ -42,7 +42,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "npm"
 
       - name: Install checker dependencies
@@ -183,11 +183,19 @@ jobs:
           KALIKA_TEST_ORIGIN: https://kalikatools.com
         run: node scripts/test-pdf-experience.mjs
 
+      - name: Live accessibility and Lighthouse quality checks
+        id: quality
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        env:
+          KALIKA_TEST_ORIGIN: https://kalikatools.com
+        run: npm run check:quality
+
       - name: Readable report summary
         if: always()
         run: |
           if [ -f reports/latest.md ]; then cat reports/latest.md >> "$GITHUB_STEP_SUMMARY"; fi
           if [ -f reports/competitor-seo.md ]; then cat reports/competitor-seo.md >> "$GITHUB_STEP_SUMMARY"; fi
+          if [ -f reports/quality.md ]; then cat reports/quality.md >> "$GITHUB_STEP_SUMMARY"; fi
 
       - name: Record check outcomes for email report
         id: check_results
@@ -243,7 +251,7 @@ jobs:
         if: steps.mail_config.outputs.ready == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "npm"
 
       - name: Install email dependencies

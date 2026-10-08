@@ -19,6 +19,7 @@ assert.deepEqual(output, {
 assert.ok(output.characters > 100);
 assert.ok(output.outcomes.includes('PDF tools (live): failure'));
 assert.ok(output.outcomes.includes('Site monitoring: not reported'));
+assert.ok(output.outcomes.includes('Accessibility and Lighthouse (live): not reported'));
 const missing = spawnSync(process.execPath, ['scripts/email-weekly-report.mjs', '--dry-run'], {
   env: { ...process.env, SMTP_APP_PASSWORD: '', GITHUB_STEP_SUMMARY: '' }, encoding: 'utf8',
 });
