@@ -76,9 +76,9 @@ The first axe scan found contrast issues on two guide buttons, the calendar curr
 
 ## Dependency proposals and report delivery
 
-`.github/renovate.json` prepares Renovate for only npm and GitHub Actions updates, with automatic merging disabled, exact versions, a Monday morning Nepal review window, three open PRs maximum, and dashboard approval for majors and vendored browser engines. The hosted Renovate GitHub App must be installed on **only AdarshaPangeni7/kalika** before it runs. App installation is a separate GitHub permission grant; the config file alone does not activate it.
+`.github/renovate.json` prepares Renovate for only npm and GitHub Actions updates, with automatic merging disabled, exact versions, a Monday morning Nepal review window, three open PRs maximum, and dashboard approval for majors and vendored browser engines. The hosted Renovate GitHub App was installed on **only AdarshaPangeni7/kalika** on 2026-10-08, with the free Community plan and interactive dependency proposals. Initial processing is visible in the Mend dashboard; the config file alone does not activate the app.
 
-Dependabot version updates remain active until Renovate installation is confirmed. Afterwards disable overlapping Dependabot version updates; retain GitHub security alerts.
+Dependabot version PR limits are set to zero for npm and GitHub Actions to avoid overlapping Renovate proposals. GitHub security alerts and security updates remain available; existing Dependabot PRs are retained for review.
 
 `node scripts/report-dependencies.mjs` reads the public repository's open dependency PRs and Renovate dashboard without credentials. Weekly/all maintenance runs save `reports/dependencies.md` and include it in the existing Gmail summary. No open PRs is not evidence that a bot is installed or fully current; API failures are reported as unavailable.
 
