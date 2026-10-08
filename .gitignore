@@ -39,3 +39,6 @@ playwright/.auth/
 /sitemap.xml
 /style.css
 /terms.html
+
+.dev.vars
+.dev.vars.*

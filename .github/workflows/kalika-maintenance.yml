@@ -195,6 +195,13 @@ jobs:
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         run: node scripts/report-dependencies.mjs
 
+      - name: Sync summaries to private admin
+        if: always()
+        env:
+          ADMIN_REPORT_SECRET: ${{ secrets.ADMIN_REPORT_SECRET }}
+          KALIKA_CHECK_MODE: ${{ steps.mode.outputs.mode }}
+        run: node scripts/sync-admin-reports.mjs
+
       - name: Readable report summary
         if: always()
         run: |

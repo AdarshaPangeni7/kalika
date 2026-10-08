@@ -1,4 +1,5 @@
 import manifest from './config/security-manifest.json' with {type:'json'};
+import {handleAdmin} from './admin-worker.mjs';
 
 // Edge response policy only: no request bodies, uploaded files, storage or telemetry.
 export function securityHeaders(pathname,env={},hashes=[]){
@@ -23,6 +24,7 @@ export function securityHeaders(pathname,env={},hashes=[]){
 export default {
  async fetch(request,env){
   const url=new URL(request.url),canonicalHost=env.LOCAL_DEV!=='true'&&['kalikatools.com','www.kalikatools.com'].includes(url.hostname);
+  if(url.pathname==='/admin'||url.pathname.startsWith('/admin/'))return handleAdmin(request,env);
   const pathname=Object.hasOwn(manifest.aliases,url.pathname)?manifest.aliases[url.pathname]:url.pathname;
   const page=Object.hasOwn(manifest.pages,pathname)?manifest.pages[pathname]:null;
   let response;

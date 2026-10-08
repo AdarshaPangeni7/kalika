@@ -76,6 +76,16 @@ The first axe scan found contrast issues on two guide buttons, the calendar curr
 
 ## Dependency proposals and report delivery
 
+### Private web admin
+
+`https://kalikatools.com/admin` uses GitHub OAuth with PKCE and a short-lived, HttpOnly secure session. Authorization checks the immutable GitHub user ID `140908479`, not an editable username. No repository scope is requested. Other accounts receive 403; admin routes are never indexed or cached and are unavailable on the workers.dev host. GitHub access tokens are used only to verify identity and are not stored. The public tools remain client-side; this private management service stores only owner sessions and monitoring reports.
+
+Configure a GitHub OAuth app with homepage `https://kalikatools.com/admin` and exact callback `https://kalikatools.com/admin/callback` (no wildcard or device flow). Set Worker secrets `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`. The `ADMIN_STORE` KV namespace stores sessions, ten-minute OAuth state and latest summaries per check mode. Missing credentials fail closed. Keep all secrets out of Git and browser code.
+
+Set the same random `ADMIN_REPORT_SECRET` in Cloudflare Worker secrets and GitHub Actions secrets. `scripts/sync-admin-reports.mjs` sends only the four allowlisted Markdown summaries from maintenance runs to the authenticated ingest endpoint. It never uploads visitor files or API credentials. The dashboard displays received timestamps and stale warnings; missing sync never claims a passing check. Full run logs/artifacts and email-job details are linked in GitHub. SEO edits remain downloadable review proposals; the web admin does not auto-publish content.
+
+Run `node scripts/test-web-admin.mjs` to verify owner authorization, locked defaults, PKCE/state, callback replay prevention, session protection, ingest authentication, CSRF and sign-out.
+
 `.github/renovate.json` prepares Renovate for only npm and GitHub Actions updates, with automatic merging disabled, exact versions, a Monday morning Nepal review window, three open PRs maximum, and dashboard approval for majors and vendored browser engines. The hosted Renovate GitHub App was installed on **only AdarshaPangeni7/kalika** on 2026-10-08, with the free Community plan and interactive dependency proposals. Initial processing is visible in the Mend dashboard; the config file alone does not activate the app.
 
 Dependabot version PR limits are set to zero for npm and GitHub Actions to avoid overlapping Renovate proposals. GitHub security alerts and security updates remain available; existing Dependabot PRs are retained for review.

@@ -12,7 +12,7 @@ for(const file of (await walk('public')).filter(f=>f.endsWith('.html'))){
   if($(e).attr('type')!=='application/ld+json')throw Error('Externalize executable inline script: '+file);
   hashes.push("'sha256-"+createHash('sha256').update($(e).html()).digest('base64')+"'");
  });
- manifest.pages[route]={asset,hashes};
+ manifest.pages[route]={asset,hashes,title:$('title').text(),description:$('meta[name=description]').attr('content')||''};
  if(asset!==route)manifest.aliases[asset]=route;
  if(route!=='/'&&route.endsWith('/'))manifest.aliases[route.slice(0,-1)]=route;
  else if(route!=='/'&&!route.endsWith('.html'))manifest.aliases[route+'/']=route;

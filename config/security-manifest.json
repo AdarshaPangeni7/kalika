@@ -2,422 +2,562 @@
   "pages": {
     "/404": {
       "asset": "/404.html",
-      "hashes": []
+      "hashes": [],
+      "title": "Page Not Found: Find Your Next Useful Tool | Kalika",
+      "description": "This Kalika page could not be found. Return to all free browser tools or open the image compressor, PDF converter and word counter to continue your task."
     },
     "/about": {
       "asset": "/about.html",
-      "hashes": []
+      "hashes": [],
+      "title": "About Kalika: Free, Private Tools for Everyday Tasks",
+      "description": "Learn why Kalika offers free browser tools for everyday tasks, how local file processing works, and how to reach the independent operator with your feedback."
     },
     "/calculators": {
       "asset": "/calculators.html",
       "hashes": [
         "'sha256-w0Utxig8rCkk+HTBTgutohB7PUbgnV29c7RfK9IlT5E='",
         "'sha256-hx3zeB2jsFKqBU+tD5XoTWZ0jpztnRyx4IeTg0YBFIE='"
-      ]
+      ],
+      "title": "Free Online Calculators for Everyday Numbers | Kalika",
+      "description": "Calculate payments, fractions, work hours and everyday numbers with free browser calculators. Check the formulas and assumptions before using your results."
     },
     "/contact": {
       "asset": "/contact.html",
-      "hashes": []
+      "hashes": [],
+      "title": "Contact Kalika: Tool Support, Feedback & Privacy Help",
+      "description": "Contact the Kalika operator for tool support, privacy questions or feedback. Find the email address and what to include when reporting an unexpected result."
     },
     "/guides/calculate-overnight-work-hours": {
       "asset": "/guides/calculate-overnight-work-hours.html",
       "hashes": [
         "'sha256-yqi/B4GqOqIRoJZObTQbp+bD5+eifWtWBD1aQOn9Xi8='",
         "'sha256-jg2fdcX8L69rVdNxgkT7HFO37xqChlZsVr8mNNA80eo='"
-      ]
+      ],
+      "title": "Calculate Overnight Work Hours and Breaks | Kalika Tools",
+      "description": "Calculate an overnight shift by marking its end time as next day and subtracting breaks. Understand hours and minutes, decimal hours and clock-change limits."
     },
     "/guides/clean-text-copied-from-pdf": {
       "asset": "/guides/clean-text-copied-from-pdf.html",
       "hashes": [
         "'sha256-HxmlREY5objIweerqNLFZIGseeSx90ksEN6tEAUaPFw='",
         "'sha256-4fCabz6BBnqRZH7MlYTCw37T2PaBFGw+Zv3VqLHTbAo='"
-      ]
+      ],
+      "title": "Clean Text Copied from a PDF into a Document | Kalika",
+      "description": "Clean extra spaces in text copied from a PDF, replace repeated errors and review broken lines without losing paragraph structure or changing meaning."
     },
     "/guides/final-exam-score-needed": {
       "asset": "/guides/final-exam-score-needed.html",
       "hashes": [
         "'sha256-8ml44yhr6fThZ8jta/pO8aJWKqdlwCMCboNO+dpGQyY='",
         "'sha256-c/WylihrvAOQD5Zqu7G0UyBmQb5vc75fsORaClQcM7Q='"
-      ]
+      ],
+      "title": "Calculate the Final Exam Score You Need | Kalika Tools",
+      "description": "Work out the exam score needed for a target course grade using assessment weights, a worked example and checks for scores outside the possible range."
     },
     "/guides/": {
       "asset": "/guides/index.html",
-      "hashes": []
+      "hashes": [],
+      "title": "Practical PDF, Image, Text & Calculator Guides | Kalika",
+      "description": "Follow practical guides for PDFs, images, text cleanup and calculations. Learn the steps, understand tool limits and check your results with Kalika tools."
     },
     "/guides/jpg-png-webp": {
       "asset": "/guides/jpg-png-webp.html",
       "hashes": [
         "'sha256-N9WXOhVQvuW9e21vn9LqDa1NA6uOnHgGwUBvI4xYzxg='",
         "'sha256-jw2j/hVFTc71jJFoO9+Qozkd7nvbXxlVqMlomLgtC7U='"
-      ]
+      ],
+      "title": "JPG vs PNG vs WebP: Choose an Image Format | Kalika",
+      "description": "Compare JPG, PNG and WebP for photos, transparent graphics and screenshots. Choose an image format that balances detail, file size and compatibility needs."
     },
     "/guides/phone-photos-to-pdf": {
       "asset": "/guides/phone-photos-to-pdf.html",
       "hashes": [
         "'sha256-e3st/+2DMSVv/wHr133s62w3HaniWIPgHoUGA+O7tHg='",
         "'sha256-i9aMVMUrqxTeaRofsUnusDtRko+KuwiD84WB7rC0k5Q='"
-      ]
+      ],
+      "title": "Turn Phone Photos into One Readable PDF File | Kalika",
+      "description": "Turn phone photos of documents into a readable PDF. Check the crop, choose a filter, arrange pages and inspect the downloaded file before sharing it."
     },
     "/guides/preeti-to-unicode-without-garbled-text": {
       "asset": "/guides/preeti-to-unicode-without-garbled-text.html",
       "hashes": [
         "'sha256-Zs4/+cVKA7CrifY/w4iTahOX8iV34Y4FHQBRShNdREE='",
         "'sha256-6HGqx8qdBP5bl1VucL/RZM12djsJG6ShieO5+IOntos='"
-      ]
+      ],
+      "title": "Convert Preeti to Unicode Without Garbled Text | Kalika",
+      "description": "Convert a Preeti passage to Nepali Unicode, check a known example and fix common font or copy problems. Follow browser-based steps and preserve your original."
     },
     "/guides/reduce-image-size-for-email": {
       "asset": "/guides/reduce-image-size-for-email.html",
       "hashes": [
         "'sha256-EVt075nNa09etGWYkPj2J099+0BWthd+5wYMzjq6eec='",
         "'sha256-ke+cW5O+I8bhr40Urz4Hq+RQo5oIrhObxtW1StxWO4M='"
-      ]
+      ],
+      "title": "How to Reduce Image File Size for Email | Kalika Guide",
+      "description": "Learn how to reduce image file size for email using pixel dimensions and JPEG quality. Compare the result, preserve your original and avoid blurry photos."
     },
     "/guides/resize-photo-for-application": {
       "asset": "/guides/resize-photo-for-application.html",
       "hashes": [
         "'sha256-wLTTjvSzCqK6J2gnzQlNHbkZokOnW6mdULdfRJhKRLc='",
         "'sha256-+FkqVoWv8dIFgfbuQxiXhlOwaMA9p1b+8ga7I7XgGwc='"
-      ]
+      ],
+      "title": "Resize Photos for Online Application Forms | Kalika",
+      "description": "Prepare a photo for an application form by checking pixel dimensions, file type and file size. Resize carefully and inspect the result before uploading."
     },
     "/guides/type-nepali-with-english-keyboard": {
       "asset": "/guides/type-nepali-with-english-keyboard.html",
       "hashes": [
         "'sha256-nNAxIOZHQ0+eWHuJRBUVNaspcIZNs7hEaVablUpez/8='",
         "'sha256-IRyX4eZmukKnkXiCWNFTDS0D1W5qhch2tJ4ZiMyR5bM='"
-      ]
+      ],
+      "title": "Type Nepali With an English Keyboard: A Guide | Kalika",
+      "description": "Type Nepali with an English keyboard using Roman words, correct ambiguous spellings and keep English text unchanged. Copy or download reviewed Unicode text."
     },
     "/image-tools": {
       "asset": "/image-tools.html",
       "hashes": [
         "'sha256-Ss31NoKR6g0eYeJRYNJRdZxbGERkpsMZSXe0oFlfdvY='",
         "'sha256-2FZRLsotd76/FuRuQODg2s3PqRXib3Byc+18pXY6Fr8='"
-      ]
+      ],
+      "title": "Free Image Tools — Compress, Crop and Convert | Kalika",
+      "description": "Prepare photos with four free image tools: compress to a KB limit, resize, crop or convert JPG, PNG and WebP. Preview results with local browser processing."
     },
     "/": {
       "asset": "/index.html",
       "hashes": [
         "'sha256-073hQSAgIam+tvhG3LfElYYgXS4cX61MiY+ZKFozdo0='"
-      ]
+      ],
+      "title": "Kalika: 48 Free PDF, Image, Text Tools & Calculators",
+      "description": "Get everyday tasks done with 48 free PDF, image and text tools plus calculators. No signup, with file processing in your browser. Explore Kalika today."
     },
     "/nepali-tools": {
       "asset": "/nepali-tools.html",
       "hashes": [
         "'sha256-tLRBGqhmuUUlocm+eGJQ2Bab6b7v70Mtekc+gjF71/s='",
         "'sha256-9mAMDPQs4LBnPj6Yz9eQyempVWiK+v1yVC2654m2WRM='"
-      ]
+      ],
+      "title": "Free Nepali Typing, Preeti & BS–AD Date Tools | Kalika",
+      "description": "Type Nepali, convert Preeti and Unicode text, or change BS and AD dates with browser tools. Find practical guides, the right tool and clear accuracy limits."
     },
     "/pdf-tools": {
       "asset": "/pdf-tools.html",
       "hashes": [
         "'sha256-efC7+lEuXVaE0K88yGELjbC+ovFiZ3GXKPqd1thwS6Y='"
-      ]
+      ],
+      "title": "Free PDF Tools — Work Locally Without Uploads | Kalika",
+      "description": "Merge, split, rotate, scan and organize PDFs with free browser tools. Find the task you need, keep document processing local and download without an account."
     },
     "/privacy": {
       "asset": "/privacy.html",
-      "hashes": []
+      "hashes": [],
+      "title": "Kalika Privacy Policy: Local Files & Data Practices",
+      "description": "Read how Kalika processes files locally, handles currency API requests and optional Google Analytics, and lets you manage your privacy choices at any time."
     },
     "/terms": {
       "asset": "/terms.html",
-      "hashes": []
+      "hashes": [],
+      "title": "Kalika Terms of Use: Free Tools & Your Responsibilities",
+      "description": "Read the Kalika terms of use for free browser tools, calculator estimates, file backups, content responsibilities, service changes and contacting the operator."
     },
     "/text-tools": {
       "asset": "/text-tools.html",
       "hashes": [
         "'sha256-fjYBjGO7HX1HjynxiDN1PU8qublhCN9KYe2l91hP+s0='",
         "'sha256-wVhvDjfxTvkOTlJM7GHKTAepDav3cFPCRiBAZZCYU1M='"
-      ]
+      ],
+      "title": "Free Text Tools: Count, Convert and Clean Text | Kalika",
+      "description": "Explore free text tools for word counts, case conversion, text cleanup and Nepali typing. Process text in your browser, then copy or download the result."
     },
     "/tools/age-calculator": {
       "asset": "/tools/age-calculator.html",
       "hashes": [
         "'sha256-TkC1umBbKzI17TRIKGQLzerpkWB6Y+PN6zgVordTDHE='"
-      ]
+      ],
+      "title": "Age Calculator Online in Years, Months and Days | Kalika",
+      "description": "Use the age calculator online to compare a birth date with a chosen date. See years, months, remaining days and total calendar days without an account."
     },
     "/tools/bs-ad-converter": {
       "asset": "/tools/bs-ad-converter.html",
       "hashes": [
         "'sha256-8Ogypd8sAvyE5gp/bOmQNYnBWdPmZnXfUSrtgGHgLpo='"
-      ]
+      ],
+      "title": "BS to AD Date Converter — Nepali Calendar Online | Kalika",
+      "description": "Convert Bikram Sambat dates to AD and AD dates to BS. Browse a Nepali month calendar with English dates, check weekdays and keep dates in your browser."
     },
     "/tools/case-converter": {
       "asset": "/tools/case-converter.html",
       "hashes": [
         "'sha256-sBGbIuknL/1QAqAJO5lZqg+S45qBjEjA5zrIl3R9zts='"
-      ]
+      ],
+      "title": "Case Converter Online for Upper & Lowercase Text | Kalika",
+      "description": "Use a case converter online to change uppercase, lowercase, title or sentence case. Paste text, choose a mode and copy the result without signing up."
     },
     "/tools/compress-pdf": {
       "asset": "/tools/compress-pdf.html",
       "hashes": [
         "'sha256-CoLuwKwWuyJD5U1FJK0x0GANT8Lw9z3XDIo/XMnRuM4='"
-      ]
+      ],
+      "title": "Compress PDF Online Free — Reduce PDF File Size | Kalika",
+      "description": "Compress PDF files in your browser with text-preserving optimization or image-based compression. Compare file sizes and download without uploading files."
     },
     "/tools/crop-pdf": {
       "asset": "/tools/crop-pdf.html",
       "hashes": [
         "'sha256-KJGFEgSM5uu8Bq/SyPlJhCYYPTMA+ZZQkO9Exgh5G6Y='"
-      ]
+      ],
+      "title": "Crop PDF Online — Adjust Page Margins for Free | Kalika",
+      "description": "Crop PDF margins locally in your browser. Set top, bottom, left and right trims, preview selected pages and save a new PDF without uploading your document."
     },
     "/tools/currency-converter": {
       "asset": "/tools/currency-converter.html",
       "hashes": [
         "'sha256-gyfE2dmDk5pZr/X4hUQTPKYr3K+uTLh9x4xW162CzFs='"
-      ]
+      ],
+      "title": "Free Currency Converter: Daily Exchange Rates | Kalika",
+      "description": "Convert currencies with daily reference rates, automatic checks and a backup provider. See the rate date and source, with clear recovery if a service is down."
     },
     "/tools/date-difference": {
       "asset": "/tools/date-difference.html",
       "hashes": [
         "'sha256-vlpCxng6EC63aLLf2jDRlXbD0sPlkKrzF2RruDY6OJ4='"
-      ]
+      ],
+      "title": "Date Difference Calculator for Days Between Dates | Kalika",
+      "description": "Use the date difference calculator to count days between two dates. Include the end date if needed and see the span in full weeks and remaining days."
     },
     "/tools/delete-pdf-pages": {
       "asset": "/tools/delete-pdf-pages.html",
       "hashes": [
         "'sha256-lAuQWMICNLMjNV0TVEHzMSnXG2RMj5JNFoUt3Moch+w='"
-      ]
+      ],
+      "title": "Delete PDF Pages Online — Preview and Remove | Kalika",
+      "description": "Delete unwanted PDF pages with thumbnail previews and undo controls. Save the remaining pages as a new PDF in your browser without uploading your document."
     },
     "/tools/discount-calculator": {
       "asset": "/tools/discount-calculator.html",
       "hashes": [
         "'sha256-h5lhzaynfcurUP8Qa4+yPdLB1D8s5mT9MRRgmGubf5k='"
-      ]
+      ],
+      "title": "Discount Calculator — Sale Prices & Total Savings | Kalika",
+      "description": "Calculate a sale price and your savings with a discount calculator. Apply sequential discounts and a fixed reduction, see each step, and copy your results."
     },
     "/tools/document-scanner": {
       "asset": "/tools/document-scanner.html",
       "hashes": [
         "'sha256-jHbKjUugT3L8DpOb+UqIaIyJmmpzv1k5wOAgP/ik9tA='"
-      ]
+      ],
+      "title": "Document Scanner Online — Scan Photos to PDF Free | Kalika",
+      "description": "Scan document photos online with automatic borders, adjustable corners, perspective correction and filters. Arrange pages and export PDF or JPG without uploads."
     },
     "/tools/duplicate-line-remover": {
       "asset": "/tools/duplicate-line-remover.html",
       "hashes": [
         "'sha256-kIXNlT3Zmls0JkWM3OuakLcVMUFYVwgQrLfBRvUbVzI='"
-      ]
+      ],
+      "title": "Duplicate Line Remover for Lists and Pasted Text | Kalika",
+      "description": "Use the duplicate line remover to remove repeated lines from a list. Keep the first occurrence, choose case matching and copy your cleaned result for free."
     },
     "/tools/emi-calculator": {
       "asset": "/tools/emi-calculator.html",
       "hashes": [
         "'sha256-1COxK+KZcD3xx8r/Ro4jk1lNByXuqjItabRdmUC9VqI='"
-      ]
+      ],
+      "title": "Free EMI Calculator: Monthly Loan Payments | Kalika",
+      "description": "Estimate monthly loan payments with a free EMI calculator. Enter the loan amount, annual interest and term to compare total interest and repayment amounts."
     },
     "/tools/exam-countdown": {
       "asset": "/tools/exam-countdown.html",
       "hashes": [
         "'sha256-iXc0hgjjnw9oI4wGcIljGlJhGnXYgIFibHODe5Q+U3U='"
-      ]
+      ],
+      "title": "Exam Countdown Timer for Your Study Schedule Free | Kalika",
+      "description": "Set an exam countdown timer with a future date and time. View days, hours, minutes and seconds remaining in your browser when planning your study sessions."
     },
     "/tools/extract-pdf-pages": {
       "asset": "/tools/extract-pdf-pages.html",
       "hashes": [
         "'sha256-YQCbH0uSmykR7G/R9CSQ8KQC/4fA+0EJcs7ag1IirSU='"
-      ]
+      ],
+      "title": "Extract PDF Pages Online into a Separate File | Kalika",
+      "description": "Select PDF pages using thumbnail previews and extract them into one new PDF. Keep the original order and process your document locally without a file upload."
     },
     "/tools/fill-sign-pdf": {
       "asset": "/tools/fill-sign-pdf.html",
       "hashes": [
         "'sha256-7RLMdzi07jEBGDlpfrxac+3Ro/lc1ZsBzXA2dduOfvU='"
-      ]
+      ],
+      "title": "Fill and Sign PDF Online — Private Form Editor | Kalika",
+      "description": "Fill and sign PDF forms in your browser. Add text, type or draw a visible signature, position it on the page and download a copy without uploading documents."
     },
     "/tools/find-replace": {
       "asset": "/tools/find-replace.html",
       "hashes": [
         "'sha256-nVKP6WOt9t+L9S60wWKkDc6EZGdrA/VklwIHgaQfzDI='"
-      ]
+      ],
+      "title": "Find and Replace Text in Your Browser for Free | Kalika",
+      "description": "Find and replace text in a pasted draft using literal matches. Choose case sensitivity, replace all occurrences and copy the edited result without signup."
     },
     "/tools/fraction-calculator": {
       "asset": "/tools/fraction-calculator.html",
       "hashes": [
         "'sha256-ZjqJlMmJyEXLKHR6FUfv4DZj+4ZlJhwA9+mSImbuNu4='"
-      ]
+      ],
+      "title": "Fraction Calculator Online — Simplify Your Sums | Kalika",
+      "description": "Add, subtract, multiply or divide fractions online. Get an exact simplified fraction, a mixed number when applicable and a decimal approximation with working."
     },
     "/tools/gpa-calculator": {
       "asset": "/tools/gpa-calculator.html",
       "hashes": [
         "'sha256-mF8COTjbIpDx1cAVTWekltozaKVpL6dnukLWP/gThKQ='"
-      ]
+      ],
+      "title": "GPA Calculator Online with Grades & Credit Hours | Kalika",
+      "description": "Use the GPA calculator online to average grade points by credit hours. Enter your school’s numeric grade points, choose a scale and review your result."
     },
     "/tools/grade-calculator": {
       "asset": "/tools/grade-calculator.html",
       "hashes": [
         "'sha256-KAzDUD8ZkOPt6FCVN7N8D8KsG5PmKH8fx8zoaGFOOq8='"
-      ]
+      ],
+      "title": "Weighted Grade Calculator for Course Assessments | Kalika",
+      "description": "Use the weighted grade calculator to combine assessment scores and weights. See your completed-work average and contribution to the final course grade."
     },
     "/tools/image-compressor": {
       "asset": "/tools/image-compressor.html",
       "hashes": [
         "'sha256-d7zPBdzbTITsfIiYIaftIwJQzXh8V3r5rFr9B+UOKBc='"
-      ]
+      ],
+      "title": "Image Compressor — 50, 100 or 200 KB Photos | Kalika",
+      "description": "Compress an image to 50 KB, 100 KB, 200 KB or a custom limit. Choose dimensions and JPG or WebP output, preview the result, then download without uploading."
     },
     "/tools/image-cropper": {
       "asset": "/tools/image-cropper.html",
       "hashes": [
         "'sha256-O6VuhWxhbd6IruJgk0yheALqlhbZVABYBL3+OmRNPb0='"
-      ]
+      ],
+      "title": "Image Cropper Online — Crop Photos in Browser | Kalika",
+      "description": "Crop an image online using a drag selection or exact pixel coordinates. Preview JPG, PNG or WebP output and download your photo without uploading it."
     },
     "/tools/image-format-converter": {
       "asset": "/tools/image-format-converter.html",
       "hashes": [
         "'sha256-21GJ0PhXnUA92Apc5hHbFsXME4bUUxJRs/Y7NLXHiE0='"
-      ]
+      ],
+      "title": "Image Format Converter — JPG, PNG and WebP | Kalika",
+      "description": "Convert an image between JPG, PNG and WebP in your browser. Keep transparency where supported, preview the output and download without uploading your photo."
     },
     "/tools/image-resizer": {
       "asset": "/tools/image-resizer.html",
       "hashes": [
         "'sha256-05VSRdXC9DOVkS24KKj6JDj549WIcWDoXY+DVQfEZys='"
-      ]
+      ],
+      "title": "Free Image Resizer Online: Change Pixel Size | Kalika",
+      "description": "Resize JPG, PNG and WebP images to your chosen pixel dimensions. Keep proportions or set both sides, choose an output format and download without file uploads."
     },
     "/tools/jpg-to-pdf": {
       "asset": "/tools/jpg-to-pdf.html",
       "hashes": [
         "'sha256-3i4JtonGH1LKc8iLCIedx0//mdfHDYM/yWop8jJUAoo='"
-      ]
+      ],
+      "title": "JPG to PDF Online — Arrange, Crop and Scan Photos | Kalika",
+      "description": "Convert JPG, PNG and WebP images to PDF in your browser. Reorder photos, crop document borders, adjust filters and export A4 or Letter pages without uploading."
     },
     "/tools/lorem-ipsum-generator": {
       "asset": "/tools/lorem-ipsum-generator.html",
       "hashes": [
         "'sha256-DOvB5svA+lrGI7AgAlqg12H0wx5owKbFOtpO1OTJA9Q='"
-      ]
+      ],
+      "title": "Lorem Ipsum Generator for Layout Placeholder Text | Kalika",
+      "description": "Use the lorem ipsum generator to create placeholder paragraphs for layouts. Choose the paragraph count, generate text and copy it into your draft design."
     },
     "/tools/merge-pdf": {
       "asset": "/tools/merge-pdf.html",
       "hashes": [
         "'sha256-6In84E9iMiGDy8n31iIzqmqPSl7Tp9Zkjdb9morKLSw='"
-      ]
+      ],
+      "title": "Merge PDF Online Free — Combine PDF Documents | Kalika",
+      "description": "Merge PDF files online for free. Arrange your documents, combine their pages and download one PDF in your browser without uploading files or signing up."
     },
     "/tools/nepali-typing": {
       "asset": "/tools/nepali-typing.html",
       "hashes": [
         "'sha256-qZ3C5JXfcOE+H8j0ohVnwUZM/tK+pcDXCINnNxL975k='"
-      ]
+      ],
+      "title": "Nepali Typing Online: Roman to Nepali Unicode | Kalika",
+      "description": "Type Romanized Nepali and convert it to Unicode Nepali in your browser. Edit spellings, use the character keyboard, then copy or download your text for free."
     },
     "/tools/ocr-pdf": {
       "asset": "/tools/ocr-pdf.html",
       "hashes": [
         "'sha256-zmhlerOrWoSCiCZthzzSa4eMKlz+FiQQ8OHH34R+kOI='"
-      ]
+      ],
+      "title": "Private OCR PDF Online — Recognize Scanned Text | Kalika",
+      "description": "Recognize text in scanned PDFs and photos on your device. Review OCR results, copy text or download a searchable PDF without uploading your documents."
     },
     "/tools/organize-pdf": {
       "asset": "/tools/organize-pdf.html",
       "hashes": [
         "'sha256-tjh+xSnJ2GifpPcPD81XOMamW3/UoICgxVpFAsPVkQc='"
-      ]
+      ],
+      "title": "Organize PDF Online — Reorder, Rotate & Remove | Kalika",
+      "description": "Organize PDF pages in your browser. Preview thumbnails, reorder, rotate, remove or extract pages, then download your updated PDF without uploading documents."
     },
     "/tools/page-numbers": {
       "asset": "/tools/page-numbers.html",
       "hashes": [
         "'sha256-6Q6WcxVyd8nwRd/20VKiCGx74wdTfvY9RUdJUw6cV2w='"
-      ]
+      ],
+      "title": "Add Page Numbers to PDF Online — Custom Start | Kalika",
+      "description": "Add page numbers to your PDF locally. Choose a starting number, page range, position and text style, preview the layout and download without document uploads."
     },
     "/tools/pdf-to-jpg": {
       "asset": "/tools/pdf-to-jpg.html",
       "hashes": [
         "'sha256-WJzCkh+vmyP5r68TywOHJ0I3zmwiROtXeZAhZKv+Cfg='"
-      ]
+      ],
+      "title": "Free PDF to JPG Converter: Download All Pages | Kalika",
+      "description": "Convert PDF pages to JPG images locally in your browser. Choose a resolution and download every page in one ZIP, with no sign-up or file uploads required."
     },
     "/tools/pdf-to-text": {
       "asset": "/tools/pdf-to-text.html",
       "hashes": [
         "'sha256-c1D4rdU+70GNgQ/1QscKJInzyDxKImah30gOiVP8Rac='"
-      ]
+      ],
+      "title": "PDF to Text Online — Extract Selectable Text | Kalika",
+      "description": "Extract selectable text from a PDF in your browser. Review page-by-page output, copy it or download a text file without uploading your document to a server."
     },
     "/tools/percentage-calculator": {
       "asset": "/tools/percentage-calculator.html",
       "hashes": [
         "'sha256-TQmnaPG89UBRvvTuPKiU3QGeumfievwXhNtk8+iWAyA='"
-      ]
+      ],
+      "title": "Percentage Calculator Online for Values & Change | Kalika",
+      "description": "Use the percentage calculator online to find a share, a percentage of a value or percentage change. Enter two numbers and see your result without signup."
     },
     "/tools/preeti-unicode-converter": {
       "asset": "/tools/preeti-unicode-converter.html",
       "hashes": [
         "'sha256-g2NBIzradYbMScOnOx0J058V3DUawULlRl03lHGp144='"
-      ]
+      ],
+      "title": "Preeti to Unicode & Unicode to Preeti Converter | Kalika",
+      "description": "Convert Preeti to Unicode or Unicode to Preeti free in your browser. Paste Nepali text, review the result, then copy or download it without uploading your text."
     },
     "/tools/qr-generator": {
       "asset": "/tools/qr-generator.html",
       "hashes": [
         "'sha256-haACfz/kXWPsw5vGglRwH62LhvIsQJYUA7STJCpy1qQ='"
-      ]
+      ],
+      "title": "Free QR Code Generator: Download a PNG Image | Kalika",
+      "description": "Create a free QR code for a link or short text without an account. Choose a PNG size, download automatically and scan the result before printing or sharing."
     },
     "/tools/rotate-pdf": {
       "asset": "/tools/rotate-pdf.html",
       "hashes": [
         "'sha256-qrhEpoWSLCVyjBosDNZ4Bk4hJkBd5mVIF8q1hbbFlkw='"
-      ]
+      ],
+      "title": "Rotate PDF Pages Online Without Uploading Files | Kalika",
+      "description": "Rotate PDF pages in your browser, preview their orientation and save a new file. Turn individual or selected pages without uploading your document to a server."
     },
     "/tools/sales-tax-calculator": {
       "asset": "/tools/sales-tax-calculator.html",
       "hashes": [
         "'sha256-25Ki8yB2S3t+EeLpaEd3ptD+rN5+FBrOiL5s72UdFDQ='"
-      ]
+      ],
+      "title": "Sales Tax & VAT Calculator — Add or Remove Tax | Kalika",
+      "description": "Add sales tax or VAT to a net price, or remove included tax from a total. Enter your own rate and see the net amount, tax and final price with a breakdown."
     },
     "/tools/scientific-calculator": {
       "asset": "/tools/scientific-calculator.html",
       "hashes": [
         "'sha256-f7dbS2EZBadiXMeP9y7rhXdvJy9YteSkmD6rDdJ5bqw='"
-      ]
+      ],
+      "title": "Scientific Calculator — Powers, Roots and Trig | Kalika",
+      "description": "Use a free scientific calculator online for powers, roots, logarithms and trigonometry. Enter expressions with parentheses and choose degrees or radians easily."
     },
     "/tools/simple-calculator": {
       "asset": "/tools/simple-calculator.html",
       "hashes": [
         "'sha256-KzOxdKVD7Y482Lk/4TbuxYOoMO3fqDeZgRh+JrBteog='"
-      ]
+      ],
+      "title": "Simple Calculator Online for Everyday Arithmetic | Kalika",
+      "description": "Use this free simple calculator online to add, subtract, multiply and divide. Calculate with decimals, percentages and keyboard controls without signing up."
     },
     "/tools/space-remover": {
       "asset": "/tools/space-remover.html",
       "hashes": [
         "'sha256-ipwEelNnnwEINL9yk1Y1UWlfpIW8YpdC9GzCYXZ7A+s='"
-      ]
+      ],
+      "title": "Extra Space Remover for Text and Whitespace Free | Kalika",
+      "description": "Use the extra space remover to clean repeated spaces or remove all whitespace. Keep line breaks in cleanup mode, review your text and copy the result."
     },
     "/tools/split-pdf": {
       "asset": "/tools/split-pdf.html",
       "hashes": [
         "'sha256-Q5h5exuf63H/LtXSmfbICCT5T6oUiZ2iZ3T0j2qTeXk='"
-      ]
+      ],
+      "title": "Split PDF Online Free — Extract Selected Pages | Kalika",
+      "description": "Split PDF files online for free. Extract selected pages into one PDF or save every page as a separate PDF in a ZIP, with local processing and no file uploads."
     },
     "/tools/text-reverser": {
       "asset": "/tools/text-reverser.html",
       "hashes": [
         "'sha256-phkbBJ10N5UpJToRZGFB3aA10V5kXwGqGUf//fWd3YE='"
-      ]
+      ],
+      "title": "Text Reverser Online for Characters & Line Order | Kalika",
+      "description": "Try the text reverser online to reverse characters or the order of lines. Paste your text, select a mode and copy the result with no account required."
     },
     "/tools/text-to-slug": {
       "asset": "/tools/text-to-slug.html",
       "hashes": [
         "'sha256-+UjkwRRDfU23RY96AT3y43woq8fUiMXX1Gc95xUWYHY='"
-      ]
+      ],
+      "title": "Text to Slug Converter for Clean URL Paths Free | Kalika",
+      "description": "Use the text to slug converter to create lowercase, hyphenated URL text. Normalize accents, remove punctuation and copy a slug without creating an account."
     },
     "/tools/tip-calculator": {
       "asset": "/tools/tip-calculator.html",
       "hashes": [
         "'sha256-RfJC74Xl+tJFAoQuuuA0m3CfknLpvSjsCxDrC3Ohrw0='"
-      ]
+      ],
+      "title": "Tip Calculator & Bill Splitter — Per-Person Cost | Kalika",
+      "description": "Calculate a tip and split the bill with exact per-person payments. Choose a tip rate, exclude included tax if needed and round the total, all in your browser."
     },
     "/tools/unit-converter": {
       "asset": "/tools/unit-converter.html",
       "hashes": [
         "'sha256-SWX/pWGisfEManXT2LIoVn1wSrfBVXormsh4dRYO+jc='"
-      ]
+      ],
+      "title": "Online Unit Converter: Length, Weight & Temperature",
+      "description": "Convert length, weight and temperature with a free unit converter. Compare metric and imperial units, check precise results and see clear input limits online."
     },
     "/tools/watermark-pdf": {
       "asset": "/tools/watermark-pdf.html",
       "hashes": [
         "'sha256-vO777b8Eis3ECrpqs2QOtm4Gb6tlbyypprRpTgqi9u8='"
-      ]
+      ],
+      "title": "Watermark PDF Online — Add Text or Image Marks | Kalika",
+      "description": "Add a text or image watermark to PDF pages in your browser. Set position, rotation and opacity, preview the result and download without uploading your files."
     },
     "/tools/word-counter": {
       "asset": "/tools/word-counter.html",
       "hashes": [
         "'sha256-9KiAWtaWptUjRnrtO8KcPmhAnARhJyXs6qmV0JuuVmM='"
-      ]
+      ],
+      "title": "Word Counter Online for Characters and Sentences | Kalika",
+      "description": "Use the word counter online to count words, characters, sentences and paragraphs as you type. Check a draft’s length in your browser without an account."
     },
     "/tools/work-hours-calculator": {
       "asset": "/tools/work-hours-calculator.html",
       "hashes": [
         "'sha256-7B0elFhr/k2/+FBEOvWMmQYzwvTKysRxgQuEdF5hJFE='"
-      ]
+      ],
+      "title": "Work Hours Calculator — Total Shifts and Breaks | Kalika",
+      "description": "Calculate work hours across seven shifts with unpaid breaks and overnight options. See total hours, minutes and decimal hours without uploading your timesheet."
     },
     "/yandex_c4f8be0d71009657.html": {
       "asset": "/yandex_c4f8be0d71009657.html",
-      "hashes": []
+      "hashes": [],
+      "title": "",
+      "description": ""
     }
   },
   "aliases": {
