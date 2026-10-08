@@ -69,6 +69,14 @@
       "title": "JPG vs PNG vs WebP: Choose an Image Format | Kalika",
       "description": "Compare JPG, PNG and WebP for photos, transparent graphics and screenshots. Choose an image format that balances detail, file size and compatibility needs."
     },
+    "/guides/latinica-cirilica-sacuvati-linkove": {
+      "asset": "/guides/latinica-cirilica-sacuvati-linkove.html",
+      "hashes": [
+        "'sha256-bZbLTWDjTEielFmJX8h9htrhFoFQjPcOnw7hepBUsnA='"
+      ],
+      "title": "Latinica u ćirilicu: sačuvajte linkove i nazive | Kalika",
+      "description": "Pretvorite srpsku latinicu u ćirilicu, sačuvajte linkove i strane nazive i proverite lj, nj i dž. Praktični primeri za Kalika konvertor, bez slanja teksta."
+    },
     "/guides/phone-photos-to-pdf": {
       "asset": "/guides/phone-photos-to-pdf.html",
       "hashes": [
@@ -603,6 +611,8 @@
     "/guides": "/guides/",
     "/guides/jpg-png-webp.html": "/guides/jpg-png-webp",
     "/guides/jpg-png-webp/": "/guides/jpg-png-webp",
+    "/guides/latinica-cirilica-sacuvati-linkove.html": "/guides/latinica-cirilica-sacuvati-linkove",
+    "/guides/latinica-cirilica-sacuvati-linkove/": "/guides/latinica-cirilica-sacuvati-linkove",
     "/guides/phone-photos-to-pdf.html": "/guides/phone-photos-to-pdf",
     "/guides/phone-photos-to-pdf/": "/guides/phone-photos-to-pdf",
     "/guides/preeti-to-unicode-without-garbled-text.html": "/guides/preeti-to-unicode-without-garbled-text",
