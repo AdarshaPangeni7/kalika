@@ -105,6 +105,14 @@
       "title": "Resize Photos for Online Application Forms | Kalika",
       "description": "Prepare a photo for an application form by checking pixel dimensions, file type and file size. Resize carefully and inspect the result before uploading."
     },
+    "/guides/taper-accents-clavier-qwerty": {
+      "asset": "/guides/taper-accents-clavier-qwerty.html",
+      "hashes": [
+        "'sha256-RCpERBZHbN+UmkP1W0I3sLxuynqGONtQbYLD4t/P+Xc='"
+      ],
+      "title": "Taper É, Ç et œ sur un clavier QWERTY : guide | Kalika",
+      "description": "Tapez É, Ç et œ sur un clavier QWERTY avec des méthodes pour Windows, Mac, iPhone et Android. Suivez les étapes et copiez vos accents avec le clavier Kalika."
+    },
     "/guides/type-nepali-with-english-keyboard": {
       "asset": "/guides/type-nepali-with-english-keyboard.html",
       "hashes": [
@@ -603,6 +611,8 @@
     "/guides/reduce-image-size-for-email/": "/guides/reduce-image-size-for-email",
     "/guides/resize-photo-for-application.html": "/guides/resize-photo-for-application",
     "/guides/resize-photo-for-application/": "/guides/resize-photo-for-application",
+    "/guides/taper-accents-clavier-qwerty.html": "/guides/taper-accents-clavier-qwerty",
+    "/guides/taper-accents-clavier-qwerty/": "/guides/taper-accents-clavier-qwerty",
     "/guides/type-nepali-with-english-keyboard.html": "/guides/type-nepali-with-english-keyboard",
     "/guides/type-nepali-with-english-keyboard/": "/guides/type-nepali-with-english-keyboard",
     "/image-tools.html": "/image-tools",
