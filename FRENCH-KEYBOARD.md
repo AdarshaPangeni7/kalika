@@ -13,7 +13,7 @@ The full page is written in French. It complements a physical keyboard; it does 
 
 ## Editing behavior and limits
 
-Ordinary typing/pasting stays unchanged. Shortcuts are opt-in, apply only to individual typed input events and never process pasted text. Examples: `e'` → é, `c,` → ç, `oe/` → œ; an uppercase initial produces the capital. Turn the option off to type these sequences literally. Undo/redo and Ctrl/Command-Z are scoped to the editor, with at most 20 in-memory changes. No source text is stored across reloads or sent to a service.
+Ordinary typing/pasting stays unchanged. Shortcuts are opt-in, apply only to individual typed input events and never process pasted text. Examples: `e'` → é, `c,` → ç, `oe/` → œ; an uppercase initial produces the capital. Turn the option off to type these sequences literally. Undo/redo and Ctrl/Command-Z are scoped to the editor, with at most 100 in-memory changes. No source text is stored across reloads or sent to a service.
 
 Inserting a character replaces an explicitly selected passage; otherwise it inserts at the cursor. The example inserts at the cursor instead of discarding a document. Insertion checks 100,000 UTF-16 units. Longer pasted text remains available for copy/download and manual reduction, never silently truncated. The counter uses UTF-16 units; some symbols count twice. Text downloads preserve newlines and Unicode but not rich document formatting. Punctuation and spacing are never rewritten automatically.
 
@@ -26,3 +26,5 @@ Reviewed https://www.lexilogos.com/clavier/francais.htm and https://french.typei
 ## Validation and launch
 
 Run `node scripts/test-french-keyboard.mjs`, `node scripts/test-home-search.mjs`, `node scripts/test-category-hubs.mjs`, `node scripts/test-analytics.mjs` and `npm run check:security`. Review desktop/mobile screenshots under ignored `reports/french-keyboard/`. Deploy with the existing Cloudflare process, verify live insertion and discovery, then notify IndexNow. Sitemap/homepage enumeration makes maintenance discover this tool. Review Search Console indexing and relevant French queries after launch; structured data is not a guarantee of indexing, rich results or rank.
+
+Immediate Backspace/Escape after shortcut expansion restores the literal sequence; mobile cancellable deleteContentBackward is supported. Ctrl/Command-Z retains its usual editor undo behavior. Social preview is a local 1200×630 PNG. English navigation destinations are labeled. No hreflang alternate is declared because there is no equivalent translated page.

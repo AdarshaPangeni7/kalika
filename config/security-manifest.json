@@ -196,9 +196,9 @@
     "/tools/clavier-francais": {
       "asset": "/tools/clavier-francais.html",
       "hashes": [
-        "'sha256-tsg2XU04i/X6n4MtbmisaJ6jN0IB9ZB0huUEOGJJYbc='"
+        "'sha256-A01UmQkYAzoI8Ksearkr6sa/hdio6tA8z00CcttvMO0='"
       ],
-      "title": "Clavier français en ligne : accents et lettres | Kalika",
+      "title": "Clavier français en ligne : accents et majuscules | Kalika",
       "description": "Tapez les accents français et les majuscules avec ce clavier français en ligne. Copiez ou téléchargez votre texte, sans compte ni envoi de votre saisie."
     },
     "/tools/compress-pdf": {
