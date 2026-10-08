@@ -69,7 +69,7 @@ Guide metadata and topical links: run `node scripts/update-editorial.mjs` after 
 - Uses the production Worker through the enforced-CSP local test server by default. Set `KALIKA_TEST_ORIGIN=https://kalikatools.com` for read-only live checks. Local pages intentionally have noindex, so the local Lighthouse SEO category is not graded; live reports include it.
 - Reports: `reports/quality.md`, machine-readable `reports/quality/results.json`, and Lighthouse HTML/JSON files. These are ignored locally and saved as GitHub Actions artifacts, never uploaded to a public Lighthouse storage service.
 - `.github/workflows/quality.yml` runs on pushes, pull requests and manual dispatch. Serious/critical axe findings, mobile performance below 80, or failed checks produce a failed check; moderate/minor and manual-review items remain visible in the artifacts. Automated checks do not certify accessibility or measure field Core Web Vitals.
-- The existing weekly/all maintenance runs also check the live site and include the quality report and check outcome in the existing Gmail report. No additional mail credentials are required. Nothing auto-edits, merges or deploys.
+- The existing weekly/all maintenance runs also check the live site and sync quality summaries to the private admin panel. Gmail delivery is disabled. Nothing auto-edits, merges or deploys.
 - Installed pinned `lighthouse` and `@axe-core/playwright`. The older `@lhci/cli` wrapper was evaluated and removed because its dependency tree introduced unresolved advisories. Lighthouse runs directly in CI instead. Wrangler is updated and its `sharp` dependency patched via an exact override; `npm audit` must remain clean.
 
 The first axe scan found contrast issues on two guide buttons, the calendar current-day label and the Nepali typing action, plus an ARIA role issue on typing suggestions. These were corrected manually during setup; the scheduled checker only reports findings.
@@ -82,7 +82,7 @@ The first axe scan found contrast issues on two guide buttons, the calendar curr
 
 Configure a GitHub OAuth app with homepage `https://kalikatools.com/admin` and exact callback `https://kalikatools.com/admin/callback` (no wildcard or device flow). Set Worker secrets `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`. The `ADMIN_STORE` KV namespace stores sessions, ten-minute OAuth state and latest summaries per check mode. Missing credentials fail closed. Keep all secrets out of Git and browser code.
 
-Report sync uses GitHub Actions OIDC tokens with a dedicated audience. The Worker verifies the GitHub signature, expiry, immutable repository/owner IDs, main branch, exact maintenance workflow, event type and run ID. No additional report password is needed. `scripts/sync-admin-reports.mjs` sends only the four allowlisted Markdown summaries from maintenance runs to the authenticated ingest endpoint. It never uploads visitor files or API credentials. The dashboard displays received timestamps and stale warnings; missing sync never claims a passing check. Full run logs/artifacts and email-job details are linked in GitHub. SEO edits remain downloadable review proposals; the web admin does not auto-publish content.
+Report sync uses GitHub Actions OIDC tokens with a dedicated audience. The Worker verifies the GitHub signature, expiry, immutable repository/owner IDs, main branch, exact maintenance workflow, event type and run ID. No additional report password is needed. `scripts/sync-admin-reports.mjs` sends only the four allowlisted Markdown summaries from maintenance runs to the authenticated ingest endpoint. It never uploads visitor files or API credentials. The dashboard displays received timestamps and stale warnings; missing sync never claims a passing check. Full run logs and artifacts are linked in GitHub. SEO edits remain downloadable review proposals; the web admin does not auto-publish content.
 
 Run `node scripts/test-web-admin.mjs` to verify owner authorization, locked defaults, PKCE/state, callback replay prevention, session protection, ingest authentication, CSRF and sign-out.
 
@@ -90,10 +90,12 @@ Run `node scripts/test-web-admin.mjs` to verify owner authorization, locked defa
 
 Dependabot version PR limits are set to zero for npm and GitHub Actions to avoid overlapping Renovate proposals. GitHub security alerts and security updates remain available; existing Dependabot PRs are retained for review.
 
-`node scripts/report-dependencies.mjs` reads the public repository's open dependency PRs and Renovate dashboard without credentials. Weekly/all maintenance runs save `reports/dependencies.md` and include it in the existing Gmail summary. No open PRs is not evidence that a bot is installed or fully current; API failures are reported as unavailable.
+`node scripts/report-dependencies.mjs` reads the public repository's open dependency PRs and Renovate dashboard without credentials. Weekly/all maintenance runs save `reports/dependencies.md` and sync it to the private admin panel. No open PRs is not evidence that a bot is installed or fully current; API failures are reported as unavailable.
 
 Where to read reports:
-- Gmail: scheduled weekly maintenance, quality and dependency review summary via the existing configured recipient.
+- Private admin: scheduled maintenance, quality, competitor SEO and dependency summaries. Automated Gmail delivery is disabled; no SMTP job runs in the maintenance workflow.
 - GitHub Actions: run summaries and report artifacts. Quality artifacts last 30 days; maintenance artifacts last 90 days.
 - GitHub Issues/Pull requests: Renovate Dependency Dashboard and proposed dependency updates. GitHub's own email notifications depend on the account notification preferences.
 - Local admin: only `reports/latest.md` generated locally. It does not synchronize GitHub artifacts automatically.
+
+Renovate proposals are not automatically assigned to the owner, to avoid assignment email noise. Repository notification preferences are managed separately in GitHub.

@@ -1,30 +1,49 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
-  "enabledManagers": ["npm", "github-actions"],
+  "extends": [
+    "config:recommended"
+  ],
+  "enabledManagers": [
+    "npm",
+    "github-actions"
+  ],
   "timezone": "Asia/Kathmandu",
-  "schedule": ["* 0-8 * * 1"],
+  "schedule": [
+    "* 0-8 * * 1"
+  ],
   "rangeStrategy": "pin",
   "automerge": false,
   "platformAutomerge": false,
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "Kalika Dependency Dashboard",
-  "assignees": ["AdarshaPangeni7"],
   "prConcurrentLimit": 3,
   "prHourlyLimit": 1,
   "minimumReleaseAge": "3 days",
-  "ignorePaths": ["node_modules/**", "reports/**"],
+  "ignorePaths": [
+    "node_modules/**",
+    "reports/**"
+  ],
   "packageRules": [
     {
       "description": "Major versions require dashboard approval before a PR is opened",
-      "matchUpdateTypes": ["major"],
+      "matchUpdateTypes": [
+        "major"
+      ],
       "dependencyDashboardApproval": true
     },
     {
       "description": "Vendored browser engines require rebuilding assets and integrity hashes; never merge package-only updates",
-      "matchPackageNames": ["pdfjs-dist", "pdf-lib", "jszip", "qrcodejs", "tesseract.js"],
+      "matchPackageNames": [
+        "pdfjs-dist",
+        "pdf-lib",
+        "jszip",
+        "qrcodejs",
+        "tesseract.js"
+      ],
       "dependencyDashboardApproval": true,
-      "prBodyNotes": ["Regenerate affected public/js/vendor assets, update integrity hashes and test the actual browser tool before merging. A package.json update alone does not update the deployed browser engine."]
+      "prBodyNotes": [
+        "Regenerate affected public/js/vendor assets, update integrity hashes and test the actual browser tool before merging. A package.json update alone does not update the deployed browser engine."
+      ]
     }
   ]
 }

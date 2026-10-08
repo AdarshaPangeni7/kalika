@@ -34,7 +34,6 @@ jobs:
     timeout-minutes: 35
     outputs:
       mode: ${{ steps.mode.outputs.mode }}
-      check_results: ${{ steps.check_results.outputs.results }}
 
     steps:
       - name: Check out repository
@@ -212,13 +211,6 @@ jobs:
           if [ -f reports/quality.md ]; then cat reports/quality.md >> "$GITHUB_STEP_SUMMARY"; fi
           if [ -f reports/dependencies.md ]; then cat reports/dependencies.md >> "$GITHUB_STEP_SUMMARY"; fi
 
-      - name: Record check outcomes for email report
-        id: check_results
-        if: always()
-        env:
-          CHECK_RESULTS: ${{ toJSON(steps) }}
-        run: node -e 'require("fs").appendFileSync(process.env.GITHUB_OUTPUT, "results=" + JSON.stringify(JSON.parse(process.env.CHECK_RESULTS)) + "\n")'
-
       - name: Save reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -230,61 +222,3 @@ jobs:
       - name: Mark workflow failed when urgent issues were found
         if: steps.run_checks.outcome == 'failure'
         run: exit 1
-
-  email-report:
-    name: Weekly email delivery
-    needs: site-check
-    if: always() && (needs.site-check.outputs.mode == 'weekly' || needs.site-check.outputs.mode == 'all')
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Check Gmail delivery configuration
-        id: mail_config
-        env:
-          KALIKA_REPORT_TO: ${{ secrets.KALIKA_REPORT_TO || vars.KALIKA_REPORT_TO }}
-          SMTP_USER: ${{ secrets.SMTP_USER || vars.SMTP_USER }}
-          SMTP_APP_PASSWORD: ${{ secrets.SMTP_APP_PASSWORD }}
-        shell: bash
-        run: |
-          missing=""
-          for setting in KALIKA_REPORT_TO SMTP_USER SMTP_APP_PASSWORD; do
-            if [ -z "${!setting//[[:space:]]/}" ]; then missing="$missing $setting"; fi
-          done
-          if [ -n "$missing" ]; then
-            echo "ready=false" >> "$GITHUB_OUTPUT"
-            echo "::warning::Weekly email NOT sent. Missing configuration:$missing. Site-check results are reported separately."
-            printf '## Email delivery: not configured\n\nWeekly email was **not sent**. Missing settings: %s. Add these in repository Settings → Secrets and variables → Actions. Use a Gmail App Password for SMTP_APP_PASSWORD. Reports remain available in the site-check summary and workflow artifacts.\n' "$missing" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "ready=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Check out repository
-        if: steps.mail_config.outputs.ready == 'true'
-        uses: actions/checkout@v4
-
-      - name: Set up Node
-        if: steps.mail_config.outputs.ready == 'true'
-        uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-          cache: "npm"
-
-      - name: Install email dependencies
-        if: steps.mail_config.outputs.ready == 'true'
-        run: npm ci
-
-      - name: Download maintenance reports
-        if: steps.mail_config.outputs.ready == 'true'
-        uses: actions/download-artifact@v4
-        with:
-          name: kalika-reports-${{ github.run_id }}
-          path: reports/
-
-      - name: Send weekly report email
-        if: steps.mail_config.outputs.ready == 'true'
-        env:
-          KALIKA_REPORT_TO: ${{ secrets.KALIKA_REPORT_TO || vars.KALIKA_REPORT_TO }}
-          SMTP_USER: ${{ secrets.SMTP_USER || vars.SMTP_USER }}
-          SMTP_APP_PASSWORD: ${{ secrets.SMTP_APP_PASSWORD }}
-          KALIKA_CHECK_RESULTS: ${{ needs.site-check.outputs.check_results }}
-        run: npm run email:weekly-report
