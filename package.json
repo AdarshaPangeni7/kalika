@@ -32,7 +32,7 @@
     "lighthouse": "13.5.0",
     "nodemailer": "10.0.13",
     "pdf-lib": "1.17.1",
-    "pdfjs-dist": "6.3.289",
+    "pdfjs-dist": "6.4.299",
     "playwright": "1.63.0",
     "qrcodejs": "1.0.0",
     "robots-parser": "3.0.1",
