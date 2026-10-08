@@ -7,7 +7,7 @@ const browser=await chromium.launch({channel:process.platform==='win32'?'chrome'
 await mkdir('reports/category-hubs',{recursive:true});
 try {
  const page=await browser.newPage({locale:'en-US'}),errors=[];page.on('pageerror',e=>errors.push(e.message));
- const cases=[['image-tools','Image Tools',4,2,'50 KB'],['calculators','Calculators',10,3,'tax'],['text-tools','Text Tools',10,4,'NEPALI']];
+ const cases=[['image-tools','Image Tools',4,2,'50 KB'],['calculators','Calculators',10,3,'tax'],['text-tools','Text Tools',11,5,'NEPALI']];
  for(const [slug,label,count,groups,query] of cases){
   assert.equal((await page.goto(base+'/'+slug)).status(),200);
   assert.equal(await page.locator('[data-hub-card]').count(),count);

@@ -128,8 +128,8 @@
       "hashes": [
         "'sha256-073hQSAgIam+tvhG3LfElYYgXS4cX61MiY+ZKFozdo0='"
       ],
-      "title": "Kalika: 48 Free PDF, Image, Text Tools & Calculators",
-      "description": "Get everyday tasks done with 48 free PDF, image and text tools plus calculators. No signup, with file processing in your browser. Explore Kalika today."
+      "title": "Kalika: 49 Free PDF, Image, Text Tools & Calculators",
+      "description": "Get everyday tasks done with 49 free PDF, image and text tools plus calculators. No signup, with file processing in your browser. Explore Kalika today."
     },
     "/nepali-tools": {
       "asset": "/nepali-tools.html",
@@ -163,7 +163,7 @@
     "/text-tools": {
       "asset": "/text-tools.html",
       "hashes": [
-        "'sha256-fjYBjGO7HX1HjynxiDN1PU8qublhCN9KYe2l91hP+s0='",
+        "'sha256-9rbKiyzBSVbOf1e0XNb5r4/8RwkbifODWjQqxgAqg5w='",
         "'sha256-wVhvDjfxTvkOTlJM7GHKTAepDav3cFPCRiBAZZCYU1M='"
       ],
       "title": "Free Text Tools: Count, Convert and Clean Text | Kalika",
@@ -473,6 +473,14 @@
       "title": "Scientific Calculator — Powers, Roots and Trig | Kalika",
       "description": "Use a free scientific calculator online for powers, roots, logarithms and trigonometry. Enter expressions with parentheses and choose degrees or radians easily."
     },
+    "/tools/serbian-latin-cyrillic": {
+      "asset": "/tools/serbian-latin-cyrillic.html",
+      "hashes": [
+        "'sha256-AL3FdMfQIp206xaf6QhjixBcruaLQwxCfxSLgJERb/w='"
+      ],
+      "title": "Latinica u ćirilicu i ćirilica u latinicu online | Kalika",
+      "description": "Pretvorite latinicu u ćirilicu ili ćirilicu u latinicu. Sačuvajte linkove, proverite rezultat i kopirajte ili preuzmite tekst. Besplatno, bez slanja teksta."
+    },
     "/tools/simple-calculator": {
       "asset": "/tools/simple-calculator.html",
       "hashes": [
@@ -678,6 +686,8 @@
     "/tools/sales-tax-calculator/": "/tools/sales-tax-calculator",
     "/tools/scientific-calculator.html": "/tools/scientific-calculator",
     "/tools/scientific-calculator/": "/tools/scientific-calculator",
+    "/tools/serbian-latin-cyrillic.html": "/tools/serbian-latin-cyrillic",
+    "/tools/serbian-latin-cyrillic/": "/tools/serbian-latin-cyrillic",
     "/tools/simple-calculator.html": "/tools/simple-calculator",
     "/tools/simple-calculator/": "/tools/simple-calculator",
     "/tools/space-remover.html": "/tools/space-remover",

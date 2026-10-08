@@ -44,3 +44,5 @@ jobs:
 
       - name: Homepage task search regression
         run: node scripts/test-home-search.mjs
+      - name: Serbian converter correctness and browser regression
+        run: node scripts/test-serbian.mjs

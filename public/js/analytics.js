@@ -60,6 +60,22 @@
   settings.type = 'button';
   settings.className = 'analytics-settings';
   settings.textContent = 'Privacy choices';
+  // Fully localized consent UI on the Serbian tool; consent behavior is unchanged.
+  function localizeConsent() {
+    const lang = document.documentElement.lang;
+    if (!lang.startsWith('sr')) return;
+    const cyr = lang === 'sr-Cyrl';
+    banner.setAttribute('aria-label', cyr ? 'Опциона аналитика' : 'Opciona analitika');
+    message.firstChild.textContent = cyr
+      ? 'Дозволити опциону аналитику за побољшање Калике? Google Analytics мери посете. Ваше датотеке и уноси у алате се не шаљу. '
+      : 'Dozvoliti opcionu analitiku za poboljšanje Kalike? Google Analytics meri posete. Vaše datoteke i unosi u alate se ne šalju. ';
+    link.textContent = cyr ? 'Политика приватности (English)' : 'Politika privatnosti (English)';
+    const labels = cyr ? ['Одбиј аналитику', 'Дозволи аналитику'] : ['Odbij analitiku', 'Dozvoli analitiku'];
+    actions.querySelectorAll('button').forEach((button, i) => { button.textContent = labels[i]; });
+    settings.textContent = cyr ? 'Избор приватности' : 'Izbor privatnosti';
+  }
+  localizeConsent();
+  if (document.documentElement.lang.startsWith('sr')) new MutationObserver(localizeConsent).observe(document.documentElement, {attributes:true,attributeFilter:['lang']});
   settings.addEventListener('click', () => { banner.hidden = false; banner.querySelector('button').focus(); });
   (document.querySelector('footer nav') || document.body).append(settings);
   if (choice === 'granted') start();
