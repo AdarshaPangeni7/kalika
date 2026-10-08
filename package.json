@@ -30,7 +30,7 @@
     "chrome-launcher": "1.2.2",
     "jszip": "3.10.2",
     "lighthouse": "13.5.0",
-    "nodemailer": "10.0.13",
+    "nodemailer": "10.0.15",
     "pdf-lib": "1.17.1",
     "pdfjs-dist": "6.3.289",
     "playwright": "1.63.0",
