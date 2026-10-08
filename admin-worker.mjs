@@ -1,4 +1,5 @@
 import manifest from './config/security-manifest.json' with {type:'json'};
+import {verifyReportToken} from './admin-report-auth.mjs';
 const ORIGIN='https://kalikatools.com', OWNER='140908479';
 const encoder=new TextEncoder();
 const random=()=>crypto.randomUUID()+crypto.randomUUID();
@@ -20,11 +21,13 @@ export async function handleAdmin(request,env){
   }
   if(p==='/admin/api/ingest'){
    if(request.method!=='POST')return json({error:'Method not allowed'},405);
-   if(!env.ADMIN_REPORT_SECRET||!env.ADMIN_STORE)return json({error:'Report sync not configured'},503);
-   if(await digest(request.headers.get('Authorization')||'')!==await digest('Bearer '+env.ADMIN_REPORT_SECRET))return json({error:'Unauthorized'},401);
+   if(!env.ADMIN_STORE)return json({error:'Report sync not configured'},503);
+   const claims=await verifyReportToken((request.headers.get('Authorization')||'').replace(/^Bearer /,''));
+   if(!claims)return json({error:'Unauthorized'},401);
    if(Number(request.headers.get('Content-Length')||0)>500000)return json({error:'Report too large'},413);
    const raw=await request.text();if(raw.length>500000)return json({error:'Report too large'},413);
    const data=JSON.parse(raw);
+   if(String(data.runId)!==claims.run_id)return json({error:'Run ID mismatch'},403);
    if(!['daily','weekly','monthly','all'].includes(data.mode)||!/^\d+$/.test(String(data.runId))||!Array.isArray(data.reports)||data.reports.length>8)return json({error:'Invalid report'},400);
    const names=['latest.md','quality.md','competitor-seo.md','dependencies.md'];
    if(data.reports.some(r=>!names.includes(r.name)||typeof r.text!=='string'||r.text.length>100000))return json({error:'Invalid report content'},400);

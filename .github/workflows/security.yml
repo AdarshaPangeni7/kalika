@@ -35,6 +35,7 @@ jobs:
       - run: node scripts/test-security-inputs.mjs
       - run: node scripts/test-security-admin.mjs
       - run: node scripts/test-web-admin.mjs
+      - run: node scripts/test-report-auth.mjs
       - name: Private OCR browser regression
         run: node scripts/test-ocr.mjs
 

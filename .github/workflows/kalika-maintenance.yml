@@ -27,6 +27,9 @@ concurrency:
 
 jobs:
   site-check:
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ubuntu-latest
     timeout-minutes: 35
     outputs:
@@ -198,7 +201,6 @@ jobs:
       - name: Sync summaries to private admin
         if: always()
         env:
-          ADMIN_REPORT_SECRET: ${{ secrets.ADMIN_REPORT_SECRET }}
           KALIKA_CHECK_MODE: ${{ steps.mode.outputs.mode }}
         run: node scripts/sync-admin-reports.mjs
 

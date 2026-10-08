@@ -32,7 +32,7 @@ const session=await (await handleAdmin(req('/admin/api/session',{headers}),env))
 assert.equal(session.login,'AdarshaPangeni7');
 assert.equal((await handleAdmin(req('/admin/logout',{method:'POST',headers}),env)).status,403);
 const input={mode:'weekly',runId:'123',checkedAt:new Date().toISOString(),reports:[{name:'latest.md',text:'<img src=x onerror=alert(1)>'}]};
-assert.equal((await handleAdmin(req('/admin/api/ingest',{method:'POST',headers:{Authorization:'Bearer test-report-secret'},body:JSON.stringify(input)}),env)).status,200);
+assert.equal((await handleAdmin(req('/admin/api/ingest',{method:'POST',headers:{Authorization:'Bearer test-report-secret'},body:JSON.stringify(input)}),env)).status,401);
 const page=await handleAdmin(req('/admin/client.js',{headers}),env);assert.match(await page.text(),/textContent/);
 const out=await handleAdmin(req('/admin/logout',{method:'POST',headers:{...headers,Origin:origin,'X-Kalika-CSRF':session.csrf}}),env);
 assert.equal(out.status,200);assert.match(out.headers.get('Set-Cookie'),/Max-Age=0/);

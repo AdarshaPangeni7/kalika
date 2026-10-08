@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import {verifyReportToken} from '../admin-report-auth.mjs';
+import {handleAdmin} from '../admin-worker.mjs';
+const keys=await crypto.subtle.generateKey({name:'RSASSA-PKCS1-v1_5',modulusLength:2048,publicExponent:new Uint8Array([1,0,1]),hash:'SHA-256'},true,['sign','verify']);
+const jwk={...await crypto.subtle.exportKey('jwk',keys.publicKey),kid:'test-key',alg:'RS256'};
+const encode=v=>Buffer.from(typeof v==='string'?v:JSON.stringify(v)).toString('base64url');
+const now=Math.floor(Date.now()/1000),claims={iss:'https://token.actions.githubusercontent.com',aud:'https://kalikatools.com/admin/api/ingest',iat:now,nbf:now-1,exp:now+300,repository_id:'1372570270',repository_owner_id:'140908479',repository:'AdarshaPangeni7/kalika',ref:'refs/heads/main',workflow_ref:'AdarshaPangeni7/kalika/.github/workflows/kalika-maintenance.yml@refs/heads/main',event_name:'workflow_dispatch',run_id:'123'};
+async function sign(c){const input=encode({alg:'RS256',kid:'test-key'})+'.'+encode(c);return input+'.'+Buffer.from(await crypto.subtle.sign('RSASSA-PKCS1-v1_5',keys.privateKey,new TextEncoder().encode(input))).toString('base64url');}
+const fetcher=async()=>Response.json({keys:[jwk]});
+const token=await sign(claims);assert.equal((await verifyReportToken(token,fetcher)).run_id,'123');
+for(const change of [{exp:now-1},{aud:'other'},{repository_id:'other'},{repository_owner_id:'other'},{ref:'refs/heads/feature'},{event_name:'pull_request'},{workflow_ref:'other'}])assert.equal(await verifyReportToken(await sign({...claims,...change}),fetcher),null);
+assert.equal(await verifyReportToken(token.slice(0,-8)+'AAAAAAAA',fetcher),null);
+const oldFetch=globalThis.fetch;globalThis.fetch=fetcher;
+const stored=new Map(),env={ADMIN_STORE:{async put(k,v){stored.set(k,v);}}};
+const data={runId:'123',mode:'weekly',checkedAt:new Date().toISOString(),reports:[{name:'latest.md',text:'Example report'}]};
+const submit=body=>handleAdmin(new Request('https://kalikatools.com/admin/api/ingest',{method:'POST',headers:{Authorization:'Bearer '+token},body:JSON.stringify(body)}),env);
+assert.equal((await submit(data)).status,200);assert.ok(stored.has('report:weekly'));assert.equal((await submit({...data,runId:'456'})).status,403);
+assert.equal((await submit({...data,reports:[{name:'credentials.json',text:'invalid'}]})).status,400);
+globalThis.fetch=oldFetch;
+console.log('PASS: signed report sync, tamper/expiry/audience/repo/workflow/branch/event rejection, run binding and report allowlist.');
