@@ -16,13 +16,14 @@
     "deploy": "node scripts/deploy-site.mjs",
     "build:counts": "node scripts/build-tool-counts.mjs",
     "build:security": "node scripts/build-security.mjs",
-    "build": "npm run build:counts && npm run build:security",
+    "build": "npm run build:counts && npm run build:visual && npm run build:security",
     "predeploy": "npm run build",
     "dev": "wrangler dev --local --var LOCAL_DEV:true",
     "check:security": "node scripts/security-lint.mjs && node scripts/build-tool-counts.mjs --check && node scripts/build-security.mjs --check && node scripts/test-security-headers.mjs && node scripts/audit-seo.mjs",
     "check:quality": "node scripts/check-quality.mjs",
     "check:accessibility": "node scripts/check-quality.mjs --mode=accessibility",
-    "check:lighthouse": "node scripts/check-quality.mjs --mode=lighthouse"
+    "check:lighthouse": "node scripts/check-quality.mjs --mode=lighthouse",
+    "build:visual": "node scripts/apply-visual-refresh.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

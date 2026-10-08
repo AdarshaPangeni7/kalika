@@ -1,0 +1,44 @@
+/* Shared visual layer. Tool geometry, controls and behavior remain in their own styles. */
+.site-refresh{background:#f5f4ef;--paper:#f5f4ef;--paper-soft:#f8f8f3;--surface:#fffefa;--muted:#58686d;--line:#d4dfdc;--shadow:0 12px 30px rgba(5,63,76,.06)}
+.site-refresh .header{min-height:82px;border-color:var(--line)}
+.site-refresh .header nav a{font-size:14px;font-weight:600}
+.site-refresh .header-note{color:var(--blue)}
+.site-refresh .breadcrumb{padding:12px 0;margin:22px 0;color:var(--muted)}
+.site-refresh .tool-heading{margin-bottom:24px;max-width:880px}
+.site-refresh .tool-heading h1{font-size:clamp(36px,4.5vw,56px);line-height:1.12}
+.site-refresh .tool-heading>p:not(.overline):not(.pdf-trust){max-width:740px;font-size:17px;line-height:1.7}
+.site-refresh .workspace,.site-refresh .serbian-tool,.site-refresh .french-workspace{border-radius:18px;border:1px solid var(--line-strong);box-shadow:var(--shadow);background:var(--surface)}
+.site-refresh .workspace>form>input[type=file],.site-refresh .workspace input[type=file]{border-radius:12px;border-color:var(--blue);background:var(--blue-soft)}
+.site-refresh .workspace input:not([type=checkbox]):not([type=range]):not([type=file]),.site-refresh .workspace select,.site-refresh .workspace textarea{border-radius:9px}
+.site-refresh .workspace .primary{border-radius:9px}
+.site-refresh .result{border-radius:12px;border-left-width:3px}
+.site-refresh .pdf-trust{border-radius:12px}
+.site-refresh .pdf-hub-card{border-radius:14px;box-shadow:none;background:var(--surface);transition:border-color .16s ease,box-shadow .16s ease}
+.site-refresh .pdf-hub-card:hover{border-color:var(--blue);box-shadow:0 8px 20px rgba(5,63,76,.06)}
+.site-refresh .pdf-group{padding-bottom:12px}
+.site-refresh .help{gap:32px}
+.site-refresh .help>div{padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.site-refresh .help>div>h2:first-child{margin-top:0}
+.site-refresh main>.related{max-width:900px;margin-bottom:24px;padding:20px 24px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.site-refresh main>.related h2{font-size:20px;margin-top:0}
+.site-refresh main>.related p:last-child{margin-bottom:0}
+.site-refresh .explainer details{border-bottom:1px solid var(--line);padding:12px 0}
+.site-refresh .explainer summary{min-height:36px;cursor:pointer;font-weight:600;color:var(--blue-deep)}
+.site-refresh .article{line-height:1.8}
+.site-refresh .article h1{font-size:clamp(34px,4.4vw,52px);line-height:1.15}
+.site-refresh .guide-meta{font-size:13px;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:22px}
+.site-refresh .article h2{line-height:1.35}
+.site-refresh footer{padding-block:32px;border-top:1px solid var(--line)}
+.site-refresh footer nav{flex-wrap:wrap}
+.guide-hub .article{max-width:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;padding-top:30px}
+.guide-hub .article>h1,.guide-hub .article>p{grid-column:1/-1;margin:0}
+.guide-hub .article>p{margin-bottom:12px;color:var(--muted)}
+.guide-card{border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--surface)}
+.guide-card h2{font-size:19px;margin:0 0 12px}
+.guide-card h2 a{text-decoration:none}
+.guide-card h2 a:hover{text-decoration:underline}
+.guide-card p{font-size:14px;color:var(--muted);margin-bottom:0}
+@media(max-width:1000px){.guide-hub .article{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.site-refresh .wrap{width:calc(100% - 36px)}.site-refresh .header{min-height:72px}.site-refresh .tool-heading>p:not(.overline):not(.pdf-trust){font-size:15px}.site-refresh .workspace{padding:20px}.site-refresh .help{gap:16px}.site-refresh .help>div{padding:18px}.site-refresh main>.related{padding:18px}.site-refresh .article h1{font-size:36px}.guide-hub .article{grid-template-columns:1fr;gap:14px}.guide-card{padding:20px}.site-refresh footer{padding-block:24px}}
+@media(prefers-reduced-motion:reduce){.site-refresh .pdf-hub-card{transition:none}}
+.site-refresh .breadcrumb{display:flex;flex-wrap:wrap;align-items:center;gap:8px}

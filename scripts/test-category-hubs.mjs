@@ -19,7 +19,8 @@ try {
   for(const width of [1280,390,320]){await page.setViewportSize({width,height:900});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),slug);if(width!==320)await page.screenshot({path:`reports/category-hubs/${slug}-${width}.png`,fullPage:true});}
  }
  const targets=[...cases.map(([slug,label])=>['/'+slug,label,'Tools']),['/pdf-tools','PDF Tools','Tools']];
- for(const file of await readdir('public/guides'))if(file.endsWith('.html')&&file!=='index.html')targets.push(['/guides/'+file.slice(0,-5),null,'Guides']);
+ // French and Serbian guide breadcrumbs are localized and covered by their dedicated suites.
+ for(const file of await readdir('public/guides'))if(file.endsWith('.html')&&file!=='index.html'&&!['taper-accents-clavier-qwerty.html','latinica-cirilica-sacuvati-linkove.html'].includes(file))targets.push(['/guides/'+file.slice(0,-5),null,'Guides']);
  for(const [route,label,parent] of targets){await page.goto(base+route);const nav=page.locator('nav[aria-label="Breadcrumb"]');assert.equal(await nav.count(),1);const actual=label||await page.locator('h1').innerText();assert.equal(await nav.locator('[aria-current="page"]').innerText(),actual);assert.deepEqual(await nav.locator('a').allTextContents(),['Home',parent]);const schema=JSON.parse(await page.locator('script[data-breadcrumb-schema]').textContent());assert.deepEqual(schema.itemListElement.map(x=>x.name),['Home',parent,actual]);assert.deepEqual(schema.itemListElement.map(x=>x.position),[1,2,3]);assert.equal(schema.itemListElement[2].item,'https://kalikatools.com'+route);}
  assert.deepEqual(errors,[]);console.log('PASS: three hub searches, empty/reset states, groups, all links, desktop/mobile layout, and matching accessible/structured breadcrumbs on four categories and nine guides.');
 }finally{await browser.close();await server.close();}
