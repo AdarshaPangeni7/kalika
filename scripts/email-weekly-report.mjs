@@ -13,16 +13,18 @@ if (!recipient || !sender || !appPassword) {
   process.exit(1);
 }
 
-const [siteReport, competitorReport, qualityReport] = await Promise.all([
+const [siteReport, competitorReport, qualityReport, dependenciesReport] = await Promise.all([
   readFile('reports/latest.md', 'utf8').catch(() => '# Kalika Site Check\n\nThe main report was not created.'),
   readFile('reports/competitor-seo.md', 'utf8').catch(() => ''),
   readFile('reports/quality.md', 'utf8').catch(() => 'Quality report unavailable: accessibility and Lighthouse checks did not report results.'),
+  readFile('reports/dependencies.md', 'utf8').catch(() => 'Dependency update report unavailable; no result was reported.'),
 ]);
 
 const date = new Date().toISOString().slice(0, 10);
 const subject = `Kalika weekly site report — ${date}`;
 const results = JSON.parse(process.env.KALIKA_CHECK_RESULTS || '{}');
 const labels = { run_checks: 'Site monitoring', nepali: 'Nepali typing (checkout)', preeti: 'Preeti and language (checkout)', discovery: 'Search crawler access', calculator: 'Simple calculator (live)', pdf: 'PDF tools (live)', calculators: 'Additional calculators (live)', competitors: 'Competitor SEO review', scanner: 'Document scanner and JPG to PDF (live)', organizer: 'Organize PDF (live)', pdf_edits: 'Watermark, page numbers and crop PDF (live)' };
+labels.dependencies = 'Dependency update review';
 labels.quality = 'Accessibility and Lighthouse (live)';
 labels.pdf_experience = 'PDF hub, rotate, delete, extract and PDF text (live)';
 labels.fill_sign = 'Fill and Sign PDF (live)';
@@ -41,6 +43,7 @@ const text = [
   runUrl ? `Full logs and report downloads: ${runUrl}` : '',
   '',
   siteReport.trim(),
+  '\n---\n\n'+dependenciesReport.trim(),
   '\n---\n\n'+qualityReport.trim(),
   competitorReport.trim() ? `\n---\n\n${competitorReport.trim()}` : '',
   '',

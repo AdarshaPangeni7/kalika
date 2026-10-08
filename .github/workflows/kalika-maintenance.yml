@@ -190,12 +190,18 @@ jobs:
           KALIKA_TEST_ORIGIN: https://kalikatools.com
         run: npm run check:quality
 
+      - name: Dependency update review
+        id: dependencies
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        run: node scripts/report-dependencies.mjs
+
       - name: Readable report summary
         if: always()
         run: |
           if [ -f reports/latest.md ]; then cat reports/latest.md >> "$GITHUB_STEP_SUMMARY"; fi
           if [ -f reports/competitor-seo.md ]; then cat reports/competitor-seo.md >> "$GITHUB_STEP_SUMMARY"; fi
           if [ -f reports/quality.md ]; then cat reports/quality.md >> "$GITHUB_STEP_SUMMARY"; fi
+          if [ -f reports/dependencies.md ]; then cat reports/dependencies.md >> "$GITHUB_STEP_SUMMARY"; fi
 
       - name: Record check outcomes for email report
         id: check_results

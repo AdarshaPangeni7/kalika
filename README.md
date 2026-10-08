@@ -73,3 +73,17 @@ Guide metadata and topical links: run `node scripts/update-editorial.mjs` after 
 - Installed pinned `lighthouse` and `@axe-core/playwright`. The older `@lhci/cli` wrapper was evaluated and removed because its dependency tree introduced unresolved advisories. Lighthouse runs directly in CI instead. Wrangler is updated and its `sharp` dependency patched via an exact override; `npm audit` must remain clean.
 
 The first axe scan found contrast issues on two guide buttons, the calendar current-day label and the Nepali typing action, plus an ARIA role issue on typing suggestions. These were corrected manually during setup; the scheduled checker only reports findings.
+
+## Dependency proposals and report delivery
+
+`.github/renovate.json` prepares Renovate for only npm and GitHub Actions updates, with automatic merging disabled, exact versions, a Monday morning Nepal review window, three open PRs maximum, and dashboard approval for majors and vendored browser engines. The hosted Renovate GitHub App must be installed on **only AdarshaPangeni7/kalika** before it runs. App installation is a separate GitHub permission grant; the config file alone does not activate it.
+
+Dependabot version updates remain active until Renovate installation is confirmed. Afterwards disable overlapping Dependabot version updates; retain GitHub security alerts.
+
+`node scripts/report-dependencies.mjs` reads the public repository's open dependency PRs and Renovate dashboard without credentials. Weekly/all maintenance runs save `reports/dependencies.md` and include it in the existing Gmail summary. No open PRs is not evidence that a bot is installed or fully current; API failures are reported as unavailable.
+
+Where to read reports:
+- Gmail: scheduled weekly maintenance, quality and dependency review summary via the existing configured recipient.
+- GitHub Actions: run summaries and report artifacts. Quality artifacts last 30 days; maintenance artifacts last 90 days.
+- GitHub Issues/Pull requests: Renovate Dependency Dashboard and proposed dependency updates. GitHub's own email notifications depend on the account notification preferences.
+- Local admin: only `reports/latest.md` generated locally. It does not synchronize GitHub artifacts automatically.
