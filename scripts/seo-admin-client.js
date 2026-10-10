@@ -24,3 +24,5 @@ function download(name,text){const a=document.createElement('a'),url=URL.createO
 function csv(value){let s=String(value??'');if(/^[\s]*[=+@\-\t\r]/.test(s))s="'"+s;return '"'+s.replaceAll('"','""')+'"';}
 function exportCsv(){const columns=['route','status','titleLength','descriptionLength','h1Count','issues','title','description'];download('kalika-seo-review.csv',[columns.join(','),...state.pages.map(p=>columns.map(k=>csv(p[k])).join(','))].join('\n'));}
 $('scan').onclick=scan;$('json').onclick=()=>download('kalika-seo-review.json',JSON.stringify(state.pages,null,2));$('csv').onclick=exportCsv;$('q').oninput=render;$('status').onchange=render;$('title').oninput=count;$('desc').oninput=count;$('draftBtn').onclick=draft;
+
+$('logout').onclick=async()=>{const session=await (await fetch('/api/session')).json();const r=await fetch('/logout',{method:'POST',headers:{'X-Kalika-CSRF':session.csrf}});if(r.ok)location.href='/';};

@@ -7,8 +7,14 @@ const host = process.env.KALIKA_ADMIN_HOST || "127.0.0.1";
 const port = Number(process.env.KALIKA_ADMIN_PORT || 8789);
 const siteOrigin = (process.env.KALIKA_SITE_ORIGIN || "https://kalikatools.com").replace(/\/+$/, "");
 const adminUser = process.env.KALIKA_ADMIN_USER || "admin";
-const adminPassword = process.env.KALIKA_ADMIN_PASSWORD || crypto.randomBytes(9).toString("base64url");
+if(!process.env.KALIKA_ADMIN_PASSWORD)throw Error('Set KALIKA_ADMIN_PASSWORD before starting the local admin. Use the GitHub-protected /admin for normal administration.');
+const passwordSalt=crypto.randomBytes(16);
+const passwordHash=crypto.scryptSync(process.env.KALIKA_ADMIN_PASSWORD,passwordSalt,64);
+delete process.env.KALIKA_ADMIN_PASSWORD;
 const sessions = new Map();
+const configuredOrigin=new URL(siteOrigin);
+if(configuredOrigin.origin!=='https://kalikatools.com')throw Error('Local SEO scanning is restricted to https://kalikatools.com.');
+let scans=0,scanWindow=Date.now();
 let attempts=0,attemptWindow=Date.now();
 if(!['127.0.0.1','localhost','::1'].includes(host))throw Error('This private admin must bind to a loopback address.');
 const allowedHosts=new Set([`127.0.0.1:${port}`,`localhost:${port}`,`[::1]:${port}`]);
@@ -24,15 +30,25 @@ const server = http.createServer(async (request, response) => {
     const url = new URL(request.url || "/", `http://${host}:${port}`);
 
     if (url.pathname === "/login" && request.method === "POST") {if(!sameOrigin(request))return sendText(response,'Invalid origin',403);return await handleLogin(request, response);}
-    if (url.pathname === "/logout") return handleLogout(request, response);
-    if(!['/','/api/scan','/api/latest-report','/admin-client.js'].includes(url.pathname))return sendText(response,'Not found',404);
+    if (url.pathname === "/logout") {
+      if(request.method!=='POST')return sendText(response,'Method not allowed',405);
+      const logoutSession=sessions.get(parseCookies(request.headers.cookie||'').kalika_admin);
+      if(!logoutSession||!sameOrigin(request)||request.headers['x-kalika-csrf']!==logoutSession.csrf)return sendText(response,'Security check failed',403);
+      return handleLogout(request,response);
+    }
+    if(!['/','/api/scan','/api/latest-report','/admin-client.js','/api/session'].includes(url.pathname))return sendText(response,'Not found',404);
     if (!isAuthenticated(request)) return url.pathname.startsWith('/api/')?sendJson(response,{error:'Please sign in to the local admin panel again.'},401):sendLogin(response);
     const session=sessions.get(parseCookies(request.headers.cookie||'').kalika_admin);
     if(request.method==='POST'&&(!sameOrigin(request)||request.headers['x-kalika-csrf']!==session.csrf))return sendJson(response,{error:'Security check failed. Reload the admin page and try again.'},403);
 
+    if(url.pathname==='/api/session')return sendJson(response,{csrf:session.csrf});
     if(url.pathname==='/admin-client.js'){response.writeHead(200,{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'no-store'});response.end(await readFile(new URL('./seo-admin-client.js',import.meta.url)));return;}
     if (url.pathname === "/") return sendHtml(response, dashboardHtml());
-    if (url.pathname === "/api/scan") return sendJson(response, await scanSite());
+    if (url.pathname === "/api/scan") {
+      if(Date.now()-scanWindow>60000){scans=0;scanWindow=Date.now();}
+      if(++scans>5)return sendText(response,'Too many scans. Retry in a minute.',429);
+      return sendJson(response,await scanSite());
+    }
     if (url.pathname === "/api/latest-report") return sendJson(response, await latestReport());
 
     sendText(response, "Not found", 404);
@@ -44,10 +60,7 @@ const server = http.createServer(async (request, response) => {
 server.listen(port, host, () => {
   console.log(`Kalika SEO admin is running at http://${host}:${port}`);
   console.log(`Username: ${adminUser}`);
-  console.log(`Password: ${adminPassword}`);
-  if (!process.env.KALIKA_ADMIN_PASSWORD) {
-    console.log("This one-time password changes each time. Set KALIKA_ADMIN_PASSWORD to keep your own password.");
-  }
+  console.log("Sign in with the password you configured. Credentials are not logged.");
 });
 
 async function handleLogin(request, response) {
@@ -58,7 +71,7 @@ async function handleLogin(request, response) {
   const user = params.get("username") || "";
   const pass = params.get("password") || "";
 
-  if (safeEqual(user, adminUser) && safeEqual(pass, adminPassword)) {
+  if (safeEqual(user, adminUser) && pass.length<=1024 && crypto.timingSafeEqual(crypto.scryptSync(pass,passwordSalt,64),passwordHash)) {
     const token = crypto.randomBytes(24).toString("base64url");
     for(const [key,value] of sessions)if(value.expiresAt<Date.now())sessions.delete(key);
     if(sessions.size>=20)sessions.delete(sessions.keys().next().value);
@@ -110,7 +123,7 @@ async function scanSite() {
 }
 
 async function getRoutes() {
-  const response = await fetch(`${siteOrigin}/sitemap.xml`, { cache: "no-store" });
+  const response = await fetch(`${siteOrigin}/sitemap.xml`, { cache: "no-store", redirect: "error", signal:AbortSignal.timeout(15000) });
   if (!response.ok) throw new Error(`Could not load sitemap.xml from ${siteOrigin}`);
   const text = await response.text();
   const routes = [...text.matchAll(/<loc>(.*?)<\/loc>/g)]
@@ -121,7 +134,8 @@ async function getRoutes() {
 }
 
 async function scanRoute(route) {
-  const response = await fetch(`${siteOrigin}${route}`, { cache: "no-store", redirect: "follow" });
+  if(new URL(route,siteOrigin).origin!==siteOrigin||!route.startsWith('/')||route.startsWith('//'))throw Error('Invalid scan route');
+  const response = await fetch(`${siteOrigin}${route}`, { cache: "no-store", redirect: "error", signal:AbortSignal.timeout(15000) });
   const html = response.ok ? await response.text() : "";
   const seo = parseSeo(html);
   const issues = [];
@@ -191,7 +205,7 @@ function dashboardHtml() {
 
       <button class="secondary" id="json" disabled>Export JSON</button>
       <button class="secondary" id="csv" disabled>Export CSV</button>
-      <a class="button secondary" href="/logout">Log out</a>
+      <button class="button secondary" id="logout" type="button">Log out</button>
     </div>
   </section>
   <section class="grid">

@@ -5,7 +5,7 @@ const encoder=new TextEncoder();
 const random=()=>crypto.randomUUID()+crypto.randomUUID();
 const cookie=(name,value,age)=>`${name}=${value}; Path=/admin; HttpOnly; Secure; SameSite=Lax; Max-Age=${age}`;
 const cookies=r=>Object.fromEntries((r.headers.get('Cookie')||'').split(';').map(x=>x.trim().split('=')));
-function reply(body,status=200,type='text/html; charset=utf-8',extra={}){return new Response(body,{status,headers:{'Content-Type':type,'Cache-Control':'no-store','X-Robots-Tag':'noindex, nofollow','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",...extra}});}
+function reply(body,status=200,type='text/html; charset=utf-8',extra={}){return new Response(body,{status,headers:{'Content-Type':type,'Cache-Control':'no-store','X-Robots-Tag':'noindex, nofollow','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Strict-Transport-Security':'max-age=31536000; includeSubDomains','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",...extra}});}
 const json=(v,status=200)=>reply(JSON.stringify(v),status,'application/json');
 const redirect=(location,setCookie)=>reply('',302,'text/plain',{Location:location,...(setCookie?{'Set-Cookie':setCookie}:{})});
 async function github(path,options={}){const r=await fetch(`https://api.github.com${path}`,{...options,headers:{Accept:'application/vnd.github+json','User-Agent':'Kalika-Private-Admin',...options.headers},signal:AbortSignal.timeout(12000)});if(!r.ok)throw Error('GitHub temporarily unavailable');return r.json();}
@@ -15,7 +15,7 @@ export async function handleAdmin(request,env){
  if(url.origin!==ORIGIN&&env.LOCAL_DEV!=='true')return reply('Not found',404,'text/plain');
  if(!['GET','POST'].includes(request.method))return reply('Method not allowed',405,'text/plain');
  try{
-  if(env.ADMIN_RATE_LIMIT&&['/admin/login','/admin/callback','/admin/api/ingest'].includes(p)){
+  if(env.ADMIN_RATE_LIMIT&&(p.startsWith('/admin/api/')||['/admin/login','/admin/callback','/admin/logout'].includes(p))){
    const key=p+':'+await digest(request.headers.get('CF-Connecting-IP')||'local');
    if(!(await env.ADMIN_RATE_LIMIT.limit({key})).success)return reply('Too many requests. Retry in a minute.',429,'text/plain',{'Retry-After':'60'});
   }

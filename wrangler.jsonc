@@ -3,7 +3,7 @@
   "name": "kalika",
   "main": "worker.mjs",
   "build": {"command": "npm run build"},
-  "vars": {"CSP_ENFORCE": "false"},
+  "vars": {"CSP_ENFORCE": "true"},
   "kv_namespaces": [{"binding":"ADMIN_STORE","id":"7962ba5df19644119bdda27a4108cecd"}],
   "ratelimits": [{"name":"ADMIN_RATE_LIMIT","namespace_id":"481401","simple":{"limit":20,"period":60}}],
   "compatibility_date": "2026-09-16",

@@ -39,3 +39,6 @@ assert.equal(out.status,200);assert.match(out.headers.get('Set-Cookie'),/Max-Age
 assert.equal((await handleAdmin(req('/admin/api/session',{headers}),env)).status,401);
 globalThis.fetch=originalFetch;
 console.log('PASS: admin locked by default, owner ID authorization, PKCE/state, callback replay, protected APIs, report authentication, CSRF and logout.');
+
+assert.match(login.headers.get('Strict-Transport-Security'),/max-age=31536000/);
+for(const route of ['/admin/api/session','/admin/api/reports','/admin/api/seo','/admin/logout'])assert.equal((await handleAdmin(req(route),{...env,ADMIN_RATE_LIMIT:{limit:async()=>({success:false})}})).status,429);
