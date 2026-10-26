@@ -3,6 +3,7 @@ import { createSign } from "node:crypto";
 import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
+import {dependencyTargets} from './dependency-targets.mjs';
 
 const root = process.cwd();
 const publicDir = path.join(root, "public");
@@ -239,23 +240,26 @@ async function checkContentFreshness() {
 }
 
 async function checkCdnDependencies() {
-  const urls = new Set();
+  const sources=[];
   for (const filename of await listFiles(path.join(publicDir, "js"))) {
+    if(filename.split(path.sep).includes('vendor')||!filename.endsWith('.js'))continue;
     const text = await readFile(filename, "utf8");
-    for (const match of text.matchAll(/https:\/\/cdn\.jsdelivr\.net\/[^'")]+/g)) urls.add(match[0]);
+    sources.push({filename,text});
   }
+  const integrity=JSON.parse(await readFile(path.join(root,'config/vendor-integrity.json'),'utf8'));
+  const urls=dependencyTargets(sources,integrity,origin);
   const failed = [];
-  for (const url of urls) {
+  for(let i=0;i<urls.length;i+=6)await Promise.all(urls.slice(i,i+6).map(async url=>{
     const result = await fetchStatus(url, "HEAD");
     const retry = result.status === 405 ? await fetchStatus(url, "GET") : result;
     checks.push({ name: "cdn", url, status: retry.status, ok: retry.ok });
     if (!retry.ok) {
       failed.push(url);
-      needsAttention.push(`CDN dependency failed: ${url} (${retry.status || retry.error})`);
-      suggestedFixes.push(`Replace or self-host the failed library after testing the affected tool: ${url}`);
+      needsAttention.push(`Library dependency failed: ${url} (${retry.status || retry.error})`);
+      suggestedFixes.push(`Restore or update the failed library/model asset after testing the affected tool: ${url}`);
     }
-  }
-  if (failed.length === 0) allClear.push("External CDN dependencies loaded successfully.");
+  }));
+  if (failed.length === 0) allClear.push(`All ${urls.length} configured library assets were available, including self-hosted OCR/PDF dependencies. Dormant upstream CDN defaults are not used as probe URLs.`);
 }
 
 function getMode() {
