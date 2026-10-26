@@ -197,6 +197,33 @@ jobs:
         if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
         run: node scripts/report-dependencies.mjs
 
+      - name: Private OCR functional checks
+        id: ocr
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        env:
+          KALIKA_TEST_ORIGIN: https://kalikatools.com
+        run: node scripts/test-ocr.mjs
+
+      - name: French keyboard functional checks
+        id: french
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        env:
+          KALIKA_TEST_ORIGIN: https://kalikatools.com
+        run: node scripts/test-french-keyboard.mjs
+
+      - name: Serbian converter functional checks
+        id: serbian
+        if: always() && (steps.mode.outputs.mode == 'weekly' || steps.mode.outputs.mode == 'all')
+        env:
+          KALIKA_TEST_ORIGIN: https://kalikatools.com
+        run: node scripts/test-serbian.mjs
+
+      - name: Include functional check results in admin report
+        if: always()
+        env:
+          KALIKA_STEP_RESULTS: ${{ toJSON(steps) }}
+        run: node scripts/summarize-workflow-checks.mjs
+
       - name: Sync summaries to private admin
         if: always()
         env:

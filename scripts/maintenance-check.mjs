@@ -13,65 +13,10 @@ const performanceMinimum = Number(process.env.KALIKA_PERFORMANCE_MIN || 80);
 const today = new Date().toISOString().slice(0, 10);
 const reportBase = `kalika-site-check-${today}-${mode}`;
 
-const routes = [
-  "/tools/pdf-to-text",
-  "/tools/ocr-pdf",
-  "/tools/extract-pdf-pages",
-  "/tools/delete-pdf-pages",
-  "/tools/rotate-pdf",
-  "/pdf-tools",
-  "/",
-  "/about",
-  "/contact",
-  "/privacy",
-  "/terms",
-  "/tools/case-converter",
-  "/tools/space-remover",
-  "/tools/duplicate-line-remover",
-  "/tools/text-reverser",
-  "/tools/find-replace",
-  "/tools/text-to-slug",
-  "/tools/lorem-ipsum-generator",
-  "/tools/gpa-calculator",
-  "/tools/percentage-calculator",
-  "/tools/scientific-calculator",
-  "/tools/fraction-calculator",
-  "/tools/work-hours-calculator",
-  "/tools/tip-calculator",
-  "/tools/sales-tax-calculator",
-  "/tools/discount-calculator",
-  "/tools/simple-calculator",
-  "/tools/grade-calculator",
-  "/tools/bs-ad-converter",
-  "/tools/date-difference",
-  "/tools/exam-countdown",
-  "/tools/image-compressor",
-  "/tools/image-cropper",
-  "/tools/image-format-converter",
-  "/tools/image-resizer",
-  "/tools/merge-pdf",
-  "/tools/organize-pdf",
-  "/tools/fill-sign-pdf",
-  "/tools/crop-pdf",
-  "/tools/page-numbers",
-  "/tools/watermark-pdf",
-  "/tools/split-pdf",
-  "/tools/compress-pdf",
-  "/tools/pdf-to-jpg",
-  "/tools/jpg-to-pdf",
-  "/tools/document-scanner",
-  "/tools/emi-calculator",
-  "/tools/unit-converter",
-  "/tools/age-calculator",
-  "/tools/word-counter",
-  "/tools/nepali-typing",
-  "/tools/preeti-unicode-converter",
-  "/tools/qr-generator",
-  "/tools/currency-converter",
-  "/guides/",
-  "/guides/reduce-image-size-for-email",
-  "/guides/jpg-png-webp"
-];
+// Use the same generated route inventory as deployment; new tools/guides must not be omitted.
+const manifest=JSON.parse(await readFile(path.join(root,'config/security-manifest.json'),'utf8'));
+const routes=Object.entries(manifest.pages).filter(([route,page])=>page.title&&!['/404','/404.html'].includes(route)).map(([route])=>route);
+if(!routes.length)throw Error('Maintenance route inventory is empty.');
 
 const toolRoutes = routes.filter((route) => route.startsWith("/tools/"));
 const checks = [];
@@ -167,7 +112,7 @@ async function checkBrokenLinks() {
 
 async function checkPageSpeed() {
   if (!process.env.PAGESPEED_API_KEY) {
-    worthReviewing.push("PageSpeed Insights skipped: add PAGESPEED_API_KEY in GitHub Secrets after launch.");
+    worthReviewing.push("PageSpeed Insights API skipped: PAGESPEED_API_KEY is not configured. The separate weekly Lighthouse lab check does not require this key.");
     suggestedFixes.push("Add a Google PageSpeed Insights API key as PAGESPEED_API_KEY, then rerun the weekly workflow.");
     return;
   }
