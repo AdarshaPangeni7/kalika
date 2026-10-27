@@ -19,7 +19,7 @@ const tools={
  'document-scanner':['Turn photos of paper into straight, readable scans. Adjust the corners, choose a look and save your pages as a PDF.']
 };
 for(const [slug,[intro,...steps]]of Object.entries(tools)){
- const file=`public/tools/${slug}.html`,$=load(await readFile(file,'utf8'));
+ const file=`public/tools/${slug}.html`,$=load((await readFile(file,'utf8')).trim());
  $('body').addClass('pdf-simple');
  $('#file').closest('label').contents().filter((_,n)=>n.type==='text').each((_,n)=>{n.data=slug==='merge-pdf'?'Select PDFs':'Select PDF';});
  if(!$('link[href^="/pdf-workflow.css"]').length)$('head').append('<link rel="stylesheet" href="/pdf-workflow.css">');
@@ -44,7 +44,7 @@ for(const [slug,[intro,...steps]]of Object.entries(tools)){
   $('#scale option').each((_,e)=>{$(e).text($(e).attr('value')==='1'?'Standard — smaller images':'Sharper — larger images');});
   $('.help ol li').each((_,e)=>{const t=$(e).text();if(/download/i.test(t))$(e).text('Select Convert to JPG, then download the ZIP when your images are ready.');});
  }
- await writeFile(file,$.html());
+ await writeFile(file,$.html().trim()+'\n');
 }
 console.log(`Simple PDF workflow applied to ${Object.keys(tools).length} pages.`);
 // Stable content versions prevent returning visitors mixing new HTML with an
@@ -52,7 +52,7 @@ console.log(`Simple PDF workflow applied to ${Object.keys(tools).length} pages.`
 const assets=['/js/pdf-workflow.js','/js/pdf-tools.js','/js/organize-pdf.js','/js/pdf-edit-tools.js','/js/fill-sign.js','/js/pdf-to-jpg.js','/js/pdf-to-text.js','/js/document-scanner.js','/js/ocr-pdf.js','/pdf-workflow.css','/pdf-tools.css'];
 const versions=new Map(await Promise.all(assets.map(async asset=>[asset,createHash('sha256').update((await readFile('public'+asset,'utf8')).replace(/\r\n/g,'\n')).digest('hex').slice(0,10)])));
 for(const slug of [...Object.keys(tools),'compress-pdf']){
- const file=`public/tools/${slug}.html`,$=load(await readFile(file,'utf8'));
+ const file=`public/tools/${slug}.html`,$=load((await readFile(file,'utf8')).trim());
  for(const [selector,attribute]of [['script[src]','src'],['link[rel=stylesheet]','href']])$(selector).each((_,e)=>{const asset=$(e).attr(attribute).split('?')[0];if(versions.has(asset))$(e).attr(attribute,asset+'?v='+versions.get(asset));});
- await writeFile(file,$.html());
+ await writeFile(file,$.html().trim()+'\n');
 }
