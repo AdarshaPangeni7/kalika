@@ -31,7 +31,7 @@ function revokeDownloads() {downloads.forEach(URL.revokeObjectURL); downloads = 
 function clearOutput() {revokeDownloads(); pdfBytes = null; $('text-output').value = ''; $('copy-text').disabled = true; $('progress').value = 0;}
 function downloadLink(bytes, type, filename, label) {
   const url = URL.createObjectURL(new Blob([bytes], {type})); downloads.push(url);
-  const link = document.createElement('a'); link.href = url; link.download = filename; link.className = 'button'; link.textContent = label;
+  const link = document.createElement('a'); link.href = url; link.dataset.bytes=String(new Blob([bytes],{type}).size); link.download = filename; link.className = 'button'; link.textContent = label;
   $('result').append(link);
   return link;
 }

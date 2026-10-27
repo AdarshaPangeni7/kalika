@@ -68,7 +68,7 @@ $('tool-form').addEventListener('submit', async event => {
     $('text-output').value = parts.join('\n\n');
     downloadUrl = URL.createObjectURL(new Blob([$ ('text-output').value], {type: 'text/plain;charset=utf-8'}));
     const link = document.createElement('a');
-    link.href = downloadUrl;
+    link.href = downloadUrl;link.dataset.bytes=String(new Blob([$ ('text-output').value]).size);link.dataset.summary=String(documentPdf.numPages-empty.length)+' pages with text';
     link.download = file.name.replace(/\.pdf$/i, '').replace(/[^\p{L}\p{N}_-]/gu, '-').slice(0, 60) + '.txt';
     link.className = 'button';
     link.textContent = 'Download text file';

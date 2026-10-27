@@ -32,6 +32,7 @@ jobs:
           "$RUNNER_TEMP/gitleaks" git --redact --log-opts="--all" --no-banner
       - run: npx playwright install --with-deps chromium
       - run: node scripts/test-compression-ux.mjs
+      - run: node scripts/test-pdf-workflow-ux.mjs
       - run: node scripts/test-analytics.mjs
       - run: node scripts/test-security-inputs.mjs
       - run: node scripts/test-security-admin.mjs
