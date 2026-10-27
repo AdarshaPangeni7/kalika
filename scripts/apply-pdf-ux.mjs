@@ -1,5 +1,6 @@
 import {readFile,writeFile} from 'node:fs/promises';
 import {load} from 'cheerio';
+import {createHash} from 'node:crypto';
 const tools={
  'merge-pdf':['Combine several PDFs into one file. Put them in order, then create and download your merged PDF.','Add PDFs','Put files in order','Create and download'],
  'split-pdf':['Save the pages you need, or make a separate PDF for every page. Your original document stays unchanged.','Select PDF','Choose pages or separate files','Create and download'],
@@ -21,8 +22,8 @@ for(const [slug,[intro,...steps]]of Object.entries(tools)){
  const file=`public/tools/${slug}.html`,$=load(await readFile(file,'utf8'));
  $('body').addClass('pdf-simple');
  $('#file').closest('label').contents().filter((_,n)=>n.type==='text').each((_,n)=>{n.data=slug==='merge-pdf'?'Select PDFs':'Select PDF';});
- if(!$('link[href="/pdf-workflow.css"]').length)$('head').append('<link rel="stylesheet" href="/pdf-workflow.css">');
- if(!$('script[src="/js/pdf-workflow.js"]').length)$('head').append('<script type="module" src="/js/pdf-workflow.js"></script>');
+ if(!$('link[href^="/pdf-workflow.css"]').length)$('head').append('<link rel="stylesheet" href="/pdf-workflow.css">');
+ if(!$('script[src^="/js/pdf-workflow.js"]').length)$('head').append('<script type="module" src="/js/pdf-workflow.js"></script>');
  $('.tool-heading > p:last-of-type').text(intro);
  $('.workspace .hint').each((_,e)=>{
   let text=$(e).text();
@@ -46,3 +47,12 @@ for(const [slug,[intro,...steps]]of Object.entries(tools)){
  await writeFile(file,$.html());
 }
 console.log(`Simple PDF workflow applied to ${Object.keys(tools).length} pages.`);
+// Stable content versions prevent returning visitors mixing new HTML with an
+// older cached PDF controller or stylesheet. Normalize line endings for CI.
+const assets=['/js/pdf-workflow.js','/js/pdf-tools.js','/js/organize-pdf.js','/js/pdf-edit-tools.js','/js/fill-sign.js','/js/pdf-to-jpg.js','/js/pdf-to-text.js','/js/document-scanner.js','/js/ocr-pdf.js','/pdf-workflow.css','/pdf-tools.css'];
+const versions=new Map(await Promise.all(assets.map(async asset=>[asset,createHash('sha256').update((await readFile('public'+asset,'utf8')).replace(/\r\n/g,'\n')).digest('hex').slice(0,10)])));
+for(const slug of [...Object.keys(tools),'compress-pdf']){
+ const file=`public/tools/${slug}.html`,$=load(await readFile(file,'utf8'));
+ for(const [selector,attribute]of [['script[src]','src'],['link[rel=stylesheet]','href']])$(selector).each((_,e)=>{const asset=$(e).attr(attribute).split('?')[0];if(versions.has(asset))$(e).attr(attribute,asset+'?v='+versions.get(asset));});
+ await writeFile(file,$.html());
+}
