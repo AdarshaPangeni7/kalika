@@ -22,4 +22,6 @@ await assert.rejects(prepareCompression(special,data,lib,true),/special form for
 await prepareCompression(special,data,lib,false);
 const signed=await PDFDocument.load(data);signed.context.register(signed.context.obj({Type:'Sig',ByteRange:[0,1,2,3]}));
 for(const image of [true,false])await assert.rejects(prepareCompression(signed,data,lib,image),/digitally signed/);
+const direct=await PDFDocument.create();direct.addPage();direct.catalog.set(PDFName.of('AcroForm'),direct.context.obj({Fields:[{Kids:[{V:{Type:'Sig',ByteRange:[0,1,2,3]}}]}]}));
+await assert.rejects(prepareCompression(direct,await direct.save(),lib,true),/digitally signed/);
 console.log('PASS compression: empty form dictionaries, filled fields/checkboxes, original preservation, flattening, XFA guidance and signature protection.');

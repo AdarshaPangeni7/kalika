@@ -3,11 +3,19 @@
 export async function prepareCompression(pdf,data,lib,image){
  const {PDFName,PDFDict,PDFArray,PDFNull,PDFSignature}=lib;
  const key=name=>PDFName.of(name);
- for(const [,object] of pdf.context.enumerateIndirectObjects()){
-  if(!(object instanceof PDFDict))continue;
+ const seen=new WeakSet();let objects=0;
+ function inspect(object,depth=0){
+  if(!(object instanceof PDFDict)&&!(object instanceof PDFArray))return;
+  if(seen.has(object))return;
+  if(depth>100||++objects>50000)throw Error('This PDF is too complex to compress safely. Try a copy saved using Print to PDF.');
+  seen.add(object);
+  if(object instanceof PDFArray){for(const child of object.asArray())inspect(child,depth+1);return;}
   const signedField=object.get(key('FT'))?.toString()==='/Sig'&&object.has(key('V'))&&pdf.context.lookup(object.get(key('V')))!==PDFNull;
   if(signedField||object.has(key('ByteRange'))||object.get(key('Type'))?.toString()==='/Sig')throw Error('This PDF is digitally signed. Compressing it would invalidate its signature. Keep the original or choose an unsigned copy.');
+  // Signatures can be direct dictionaries, not only indirect PDF objects.
+  for(const child of object.values())inspect(child,depth+1);
  }
+ for(const [,object] of pdf.context.enumerateIndirectObjects())inspect(object);
  const acro=pdf.context.lookup(pdf.catalog.get(key('AcroForm')));
  const fields=acro instanceof PDFDict?pdf.context.lookup(acro.get(key('Fields'))):null;
  const hasFields=fields instanceof PDFArray&&fields.size()>0;
