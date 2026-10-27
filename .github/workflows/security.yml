@@ -31,6 +31,7 @@ jobs:
           tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP" gitleaks
           "$RUNNER_TEMP/gitleaks" git --redact --log-opts="--all" --no-banner
       - run: npx playwright install --with-deps chromium
+      - run: node scripts/test-compression-ux.mjs
       - run: node scripts/test-analytics.mjs
       - run: node scripts/test-security-inputs.mjs
       - run: node scripts/test-security-admin.mjs
@@ -39,6 +40,7 @@ jobs:
       - run: node scripts/test-workflow-summary.mjs
       - run: node scripts/test-dependency-targets.mjs
       - run: node scripts/test-dependency-review-api.mjs
+      - run: node scripts/test-compression-forms.mjs
       - name: Private OCR browser regression
         run: node scripts/test-ocr.mjs
 

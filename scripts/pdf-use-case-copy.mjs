@@ -5,7 +5,7 @@ export const pdfUseCaseCopy = {
   },
   "compress-pdf": {
     "heading": "Choose compression for the way you will use the PDF",
-    "text": "For a report that readers need to search or copy from, start with Preserve text. For scanned receipts or photographed pages, image-based compression may help reduce the attachment size, but check small print and handwriting before sharing. If a form has a strict size limit, compare the actual result with that limit; a smaller file is not guaranteed."
+    "text": "For a report or form that readers need to search, copy or edit, choose Keep text. For scans and photographed pages, try Balanced and check small print before sharing. Compare the actual size saved with your upload limit; a smaller file is not guaranteed."
   },
   "split-pdf": {
     "heading": "Send the relevant part of a longer document",

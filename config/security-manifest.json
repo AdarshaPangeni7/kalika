@@ -220,10 +220,10 @@
     "/tools/compress-pdf": {
       "asset": "/tools/compress-pdf.html",
       "hashes": [
-        "'sha256-CoLuwKwWuyJD5U1FJK0x0GANT8Lw9z3XDIo/XMnRuM4='"
+        "'sha256-sLvdk93/ut8m/eDSMZpAwMJ/acGrA7Yq10E3FhjzASY='"
       ],
       "title": "Compress PDF Online Free — Reduce PDF File Size | Kalika",
-      "description": "Compress PDF files in your browser with text-preserving optimization or image-based compression. Compare file sizes and download without uploading files."
+      "description": "Compress PDF files privately in your browser. Choose a compression level, compare the original and new sizes, and see the percentage saved before download."
     },
     "/tools/crop-pdf": {
       "asset": "/tools/crop-pdf.html",

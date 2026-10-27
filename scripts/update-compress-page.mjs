@@ -1,0 +1,20 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {load} from 'cheerio';
+import {compressionContent as d} from './compression-page-content.mjs';
+const file='public/tools/compress-pdf.html',$=load(await readFile(file,'utf8'));
+$('meta[name=description],meta[property="og:description"],meta[name="twitter:description"]').attr('content',d.description);
+$('.tool-heading > p:last-child').text(d.intro);
+$('#file').closest('label').contents().filter((_,n)=>n.type==='text').each((_,n)=>{n.data='Select PDF';});
+$('#file').closest('label').next('p.hint').text(d.limits);
+$('.pdf-settings').html(d.settings);
+$('.pdf-settings').next('p.hint').text(d.hint);
+$('.help > div').first().find('ol').html(d.steps.map(x=>`<li>${x}</li>`).join(''));
+$('.help > div').last().find('ul').html(d.benefits.map(x=>`<li>${x}</li>`).join(''));
+const faq=$('section.explainer').filter((_,e)=>$(e).find('h2').text()==='Frequently Asked Questions');
+faq.html('<h2>Frequently Asked Questions</h2>'+d.faqs.map(([q,a])=>`<details><summary>${q}</summary><p>${a}</p></details>`).join(''));
+$('.workspace').next('section.explainer').find('h2').text('Choose the right copy for your document');
+$('.workspace').next('section.explainer').find('p').text('For a scanned receipt or photographed page, try Balanced first and check small print in the download. For an insurance form you still need to fill in, choose Keep text. The result shows actual savings, so you can compare them with an email or application size limit.');
+const schema=JSON.parse($('script[type="application/ld+json"]').first().text());
+for(const entry of schema['@graph']){if(entry['@type']==='WebApplication')entry.description=d.description;if(entry['@type']==='FAQPage')entry.mainEntity=d.faqs.map(([name,text])=>({'@type':'Question',name,acceptedAnswer:{'@type':'Answer',text}}));}
+$('script[type="application/ld+json"]').first().text(JSON.stringify(schema));
+await writeFile(file,$.html());
